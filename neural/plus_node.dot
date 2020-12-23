@@ -1,0 +1,9 @@
+digraph G{
+	rankdir=LR;
+	node [color=red2,shape=plaintext]
+	x,y,z;
+	node[style=solid,color=red2,shape=circle,label="x"]p;
+	x->p;
+	y->p;
+	p->z;
+}

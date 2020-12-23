@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>osc-file-system- on ticks blog</title>
+    <link>https://tickscn.github.io/tags/osc-file-system/</link>
+    <description>Recent content in osc-file-system- on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 28 Jul 2020 12:31:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/osc-file-system/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>文件系统</title>
+      <link>https://tickscn.github.io/post/osc_file_system/</link>
+      <pubDate>Tue, 28 Jul 2020 12:31:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_file_system/</guid>
+      <description>文件概念 计算机可以在各种存储介质上存储信息, 为了方便使用, 操作系统提供了信息存储的统一视图, 对存储设备的物理属性加以抽象, 从而定义逻辑存储单</description>
+    </item>
+    
+  </channel>
+</rss>

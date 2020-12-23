@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>tensorflow 数据类型 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="数值类型 标量(Scalar): 单个的实数, 维度为 0. shape 为[] 向量(Vector): n 个实数的有序集合. shape 为[n] 矩阵(Matrix): n 行 m 列" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/tensorflow_base_type/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="tensorflow 数据类型" />
+<meta property="og:description" content="数值类型 标量(Scalar): 单个的实数, 维度为 0. shape 为[] 向量(Vector): n 个实数的有序集合. shape 为[n] 矩阵(Matrix): n 行 m 列" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/tensorflow_base_type/" />
+<meta property="article:published_time" content="2020-12-08T15:41:00+08:00" />
+<meta property="article:modified_time" content="2020-12-08T15:41:00+08:00" />
+<meta itemprop="name" content="tensorflow 数据类型">
+<meta itemprop="description" content="数值类型 标量(Scalar): 单个的实数, 维度为 0. shape 为[] 向量(Vector): n 个实数的有序集合. shape 为[n] 矩阵(Matrix): n 行 m 列">
+<meta itemprop="datePublished" content="2020-12-08T15:41:00+08:00" />
+<meta itemprop="dateModified" content="2020-12-08T15:41:00+08:00" />
+<meta itemprop="wordCount" content="538">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="tensorflow 数据类型"/>
+<meta name="twitter:description" content="数值类型 标量(Scalar): 单个的实数, 维度为 0. shape 为[] 向量(Vector): n 个实数的有序集合. shape 为[n] 矩阵(Matrix): n 行 m 列"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">tensorflow 数据类型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-08 </span>
+        <div class="post-category">
+            <a href="/categories/neural-network/"> Neural-NetWork </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#数值类型">数值类型</a></li>
+        <li><a href="#字符串类型">字符串类型</a></li>
+        <li><a href="#布尔类型">布尔类型</a></li>
+        <li><a href="#数值精度">数值精度</a></li>
+        <li><a href="#待优化张量">待优化张量</a></li>
+        <li><a href="#创建张量">创建张量</a>
+          <ul>
+            <li><a href="#0-张量或全-1-张量">0 张量或全 1 张量</a></li>
+            <li><a href="#全指定数值张量">全指定数值张量</a></li>
+            <li><a href="#已知分布的向量">已知分布的向量</a></li>
+          </ul>
+        </li>
+        <li><a href="#创建序列">创建序列</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="数值类型">数值类型</h2>
+<ul>
+<li>标量(Scalar): 单个的实数, 维度为 0. shape 为[]</li>
+<li>向量(Vector): n 个实数的有序集合. shape 为[n]</li>
+<li>矩阵(Matrix): n 行 m 列实数的有序集合, 维度为 2. shape 为[n, m]</li>
+<li>张量(Tensor): 维度大于 2 的数组. 张量的每个维度也被称为轴(Axis)</li>
+</ul>
+<p>Tensorflow 中为了方便将标量,向量和矩阵也称为张量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Tensorflow 中创建张量的方式为 ~tf.constant()~
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="字符串类型">字符串类型</h2>
+<p>通过 <code>tf.constant()</code> 传入字符串对象, 可以创建字符串类型的张量</p>
+<h2 id="布尔类型">布尔类型</h2>
+<p>传入 Python 中的 Boolean 的数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">~a = tf.constant(True)~
+</code></pre></td></tr></table>
+</div>
+</div><p>与 Python 原生的 Bollean 数值比较不相等</p>
+<h2 id="数值精度">数值精度</h2>
+<p>由数据的字长来控制.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">精度和类型转换可以使用 ~tf.cast()~
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="待优化张量">待优化张量</h2>
+<p>为了区分需要计算梯度信息的张量和不需要计算梯度信息的张量, Tensorflow 有专门的类型来表示需要训练的数据 <code>tf.Variable</code>, 可以由 <code>tf.Variable</code> 来创建, 参数可以是普通 tf 张量, 也可以是原始数组</p>
+<h2 id="创建张量">创建张量</h2>
+<p>可以通过 numpy.array 或 python 中的切片来创建. <code>tf.convert_to_tensor</code>. numpy.array 默认使用 float64 精度, 如果想的话可以转换为 float32. 实际上可以使用 <code>tf.constant</code></p>
+<h3 id="0-张量或全-1-张量">0 张量或全 1 张量</h3>
+<ol>
+<li><code>tf.zeors()</code>: 全 0</li>
+<li><code>tf.ones()</code>: 全 1</li>
+<li><code>tf.zeros_like</code> 与参数同样大小的全 0</li>
+<li><code>tf.ones_like</code> 与参数同样大小的全 1</li>
+</ol>
+<h3 id="全指定数值张量">全指定数值张量</h3>
+<p>使用 <code>tf.fill(shape, value)</code></p>
+<h3 id="已知分布的向量">已知分布的向量</h3>
+<p>可以创建采样自已知分布的随机变量, 常见的有正态分布(Normal Distribution, 或高斯分布 Gauss Distribution)和均匀分布(Uniform Distribution)</p>
+<ol>
+<li><code>tf.random.normal(shape, mean=, stddev=)</code>: 创建形状为 shape, 期望为 mean, 标准差为 stddev 的正态分布 \(\mathcal{N}(mean,stddev^{2})\)</li>
+<li><code>tf.random.uniform(shape,mival=,maxval=,dtype=)</code></li>
+</ol>
+<h2 id="创建序列">创建序列</h2>
+<p><code>tf.range(limits, delta=)</code>, 序列不包括 limits. 默认为 delta 为 1 的整形序列</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-08
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/tensorflow_dims_trans/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">tensorflow 维度变换</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/">
+            <span class="next-text nav-default">分类问题</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-12-08 15:41:00 \u002b0800 CST',
+        title: 'tensorflow 数据类型',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

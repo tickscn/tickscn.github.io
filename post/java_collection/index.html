@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>集合 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="Java 集合框架 将集合的接口与实现分离 Java 将常用数据结构类库的接口与实现分离. 如队列(queue). 尾部插入 头部删除 查找元素个数 1 2 3 4 5 6 public interface Queue&amp;lt;E&amp;gt; {" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_collection/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="集合" />
+<meta property="og:description" content="Java 集合框架 将集合的接口与实现分离 Java 将常用数据结构类库的接口与实现分离. 如队列(queue). 尾部插入 头部删除 查找元素个数 1 2 3 4 5 6 public interface Queue&lt;E&gt; {" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_collection/" />
+<meta property="article:published_time" content="2020-04-08T19:30:00+08:00" />
+<meta property="article:modified_time" content="2020-04-08T19:30:00+08:00" />
+<meta itemprop="name" content="集合">
+<meta itemprop="description" content="Java 集合框架 将集合的接口与实现分离 Java 将常用数据结构类库的接口与实现分离. 如队列(queue). 尾部插入 头部删除 查找元素个数 1 2 3 4 5 6 public interface Queue&lt;E&gt; {">
+<meta itemprop="datePublished" content="2020-04-08T19:30:00+08:00" />
+<meta itemprop="dateModified" content="2020-04-08T19:30:00+08:00" />
+<meta itemprop="wordCount" content="1398">
+
+
+
+<meta itemprop="keywords" content="collection,map," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="集合"/>
+<meta name="twitter:description" content="Java 集合框架 将集合的接口与实现分离 Java 将常用数据结构类库的接口与实现分离. 如队列(queue). 尾部插入 头部删除 查找元素个数 1 2 3 4 5 6 public interface Queue&lt;E&gt; {"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">集合</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-08 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#java-集合框架">Java 集合框架</a>
+          <ul>
+            <li><a href="#将集合的接口与实现分离">将集合的接口与实现分离</a></li>
+            <li><a href="#collection-接口"><code>Collection</code> 接口</a></li>
+            <li><a href="#迭代器">迭代器</a></li>
+            <li><a href="#集合框架中的接口">集合框架中的接口</a></li>
+          </ul>
+        </li>
+        <li><a href="#具体的集合">具体的集合</a>
+          <ul>
+            <li><a href="#链表">链表</a></li>
+            <li><a href="#数组列表">数组列表</a></li>
+            <li><a href="#散列集">散列集</a></li>
+            <li><a href="#树集">树集</a></li>
+            <li><a href="#双端队列">双端队列</a></li>
+            <li><a href="#优先级队列">优先级队列</a></li>
+          </ul>
+        </li>
+        <li><a href="#映射">映射</a>
+          <ul>
+            <li><a href="#枚举集与映射">枚举集与映射</a></li>
+          </ul>
+        </li>
+        <li><a href="#视图与包装器">视图与包装器</a>
+          <ul>
+            <li><a href="#集合包装器">集合包装器</a></li>
+            <li><a href="#子范围--subrange">子范围(subrange)</a></li>
+            <li><a href="#不可修改视图">不可修改视图</a></li>
+            <li><a href="#同步视图">同步视图</a></li>
+            <li><a href="#受查视图">受查视图</a></li>
+          </ul>
+        </li>
+        <li><a href="#算法">算法</a>
+          <ul>
+            <li><a href="#排序与混排">排序与混排</a></li>
+            <li><a href="#二分查找">二分查找</a></li>
+            <li><a href="#其它的简单算法">其它的简单算法</a></li>
+            <li><a href="#批处理">批处理</a></li>
+            <li><a href="#集合与数组转换">集合与数组转换</a></li>
+          </ul>
+        </li>
+        <li><a href="#遗留集合">遗留集合</a>
+          <ul>
+            <li><a href="#hashtable">Hashtable</a></li>
+            <li><a href="#枚举">枚举</a></li>
+            <li><a href="#属性映射--propetry-map">属性映射(propetry map)</a></li>
+            <li><a href="#栈">栈</a></li>
+            <li><a href="#位集">位集</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="java-集合框架">Java 集合框架</h2>
+<h3 id="将集合的接口与实现分离">将集合的接口与实现分离</h3>
+<p>Java 将常用数据结构类库的接口与实现分离. 如队列(queue).</p>
+<ul>
+<li>尾部插入</li>
+<li>头部删除</li>
+<li>查找元素个数</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Queue</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+<span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">element</span><span class="o">);</span>
+    <span class="n">E</span> <span class="nf">remove</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="nf">size</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>队列的常见实现方法有顺序表(数组), 链表. 不同的实现用实现了接口 Queue 的类表示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ArrayQueue</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+<span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">head</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">tail</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">size</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">capacity</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">E</span><span class="o">[]</span> <span class="n">elements</span><span class="o">;</span>
+    <span class="n">ArrayQueue</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">capacity</span> <span class="o">=</span> <span class="n">capacity</span><span class="o">;</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="o">(</span><span class="n">E</span><span class="o">[])</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">capacity</span><span class="o">];</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">element</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">capacity</span><span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">QueueIsFull</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="o">(</span><span class="n">tail</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">%</span> <span class="n">capacity</span><span class="o">;</span>
+        <span class="n">elements</span><span class="o">[</span><span class="n">tail</span><span class="o">]</span> <span class="o">=</span> <span class="n">element</span><span class="o">;</span>
+        <span class="n">size</span><span class="o">++;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">E</span> <span class="nf">remove</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">0</span><span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">QueueIsEmpty</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="o">(</span><span class="n">head</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">%</span> <span class="n">capacity</span><span class="o">;</span>
+        <span class="n">size</span><span class="o">--;</span>
+        <span class="k">return</span> <span class="n">elements</span><span class="o">[</span><span class="n">h</span><span class="o">];</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="k">return</span> <span class="n">size</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用的时候可以使用接口类型存放集合的引用, 这样当想要更换实现时只需更改构造器</p>
+<h3 id="collection-接口"><code>Collection</code> 接口</h3>
+<p>集合类的基本接口是 <code>Collection</code>, 其有两个基本方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+<span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">element</span><span class="o">);</span>
+    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">();</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>add 用于添加元素, 如果确实改变了对象就返回 true, 否则返回 false
+iterator 方法返回一个实现了 Iterator 接口的对象</p>
+<h3 id="迭代器">迭代器</h3>
+<p>Iterator 接口有四个方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Iterator</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
+<span class="o">{</span>
+    <span class="n">E</span> <span class="nf">next</span><span class="o">();</span>
+    <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">();</span>
+    <span class="kt">void</span> <span class="nf">remove</span><span class="o">();</span>
+    <span class="k">default</span> <span class="kt">void</span> <span class="nf">forEachRemaining</span><span class="o">(</span><span class="n">Costume</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">action</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>remove() 之前必须调用 next()</p>
+<h3 id="集合框架中的接口">集合框架中的接口</h3>
+<ul>
+<li>Collection</li>
+<li>Map</li>
+</ul>
+<p>一些区别</p>
+<ul>
+<li>Collection 使用 boolean add(E element) 添加元素. Map 使用 V put(K key, V value);</li>
+<li>Collection 可以使用迭代器访问元素, Map 使用 V get(K key)</li>
+</ul>
+<h2 id="具体的集合">具体的集合</h2>
+<table>
+<thead>
+<tr>
+<th>集合类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ArrayList</td>
+<td>可以动态增长和缩减的索引序列</td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>可以在任何位置快速插入和删除的 <strong><strong>有序</strong></strong> 序列</td>
+</tr>
+<tr>
+<td>ArrayDeque</td>
+<td>用循环数组实现的双端队列</td>
+</tr>
+<tr>
+<td>HashSet</td>
+<td>无序集</td>
+</tr>
+<tr>
+<td>TreeSet</td>
+<td>有序集</td>
+</tr>
+<tr>
+<td>EnumSet</td>
+<td>包含枚举类型的集</td>
+</tr>
+<tr>
+<td>LinkedHashSet</td>
+<td>记住元素插入顺序的集</td>
+</tr>
+<tr>
+<td>PriorityQueue</td>
+<td>高效删除最小元素的集</td>
+</tr>
+<tr>
+<td>HashMap</td>
+<td>存储 key/value 关联的数据结构</td>
+</tr>
+<tr>
+<td>TreeMap</td>
+<td>键值有序排列的映射</td>
+</tr>
+<tr>
+<td>EnumMap</td>
+<td>键值无枚举类型的映射</td>
+</tr>
+<tr>
+<td>LinkedHashMap</td>
+<td>记住元素插入顺序的映射</td>
+</tr>
+<tr>
+<td>WeekHashMap</td>
+<td>可以回收不用的值</td>
+</tr>
+<tr>
+<td>IdentityHashMap</td>
+<td>使用 == 而不是 equals 比较的映射</td>
+</tr>
+</tbody>
+</table>
+<h3 id="链表">链表</h3>
+<ol>
+<li>Java 中的链表都是双向链表</li>
+<li>add 方法插入末尾</li>
+<li>迭代器 Iterator 的子接口 ListIterator 中 add 方法可以插入当前迭代器之前.</li>
+<li>该子接口也允许反向遍历链表
+<ol>
+<li>E previous();</li>
+<li>boolean hasPrevious();</li>
+</ol>
+</li>
+<li>remove 删除刚由迭代器访问的元素</li>
+</ol>
+<h3 id="数组列表">数组列表</h3>
+<ul>
+<li>ArrayList 是不同步的</li>
+<li>Vector 是同步的</li>
+</ul>
+<h3 id="散列集">散列集</h3>
+<ol>
+<li>可以快速查找的数据结构散列表(hash table)</li>
+<li>Java 中散列表用链表数组实现</li>
+</ol>
+<h3 id="树集">树集</h3>
+<ol>
+<li>有序集合</li>
+<li>目前的实现是红黑树</li>
+</ol>
+<h3 id="双端队列">双端队列</h3>
+<ol>
+<li>Dqueu 接口</li>
+<li>ArrayDeque 和 LinkedList 都实现了该接口</li>
+</ol>
+<h3 id="优先级队列">优先级队列</h3>
+<p>堆, 可以快速查找最小值</p>
+<h2 id="映射">映射</h2>
+<ol>
+<li>HashMap</li>
+<li>TreeMap</li>
+</ol>
+<h3 id="枚举集与映射">枚举集与映射</h3>
+<p>枚举集内部用位序表明实现. 没有公共构造器, 可以使用工厂方法</p>
+<h2 id="视图与包装器">视图与包装器</h2>
+<p>使用视图(views)可以获取其它实现了 Collection 和 Map 的对象. 视图引用的还是原对象. 可以理解为限制了接口的原数据</p>
+<h3 id="集合包装器">集合包装器</h3>
+<ol>
+<li>Array 的 asList 可以返回一个普通 Java 数组的 List 包装器</li>
+<li>Collections 类实现了很多实用方法. 参数和返回值是集合
+<ol>
+<li>nCopies(n, anObject) 返回一个实现了 List 接口的不可变对象</li>
+<li>singleton(anObject) 返回实现了 Set 的单元素集, 对应的有 singletonList, singletonMap</li>
+<li>emptySet() 返回空集</li>
+</ol>
+</li>
+</ol>
+<h3 id="子范围--subrange">子范围(subrange)</h3>
+<ol>
+<li>subList(begIndex, endIndex) 可以进行对应的任何操作</li>
+<li>有序集合和有序映射可以按照排序了选子范围
+<ol>
+<li>subSet(form, to)</li>
+<li>headSet(to)</li>
+<li>tailSet(from)</li>
+<li>映射类似</li>
+</ol>
+</li>
+</ol>
+<h3 id="不可修改视图">不可修改视图</h3>
+<p>Collections 的方法</p>
+<ul>
+<li>unmodifiableCollection</li>
+<li>unmodifiableList</li>
+<li>unmodifiableSet</li>
+<li>unmodifiableSortedSet</li>
+<li>unmodifiableNavigableSet</li>
+<li>unmodifiableMap</li>
+<li>unmodifiableSortedMap</li>
+<li>unmodifiableNavigableMap</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">unmodifiableCollection 使用 Object 的 equals 和 hashCode 方法.
+unmodifiableSet, unmodifiableList 使用底层的 equals 和 hashCode 方法
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="同步视图">同步视图</h3>
+<p>synchronizedXXX</p>
+<h3 id="受查视图">受查视图</h3>
+<p>类型错误的调试</p>
+<h2 id="算法">算法</h2>
+<h3 id="排序与混排">排序与混排</h3>
+<ol>
+<li>sort()</li>
+<li>reverseOrder() 降序比较器</li>
+<li>shuffle() 随机打乱</li>
+</ol>
+<h3 id="二分查找">二分查找</h3>
+<p>binarySearch 需要 List 接口. 返回非负值, 说明返回的是所查元素的索引, 返回负值, -i-1 是应该插入的位置</p>
+<h3 id="其它的简单算法">其它的简单算法</h3>
+<ol>
+<li>max</li>
+<li>min</li>
+<li>copy</li>
+<li>fill</li>
+<li>addAll</li>
+<li>replaceAll</li>
+<li>indexOfSubList</li>
+<li>lastIndexOfSubList</li>
+<li>swap</li>
+<li>reverse</li>
+<li>rotate 循环移动</li>
+<li>frequency 返回相同的个数</li>
+<li>disjoint 交集是否为空</li>
+</ol>
+<h3 id="批处理">批处理</h3>
+<ol>
+<li>removeAll()</li>
+<li>retainAll()</li>
+</ol>
+<h3 id="集合与数组转换">集合与数组转换</h3>
+<ol>
+<li>asList</li>
+<li>toArray() 返回 Object[]
+<ol>
+<li>toArray(xxx) xxx 为所需类型且长度为 1 的数组.</li>
+<li>toArray(xxx) xxx 为指定长度的所需类型数组. 长度相同时不会创建新数组</li>
+</ol>
+</li>
+</ol>
+<h2 id="遗留集合">遗留集合</h2>
+<h3 id="hashtable">Hashtable</h3>
+<p>Hashtable 与 HashMap 类的作用相同, Hashtable 是同步的. 如果对兼容性和同步性没有要求, 使用 HashMap. 并发时使用 ConcurrentHashMap</p>
+<h3 id="枚举">枚举</h3>
+<p>Enumeration 接口用来遍历元素</p>
+<h3 id="属性映射--propetry-map">属性映射(propetry map)</h3>
+<ul>
+<li>Key 与 Value 都是字符串</li>
+<li>可保存到文件中, 也可从文件中加载</li>
+<li>使用一个默认的辅助表</li>
+</ul>
+<h3 id="栈">栈</h3>
+<p>Stack 实现了 push 和 pop, 扩展为 Vector. 但是 Vector 可以使用栈不允许的操作</p>
+<h3 id="位集">位集</h3>
+<p>BitSet</p>
+<ul>
+<li>get(i)</li>
+<li>set(i)</li>
+<li>clear(i)</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-08
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/collection/">collection</a>
+          <a href="/tags/map/">map</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java_gui/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">图形程序设计</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_generic/">
+            <span class="next-text nav-default">泛型程序设计</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-04-08 19:30:00 \u002b0800 CST',
+        title: '集合',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

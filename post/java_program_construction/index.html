@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java 的基本程序设计结构 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &amp;#34;Hello, World!&amp;#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_program_construction/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java 的基本程序设计结构" />
+<meta property="og:description" content="1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &#34;Hello, World!&#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_program_construction/" />
+<meta property="article:published_time" content="2020-03-07T21:17:00+08:00" />
+<meta property="article:modified_time" content="2020-03-07T21:17:00+08:00" />
+<meta itemprop="name" content="Java 的基本程序设计结构">
+<meta itemprop="description" content="1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &#34;Hello, World!&#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访">
+<meta itemprop="datePublished" content="2020-03-07T21:17:00+08:00" />
+<meta itemprop="dateModified" content="2020-03-07T21:17:00+08:00" />
+<meta itemprop="wordCount" content="993">
+
+
+
+<meta itemprop="keywords" content="hello," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java 的基本程序设计结构"/>
+<meta name="twitter:description" content="1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &#34;Hello, World!&#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java 的基本程序设计结构</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-07 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#分析-hello-world">分析 Hello, World</a>
+          <ul>
+            <li><a href="#分析-hello-world">分析 Hello, World</a></li>
+          </ul>
+        </li>
+        <li><a href="#注释">注释</a></li>
+        <li><a href="#数据类型">数据类型</a>
+          <ul>
+            <li><a href="#整型">整型</a></li>
+            <li><a href="#浮点型">浮点型</a></li>
+            <li><a href="#char">char</a></li>
+            <li><a href="#bollen">bollen</a></li>
+          </ul>
+        </li>
+        <li><a href="#变量">变量</a>
+          <ul>
+            <li><a href="#初始化">初始化</a></li>
+            <li><a href="#常量">常量</a></li>
+            <li><a href="#运算符">运算符</a></li>
+            <li><a href="#数学函数与常量">数学函数与常量</a></li>
+            <li><a href="#数值类型转换">数值类型转换</a></li>
+            <li><a href="#逻辑-位运算">逻辑, 位运算</a></li>
+            <li><a href="#移位运算">移位运算</a></li>
+          </ul>
+        </li>
+        <li><a href="#字符串">字符串</a>
+          <ul>
+            <li><a href="#相等">相等</a></li>
+            <li><a href="#空串与-null-串">空串与 null 串</a></li>
+            <li><a href="#string-api">String API</a></li>
+            <li><a href="#构建字符串">构建字符串</a></li>
+          </ul>
+        </li>
+        <li><a href="#输入输出">输入输出</a></li>
+        <li><a href="#格式化输出">格式化输出</a></li>
+        <li><a href="#文件输入与输出">文件输入与输出</a>
+          <ul>
+            <li><a href="#输入">输入</a></li>
+            <li><a href="#输出到文件">输出到文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#控制流程">控制流程</a>
+          <ul>
+            <li><a href="#块">块</a></li>
+            <li><a href="#switch">switch</a></li>
+            <li><a href="#break">break</a></li>
+          </ul>
+        </li>
+        <li><a href="#大数值">大数值</a></li>
+        <li><a href="#数组">数组</a>
+          <ul>
+            <li><a href="#拷贝">拷贝</a></li>
+            <li><a href="#命令行参数">命令行参数</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="n">String</span> <span class="n">out</span> <span class="o">=</span> <span class="s">&#34;Hello, World!&#34;</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">out</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="分析-hello-world">分析 Hello, World</h2>
+<p>Java 区分大小写</p>
+<h3 id="分析-hello-world">分析 Hello, World</h3>
+<p>Java 区分大小写.
+<code>public</code> 是访问修饰符(access modifier), 控制其它代码对其的访问权限, <code>class</code> 表明类, <code>Hello</code> 类名
+Java 中类名以字母开头, 后面可以是字母和数字的组合, 不能与保留字重复</p>
+<p>Java 类名的标准命名规范是驼峰命名法</p>
+<p>源代码的名字必须与公共类相同, 扩展名 .java</p>
+<p>运行时 java 虚拟机从指定类的 main 方法开始</p>
+<h2 id="注释">注释</h2>
+<ol>
+<li>// 行注释</li>
+<li><em>* *</em> 块注释</li>
+<li><em>** *</em> 块注释, 不过可以用来生成文档</li>
+</ol>
+<h2 id="数据类型">数据类型</h2>
+<h3 id="整型">整型</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用空间</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+<td>4 byte</td>
+<td>-2147483648 ~ 2147483647(近似 20 亿)</td>
+</tr>
+<tr>
+<td>short</td>
+<td>2 byte</td>
+<td>-32768 ~ 32767</td>
+</tr>
+<tr>
+<td>long</td>
+<td>8 byte</td>
+<td></td>
+</tr>
+<tr>
+<td>byte</td>
+<td>1 byte</td>
+<td>-128 ~ 128</td>
+</tr>
+</tbody>
+</table>
+<p>字面量</p>
+<ol>
+<li>long 后缀 L 或 l</li>
+<li>16 进制 前缀 0X 或 0x</li>
+<li>八进制 前缀 0</li>
+</ol>
+<h3 id="浮点型">浮点型</h3>
+<p>float 与 double</p>
+<h3 id="char">char</h3>
+<p>使用单引号. \u 转义类似于预处理. 会在解析代码之前进行处理</p>
+<h3 id="bollen">bollen</h3>
+<p>true 和 false.</p>
+<p>java 中 数值不能自动转为 boolen</p>
+<h2 id="变量">变量</h2>
+<p>type name</p>
+<h3 id="初始化">初始化</h3>
+<p>可以使用=赋值</p>
+<h3 id="常量">常量</h3>
+<p>使用关键字 <code>final</code> 指示常量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">=const= 也量 Java 的保留字, 但是没有被使用. 必须使用 =final= 声明常量
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="运算符">运算符</h3>
+<p>+, -, *, /, %. 加减乘除和取模</p>
+<h3 id="数学函数与常量">数学函数与常量</h3>
+<p>Math 类中包含很多常用数学函数</p>
+<ol>
+<li>开平方 Math.sqrt(double)</li>
+<li>幂 Math.pow( x,  a) \(x^a\)</li>
+<li>三角函数
+<ol>
+<li>Math.sin</li>
+<li>Math.cos</li>
+<li>Math.tan</li>
+<li>Math.atan</li>
+<li>Math.atan2</li>
+</ol>
+</li>
+<li>指数函数 Math.exp</li>
+<li>自然对数 Math.log</li>
+<li>常用对数 Math.log10</li>
+<li>Math.PI \(\pi\)</li>
+<li>Math.E</li>
+</ol>
+<h3 id="数值类型转换">数值类型转换</h3>
+<p>类似 C++</p>
+<h3 id="逻辑-位运算">逻辑, 位运算</h3>
+<p>类似 C++</p>
+<h3 id="移位运算">移位运算</h3>
+<p>&laquo; 左移</p>
+<blockquote>
+<blockquote>
+<p>右移. 高位填充符号位</p>
+<blockquote>
+<p>右移. 高位填充 0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="字符串">字符串</h2>
+<p>标准类库中的 String 类, 不可修改</p>
+<p>可用 + 拼接</p>
+<p>可用 join 方法在拼接时加入分隔符</p>
+<h3 id="相等">相等</h3>
+<p>equals 方法</p>
+<p>compareTo 类似 C 语言的 strcmp</p>
+<h3 id="空串与-null-串">空串与 null 串</h3>
+<p>空串&quot;&quot; 是长度为 0 的字符串
+null 串是特殊的串.
+str == null 可以检查 str 是否为 null</p>
+<h3 id="string-api">String API</h3>
+<ul>
+<li>char charAt(int Index) 返回代码单元</li>
+<li>int codePointAt(int Index) 返回给定位置的码点</li>
+<li>int offsetByCodePoints(int startIndex, int cpCount) 返回 startIndex 位移 cpCount 后的码点索引</li>
+<li>int compareTo(String str) 字典序小于 str, 返回-1. 大于返回 1, 相等返回 0</li>
+<li>IntStream codePoints() 将码点作为流返回</li>
+<li>new String(int[] codePoints, int offset, int count) 用码点构造符串</li>
+<li>boolean equals(Object other)</li>
+<li>boolean equalsIgnoreCase(String other)</li>
+<li>int leagth()</li>
+<li>String replace()</li>
+<li>String substring()</li>
+<li>String toLowerCase()</li>
+<li>String toUpperCase()</li>
+<li>String trim() 删除头尾空格</li>
+</ul>
+<h3 id="构建字符串">构建字符串</h3>
+<p>StringBuilder builder = new StringBuilder();
+append()方法可以添加字符或字符串</p>
+<h2 id="输入输出">输入输出</h2>
+<p>输出使用 <code>System.out.ptintln</code>
+输入需要一个 Scanner</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.*</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestInput</span><span class="o">{</span>
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+            <span class="n">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;What&#39;s your name?&#34;</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextLine</span><span class="o">();</span>
+
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;How old are you?&#34;</span><span class="o">);</span>
+            <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Oh,&#34;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#34; you are &#34;</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span><span class="s">&#34; years old.&#34;</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="格式化输出">格式化输出</h2>
+<p>System.out.ptintf()</p>
+<h2 id="文件输入与输出">文件输入与输出</h2>
+<h3 id="输入">输入</h3>
+<p>Scanner in = new Scanner(Paths.get(&ldquo;test.txt&rdquo;), &ldquo;UTF-8&rdquo;);</p>
+<h3 id="输出到文件">输出到文件</h3>
+<p>PrintWriter out = new PrintWriter(&ldquo;test.txt&rdquo;,&ldquo;UTF-8&rdquo;);</p>
+<h2 id="控制流程">控制流程</h2>
+<p>条件与循环语句. Java 没有 goto. 但是 break 可以带标签与 c++ 相同的部分省略</p>
+<h3 id="块">块</h3>
+<p>Java 中不允许嵌套的块中变量与上层的变量同名</p>
+<h3 id="switch">switch</h3>
+<p>JAVA SE 7 开始 switch 变量支持字符串字面量</p>
+<h3 id="break">break</h3>
+<p>可以跳出带标签的语句块</p>
+<h2 id="大数值">大数值</h2>
+<p>BigNumber.
+BigDecimal.</p>
+<h2 id="数组">数组</h2>
+<p>type[] name = new type[length];
+数字数组初始化为 0, boolean 初始化为 false, 对象初始化为 null</p>
+<h3 id="拷贝">拷贝</h3>
+<p>直接赋值, 两个数组变量引用同一个数组</p>
+<p>Arrays.copyOf 可以复制内容</p>
+<h3 id="命令行参数">命令行参数</h3>
+<p>与 C/C++不同, 不包含程序名</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-03-07
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/hello/">hello</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java_beging/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">java 开始</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/osc_chapter4_project/">
+            <span class="next-text nav-default">第四章编程项目</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-03-07 21:17:00 \u002b0800 CST',
+        title: 'Java 的基本程序设计结构',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

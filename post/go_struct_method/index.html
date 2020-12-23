@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>结构(struct)与方法(method) - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="以经知道可以使用 struct 来定义自定义的类型, 在 C 中也是有的 使用工厂方法创建结构体实例 结构体工厂 按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/go_struct_method/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="结构(struct)与方法(method)" />
+<meta property="og:description" content="以经知道可以使用 struct 来定义自定义的类型, 在 C 中也是有的 使用工厂方法创建结构体实例 结构体工厂 按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/go_struct_method/" />
+<meta property="article:published_time" content="2020-11-08T20:44:00+08:00" />
+<meta property="article:modified_time" content="2020-11-08T20:44:00+08:00" />
+<meta itemprop="name" content="结构(struct)与方法(method)">
+<meta itemprop="description" content="以经知道可以使用 struct 来定义自定义的类型, 在 C 中也是有的 使用工厂方法创建结构体实例 结构体工厂 按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例">
+<meta itemprop="datePublished" content="2020-11-08T20:44:00+08:00" />
+<meta itemprop="dateModified" content="2020-11-08T20:44:00+08:00" />
+<meta itemprop="wordCount" content="795">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="结构(struct)与方法(method)"/>
+<meta name="twitter:description" content="以经知道可以使用 struct 来定义自定义的类型, 在 C 中也是有的 使用工厂方法创建结构体实例 结构体工厂 按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">结构(struct)与方法(method)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-08 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#使用工厂方法创建结构体实例">使用工厂方法创建结构体实例</a>
+          <ul>
+            <li><a href="#结构体工厂">结构体工厂</a></li>
+          </ul>
+        </li>
+        <li><a href="#带标签的结构体">带标签的结构体</a></li>
+        <li><a href="#命名冲突">命名冲突</a></li>
+        <li><a href="#方法">方法</a>
+          <ul>
+            <li><a href="#setter-和-getter">setter 和 getter</a></li>
+            <li><a href="#内嵌类型的方法和继承">内嵌类型的方法和继承</a></li>
+            <li><a href="#通用方法的命名">通用方法的命名</a></li>
+          </ul>
+        </li>
+        <li><a href="#类型的-string-方法和格式化描述符">类型的 <code>String</code> 方法和格式化描述符</a></li>
+        <li><a href="#垃圾回收和-setfinalizer">垃圾回收和 <code>SetFinalizer</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>以经知道可以使用 <code>struct</code> 来定义自定义的类型, 在 C 中也是有的</p>
+<h2 id="使用工厂方法创建结构体实例">使用工厂方法创建结构体实例</h2>
+<h3 id="结构体工厂">结构体工厂</h3>
+<p>按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例的指针</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Student</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Age</span> <span class="kt">int</span>
+  <span class="nx">Name</span> <span class="kt">string</span>
+  <span class="nx">StuID</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewStudent</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">age</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">Student</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>  <span class="o">&amp;&amp;</span> <span class="nx">age</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="o">&amp;</span><span class="nx">Student</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span><span class="nx">name</span><span class="p">,</span> <span class="nx">Age</span><span class="p">:</span><span class="nx">age</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>因为以小写字母开头的名字对包外是不可见的, 将类型定义为包私有的可以要求调用者使用工厂方法来使用结构</p>
+</blockquote>
+<h2 id="带标签的结构体">带标签的结构体</h2>
+<p>在使用 JSON 转换时就提过, Go 中结构体的每个字段可以带有一个字符串字面量的标签. 可以在反射时使用</p>
+<h2 id="命名冲突">命名冲突</h2>
+<p>内层会覆盖外层, 但是它们的内存都保留. 同层的重复名字在被使用时引发错误</p>
+<h2 id="方法">方法</h2>
+<p>Go 中方法是作用在接收者(reveiver)上的函数, 当接收者是一个结构体时, 方法与 Java 中的对应概念或 C++ 中的成员函数相似. 接收者可以各种类型(接口类型就不可以). 一个类型加上它的所有方法相当于面向对象的类因为 Go 不允许函数重载, 所以方法重载也是不行的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">recv</span> <span class="nx">recv_type</span><span class="p">)</span> <span class="nf">MethodName</span><span class="p">(</span><span class="nx">param</span><span class="o">-</span><span class="nx">list</span><span class="p">)</span> <span class="p">(</span><span class="nx">result</span><span class="o">-</span><span class="nx">list</span><span class="p">)</span> <span class="p">{}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>recv</code> 有些类似 C++ 中的 <code>this</code>. 如果不需要使用它可以命名为 <code>_</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// employee/employee.go
+</span><span class="c1"></span>
+<span class="kd">type</span> <span class="nx">employee</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">name</span> <span class="kt">string</span>
+  <span class="nx">id</span> <span class="kt">string</span>
+  <span class="nx">salary</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewEmployee</span><span class="p">(</span><span class="nx">n</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">id</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">employee</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">&amp;</span><span class="nx">employee</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span><span class="nx">n</span><span class="p">,</span> <span class="nx">id</span><span class="p">:</span><span class="nx">id</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">employee</span><span class="p">)</span> <span class="nf">GiveRaise</span><span class="p">(</span><span class="nx">raio</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">this</span><span class="p">.</span><span class="nx">salary</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nx">raio</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="setter-和-getter">setter 和 getter</h3>
+<p>setter 惯例是使用 Set 前缀, getter 只需要与所获字段同名</p>
+<h3 id="内嵌类型的方法和继承">内嵌类型的方法和继承</h3>
+<p>嵌入类型相当于继承, 嵌入有名字的对象是组合</p>
+<h3 id="通用方法的命名">通用方法的命名</h3>
+<p>规范的 Go 程序应与通用的方法一样有合适的名字和签名如 <code>Open</code>, <code>CLose</code>, <code>Read</code>, <code>Write</code>, <code>Sort</code>. 比如 Go 中的类型转换函数名是类型的名字而不用 to 前缀</p>
+<h2 id="类型的-string-方法和格式化描述符">类型的 <code>String</code> 方法和格式化描述符</h2>
+<p>fmt.Printf, fmt.Print, fmt.Println 等会自动调用一个类型的 String 方法来产生输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">stack</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;bytes&#34;</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;strconv&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Stack</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">data</span> <span class="p">[]</span><span class="kt">int</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Push</span><span class="p">(</span><span class="nx">e</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">this</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">this</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">this</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Pop</span><span class="p">()</span> <span class="p">(</span><span class="nx">e</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">this</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+    <span class="nx">err</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Stack is empty&#34;</span><span class="p">)</span>
+    <span class="k">return</span>
+  <span class="p">}</span>
+  <span class="nx">e</span> <span class="p">=</span> <span class="nx">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">this</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="nx">this</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="nx">this</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="nx">buf</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">)</span>
+  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">s</span><span class="p">.</span><span class="nx">data</span> <span class="p">{</span>
+    <span class="nx">buf</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="s">&#34;[&#34;</span> <span class="o">+</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34;:&#34;</span> <span class="o">+</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34;] &#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">buf</span><span class="p">.</span><span class="nf">String</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="垃圾回收和-setfinalizer">垃圾回收和 <code>SetFinalizer</code></h2>
+<p>Go 语言是带有垃圾回收的语言, GC 线程会在特定的时候搜索不用的变量并回收它们的内存. <code>SetFinalizer</code> 方法是直到对象被回收时才会执行</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-08
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/go_interfaces_reflection/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">接口(interfaces)和反射(reflection)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/go_package/">
+            <span class="next-text nav-default">包</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-11-08 20:44:00 \u002b0800 CST',
+        title: '结构(struct)与方法(method)',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

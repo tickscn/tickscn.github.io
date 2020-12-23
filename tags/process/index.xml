@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>process on ticks blog</title>
+    <link>https://tickscn.github.io/tags/process/</link>
+    <description>Recent content in process on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 20 Nov 2019 16:36:38 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/process/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>process</title>
+      <link>https://tickscn.github.io/post/process/</link>
+      <pubDate>Wed, 20 Nov 2019 16:36:38 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/process/</guid>
+      <description>进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状</description>
+    </item>
+    
+  </channel>
+</rss>

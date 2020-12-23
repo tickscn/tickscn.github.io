@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>日期和时间 API - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="时间线 JAVA 的 Date 和 Time API 规范使用时间尺度为 86400s/d 每天正午与官方时间精确匹配 其它时间点, 精确的方式与官方时间接近匹配 Instant 表示时间线上的某一点, 原点为 UTC 1970 年" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_date_and_time/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="日期和时间 API" />
+<meta property="og:description" content="时间线 JAVA 的 Date 和 Time API 规范使用时间尺度为 86400s/d 每天正午与官方时间精确匹配 其它时间点, 精确的方式与官方时间接近匹配 Instant 表示时间线上的某一点, 原点为 UTC 1970 年" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_date_and_time/" />
+<meta property="article:published_time" content="2020-05-03T16:59:00+08:00" />
+<meta property="article:modified_time" content="2020-05-03T16:59:00+08:00" />
+<meta itemprop="name" content="日期和时间 API">
+<meta itemprop="description" content="时间线 JAVA 的 Date 和 Time API 规范使用时间尺度为 86400s/d 每天正午与官方时间精确匹配 其它时间点, 精确的方式与官方时间接近匹配 Instant 表示时间线上的某一点, 原点为 UTC 1970 年">
+<meta itemprop="datePublished" content="2020-05-03T16:59:00+08:00" />
+<meta itemprop="dateModified" content="2020-05-03T16:59:00+08:00" />
+<meta itemprop="wordCount" content="382">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="日期和时间 API"/>
+<meta name="twitter:description" content="时间线 JAVA 的 Date 和 Time API 规范使用时间尺度为 86400s/d 每天正午与官方时间精确匹配 其它时间点, 精确的方式与官方时间接近匹配 Instant 表示时间线上的某一点, 原点为 UTC 1970 年"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">日期和时间 API</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-03 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#时间线">时间线</a></li>
+        <li><a href="#本地日期">本地日期</a></li>
+        <li><a href="#日期调整器">日期调整器</a></li>
+        <li><a href="#本地时间">本地时间</a></li>
+        <li><a href="#时区时间">时区时间</a></li>
+        <li><a href="#格式化和解析">格式化和解析</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="时间线">时间线</h2>
+<p>JAVA 的 Date 和 Time API 规范使用时间尺度为</p>
+<ul>
+<li>86400s/d</li>
+<li>每天正午与官方时间精确匹配</li>
+<li>其它时间点, 精确的方式与官方时间接近匹配</li>
+</ul>
+<p>Instant 表示时间线上的某一点, 原点为 UTC 1970 年 1 月 1 号. 精确度为纳秒. 计算两个 Instant 的间隔可以用 Dutation.between</p>
+<h2 id="本地日期">本地日期</h2>
+<p>Java API 中有两种人类时间</p>
+<ol>
+<li>本地日期/时间</li>
+<li>时区时间</li>
+</ol>
+<p>LocalDate 是带有年, 月, 日的日期.</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>now, of</td>
+<td>构建一个 LocalDate</td>
+</tr>
+<tr>
+<td>PlusDays/Weeks/Months/Years</td>
+<td>当前 LocalDate 加上</td>
+</tr>
+<tr>
+<td>minusXxx</td>
+<td>当前 LocalDate 减去</td>
+</tr>
+<tr>
+<td>plus/minus</td>
+<td>加上或减去一个 Duration 或 Period</td>
+</tr>
+</tbody>
+</table>
+<h2 id="日期调整器">日期调整器</h2>
+<p>TemporalAdjusters 类</p>
+<ol>
+<li>next(weekday), previous(weekday) 下一个或上一个给定的星期日期</li>
+<li>nextOrSame(weekday), previousOrSame(weekday)</li>
+<li>dayOfWeekInMonth(n, weekday)</li>
+<li>lastInMonth(weekday)</li>
+</ol>
+<h2 id="本地时间">本地时间</h2>
+<p>LocalTime 表式当日时间. 可以用方法 now, of 创建</p>
+<h2 id="时区时间">时区时间</h2>
+<p>互联网编码分配管理机构(IANA)保存着一个数据库. 可以给定一个 Id 来生成 ZoneId.</p>
+<h2 id="格式化和解析">格式化和解析</h2>
+<p>DateTimeFormatter</p>
+<ul>
+<li>预定义格式器</li>
+<li>Locale 相关的格式器</li>
+<li>带有定制模式格式器</li>
+</ul>
+<p>预定义格式器</p>
+<table>
+<thead>
+<tr>
+<th>格式器</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BASIC_ISO_DATE</td>
+<td>19690716&ndash;0500(年月日&ndash;时区偏移)</td>
+</tr>
+<tr>
+<td>ISO_LOCAL_DATE</td>
+<td>1969-07-16</td>
+</tr>
+<tr>
+<td>ISO_LOCAL_TIME</td>
+<td>09:32:00</td>
+</tr>
+<tr>
+<td>ISO_LOCAL_DATE_TIME</td>
+<td>1969-07-16T09:32:00</td>
+</tr>
+<tr>
+<td>ISO_OFFSET_XXX</td>
+<td>类似于上面, 不过有时区偏移</td>
+</tr>
+<tr>
+<td>ISO_ZONED_DATE_TIME</td>
+<td>类似于上面, 不过有时区 ID</td>
+</tr>
+<tr>
+<td>ISO_INSTANT</td>
+<td>UTC 用 Z 时区表式</td>
+</tr>
+<tr>
+<td>ISO_TIME/ISO_DATE/ISO_DATE_TIME</td>
+<td>时区可选</td>
+</tr>
+</tbody>
+</table>
+<p>Local</p>
+<ul>
+<li>short</li>
+<li>medium</li>
+<li>long</li>
+<li>full</li>
+</ul>
+<p>ofLocalizedDateTime();</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-03
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/cpp_seq_container/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">顺序容器</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_database/">
+            <span class="next-text nav-default">数据库编程</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-05-03 16:59:00 \u002b0800 CST',
+        title: '日期和时间 API',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

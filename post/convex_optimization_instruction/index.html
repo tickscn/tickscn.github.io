@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>凸优化引言 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="数学优化 数学优化问题可以写成如下形式 \begin{equation} \begin{split} &amp;amp;minimize\quad &amp;amp; f_0(\boldsymbol{x}) \\\ &amp;amp;subject\ to\ &amp;amp;f_i(\boldsymbol{x}) \leqslant \boldsymbol{b_i} \end{split} \end{equation} \(f_0\) 是指目标函数, 是优化变量 $\boldsymbol{x}$的函数, 下面的称为约" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/convex_optimization_instruction/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="凸优化引言" />
+<meta property="og:description" content="数学优化 数学优化问题可以写成如下形式 \begin{equation} \begin{split} &amp;minimize\quad &amp; f_0(\boldsymbol{x}) \\\ &amp;subject\ to\ &amp;f_i(\boldsymbol{x}) \leqslant \boldsymbol{b_i} \end{split} \end{equation} \(f_0\) 是指目标函数, 是优化变量 $\boldsymbol{x}$的函数, 下面的称为约" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/convex_optimization_instruction/" />
+<meta property="article:published_time" content="2020-11-14T16:35:00+08:00" />
+<meta property="article:modified_time" content="2020-11-14T16:35:00+08:00" />
+<meta itemprop="name" content="凸优化引言">
+<meta itemprop="description" content="数学优化 数学优化问题可以写成如下形式 \begin{equation} \begin{split} &amp;minimize\quad &amp; f_0(\boldsymbol{x}) \\\ &amp;subject\ to\ &amp;f_i(\boldsymbol{x}) \leqslant \boldsymbol{b_i} \end{split} \end{equation} \(f_0\) 是指目标函数, 是优化变量 $\boldsymbol{x}$的函数, 下面的称为约">
+<meta itemprop="datePublished" content="2020-11-14T16:35:00+08:00" />
+<meta itemprop="dateModified" content="2020-11-14T16:35:00+08:00" />
+<meta itemprop="wordCount" content="898">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="凸优化引言"/>
+<meta name="twitter:description" content="数学优化 数学优化问题可以写成如下形式 \begin{equation} \begin{split} &amp;minimize\quad &amp; f_0(\boldsymbol{x}) \\\ &amp;subject\ to\ &amp;f_i(\boldsymbol{x}) \leqslant \boldsymbol{b_i} \end{split} \end{equation} \(f_0\) 是指目标函数, 是优化变量 $\boldsymbol{x}$的函数, 下面的称为约"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">凸优化引言</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-14 </span>
+        <div class="post-category">
+            <a href="/categories/convex-optimization/"> Convex-Optimization </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#数学优化">数学优化</a></li>
+        <li><a href="#最小二乘和线性规划">最小二乘和线性规划</a>
+          <ul>
+            <li><a href="#最小二乘">最小二乘</a></li>
+            <li><a href="#线性规划">线性规划</a></li>
+          </ul>
+        </li>
+        <li><a href="#凸优化">凸优化</a></li>
+        <li><a href="#非线性优化">非线性优化</a>
+          <ul>
+            <li><a href="#局部优化">局部优化</a></li>
+            <li><a href="#全局优化">全局优化</a></li>
+            <li><a href="#非凸问题中凸优化的应用">非凸问题中凸优化的应用</a></li>
+          </ul>
+        </li>
+        <li><a href="#符号约定">符号约定</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="数学优化">数学优化</h2>
+<p>数学优化问题可以写成如下形式</p>
+<p>\begin{equation}
+\begin{split}
+&amp;minimize\quad &amp; f_0(\boldsymbol{x}) \\\<br>
+&amp;subject\ to\ &amp;f_i(\boldsymbol{x}) \leqslant \boldsymbol{b_i}
+\end{split}
+\end{equation}</p>
+<p>\(f_0\) 是指目标函数, 是优化变量 $\boldsymbol{x}$的函数, 下面的称为约束函数. 当 \(\boldsymbol{x^*}\) 满足约束函数且使目标函数最小, 称其为最优问题的解</p>
+<h2 id="最小二乘和线性规划">最小二乘和线性规划</h2>
+<h3 id="最小二乘">最小二乘</h3>
+<p>没有约束条件, 目标函数是若干项的平方和, 每一项具有形式 \(\boldsymbol{a_i^Tx}-b_i\)</p>
+<p>\begin{equation}
+minimize\quad f_0(\boldsymbol{x}) = ||\boldsymbol{Ax-b}||_2^2=\sum_{i=1}^{k}(\boldsymbol{a_i^Tx}-b_i)^2
+\end{equation}</p>
+<p>求解最小二乘问题的复杂度大约为 \(kn^2\)</p>
+<h4 id="求解最小二乘问题">求解最小二乘问题</h4>
+<p>是 \(\dfrac{\partial f_0}{\partial \boldsymbol{x}} = (\boldsymbol{A^TAx-A^Tb}) = 0\) 所以 \(\boldsymbol{x = (A^TA)^{-1}A^Tb}\)</p>
+<h4 id="使用最小二乘的一些技巧">使用最小二乘的一些技巧</h4>
+<ol>
+<li>
+<p>加权最小二乘</p>
+<p>\begin{equation}
+minimize\quad f_0(\boldsymbol{x}) = \sum_{i=1}^{k}\omega_i(\boldsymbol{a_i^Tx}-b_i)^2
+\end{equation}</p>
+</li>
+<li>
+<p>正则化.
+是为了在求解时对偏离了实际的值进行一个惩罚, 如下式, 当 x 过大时可以有修正</p>
+<p>\begin{equation}
+minimize\quad f_0(\boldsymbol{x}) = \sum_{i=1}^{k}(\boldsymbol{a_i^Tx}-b_i)^2 + \lambda \sum_{i=1}^{n}x_i^2
+\end{equation}</p>
+</li>
+</ol>
+<h3 id="线性规划">线性规划</h3>
+<p>没有解析解, 时间复杂度不是很稳定</p>
+<h4 id="使用线性规划">使用线性规划</h4>
+<p>实际中, 有些问题不能很易的看出是否属于线性规划. 需要一些技巧. 如 Chebyshev 逼近问题</p>
+<p>\begin{equation}
+minimize\quad f_0(\boldsymbol{x}) =max(|(\boldsymbol{a_i^Tx}-b_i|); i = 1,2,\cdots, k
+\end{equation}</p>
+<h2 id="凸优化">凸优化</h2>
+<p>求解的问题中目标函数和约束函数都是凸函数. 所谓的凸函数指对任意的 \(\boldsymbol{x,y\in R}^n, \alpha, \beta\in \bf{R}_+\) 且 \(\alpha +\beta = 1\), 都有
+\[f(\alpha \boldsymbol{x} + \beta\boldsymbol{y})\leqslant \alpha f(\boldsymbol{x}) + \beta f(\boldsymbol{y})\]
+求解凸优化的一个常用的方法是内点法. 复杂度是 \(max\{n^3, n^2k, F\}\), $F$是求目标函数和约束函数的一阶和二阶导所需时间</p>
+<h2 id="非线性优化">非线性优化</h2>
+<p>其目标函数或者目标函数不是线性函数, 且不一定为凸函数, 目前没有完全有效的方法, 一般在放宽某些指标后, 采取不同的途径进行求解</p>
+<h3 id="局部优化">局部优化</h3>
+<p>不在寻找最优可行解, 而是局部最优解. 当满意解,即局部最优解也有价值时使用这个方法是很合适的. 局部优化的缺点有</p>
+<ol>
+<li>初始值的选取对局部最优解有很大的影响</li>
+<li>无法估计局部最优与全局最优的差别到底有多大的差距</li>
+<li>对算法的一些参数值非常敏感, 需要对每一个问题进行调整</li>
+</ol>
+<p>大部分局部优化方法仅要求函数可微</p>
+<h3 id="全局优化">全局优化</h3>
+<p>浪费时间求取全局最优化, 最差时时间复杂度是指数级的. 寄希望于特殊情况. 在实际中, 对规模较小, 或对时间没有苛刻要求的问题中使用全局优化</p>
+<h3 id="非凸问题中凸优化的应用">非凸问题中凸优化的应用</h3>
+<p>即使对于非凸问题, 凸优化也有着重要作用</p>
+<ol>
+<li>局部优化中得用凸优化进行初始值的选取将非凸问题转为近似的非凸问题, 使用凸优化求得的解作为局部优化的初始值</li>
+<li>凸启发式算法搜寻一些稀疏解. 使用随机算法时用凸优化判断哪种分布的期望值最优</li>
+<li>全局优化的界</li>
+</ol>
+<h2 id="符号约定">符号约定</h2>
+<p>实数集 \(\bf{R}\), 非负实数集 \(\bf{R}_+\), 正实数集 \(\bf{R}_{++}\), 圆括号并用逗号分隔元素的向量表示列向量
+\[\boldsymbol{A =[a_1^T\ a_2^T\ &hellip;\ a_n^T]}\]
+\(\boldsymbol{S}^k\) 表示 \(k\times k\) 的对称阵, \(\boldsymbol{S}^k_+\) 半正定, \(\boldsymbol{S}^k_{++}\) 正定</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-14
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/convex_set/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">仿射集合和凸集</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/go_interfaces_reflection/">
+            <span class="next-text nav-default">接口(interfaces)和反射(reflection)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-11-14 16:35:00 \u002b0800 CST',
+        title: '凸优化引言',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

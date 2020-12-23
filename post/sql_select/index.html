@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>从表中检索数据 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="介绍 SQL 重点 SELECT 语句 1 2 3 4 5 6 7 SELECT columns FROM tables [JOIN join] [WHERE search_condition] [GROUP BY grouping_columns] [HAVING search_condition] [ORDER BY sort_column] 方框中是可选语句 使用 SELECT 和 FROM 检索 可以使用 SELECT 检索一列, 多列或全部的列, FROM 指定检索的" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/sql_select/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="从表中检索数据" />
+<meta property="og:description" content="介绍 SQL 重点 SELECT 语句 1 2 3 4 5 6 7 SELECT columns FROM tables [JOIN join] [WHERE search_condition] [GROUP BY grouping_columns] [HAVING search_condition] [ORDER BY sort_column] 方框中是可选语句 使用 SELECT 和 FROM 检索 可以使用 SELECT 检索一列, 多列或全部的列, FROM 指定检索的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/sql_select/" />
+<meta property="article:published_time" content="2020-06-12T16:28:00+08:00" />
+<meta property="article:modified_time" content="2020-06-12T16:28:00+08:00" />
+<meta itemprop="name" content="从表中检索数据">
+<meta itemprop="description" content="介绍 SQL 重点 SELECT 语句 1 2 3 4 5 6 7 SELECT columns FROM tables [JOIN join] [WHERE search_condition] [GROUP BY grouping_columns] [HAVING search_condition] [ORDER BY sort_column] 方框中是可选语句 使用 SELECT 和 FROM 检索 可以使用 SELECT 检索一列, 多列或全部的列, FROM 指定检索的">
+<meta itemprop="datePublished" content="2020-06-12T16:28:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-12T16:28:00+08:00" />
+<meta itemprop="wordCount" content="842">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="从表中检索数据"/>
+<meta name="twitter:description" content="介绍 SQL 重点 SELECT 语句 1 2 3 4 5 6 7 SELECT columns FROM tables [JOIN join] [WHERE search_condition] [GROUP BY grouping_columns] [HAVING search_condition] [ORDER BY sort_column] 方框中是可选语句 使用 SELECT 和 FROM 检索 可以使用 SELECT 检索一列, 多列或全部的列, FROM 指定检索的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">从表中检索数据</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-12 </span>
+        <div class="post-category">
+            <a href="/categories/sql/"> SQL </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#使用-select-和-from-检索">使用 <code>SELECT</code> 和 <code>FROM</code> 检索</a></li>
+        <li><a href="#使有-as-创建别名">使有 AS 创建别名</a></li>
+        <li><a href="#使有-distinct-消除重复行">使有 <code>DISTINCT</code> 消除重复行</a></li>
+        <li><a href="#使用-order-by-排序行">使用 <code>ORDER BY</code> 排序行</a></li>
+        <li><a href="#使用-where-筛选行">使用 <code>WHERE</code> 筛选行</a>
+          <ul>
+            <li><a href="#逻辑运算">逻辑运算</a></li>
+            <li><a href="#like-模式匹配">LIKE 模式匹配</a></li>
+            <li><a href="#between">BETWEEN</a></li>
+            <li><a href="#in">IN</a></li>
+            <li><a href="#is-null">IS NULL</a></li>
+            <li><a href="#正则表达式">正则表达式</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>介绍 SQL 重点 <code>SELECT</code> 语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">columns</span>
+  <span class="k">FROM</span> <span class="n">tables</span>
+  <span class="p">[</span><span class="k">JOIN</span> <span class="k">join</span><span class="p">]</span>
+  <span class="p">[</span><span class="k">WHERE</span> <span class="n">search_condition</span><span class="p">]</span>
+  <span class="p">[</span><span class="k">GROUP</span> <span class="k">BY</span> <span class="n">grouping_columns</span><span class="p">]</span>
+  <span class="p">[</span><span class="k">HAVING</span> <span class="n">search_condition</span><span class="p">]</span>
+  <span class="p">[</span><span class="k">ORDER</span> <span class="k">BY</span> <span class="n">sort_column</span><span class="p">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>方框中是可选语句</p>
+<h2 id="使用-select-和-from-检索">使用 <code>SELECT</code> 和 <code>FROM</code> 检索</h2>
+<p>可以使用 <code>SELECT</code> 检索一列, 多列或全部的列, <code>FROM</code> 指定检索的表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">city</span><span class="p">,</span> <span class="n">phone</span><span class="p">,</span> <span class="n">au_fname</span>
+  <span class="k">FROM</span> <span class="n">authors</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+---------------|--------------|-----------+
+| city          | phone        | au_fname  |
++---------------|--------------|-----------+
+| Bronx         | 718-496-7223 | Sarah     |
+| Boulder       | 303-986-7020 | Wendy     |
+| San Francisco | 415-549-4278 | Hallie    |
+| San Francisco | 415-549-4278 | Klee      |
+| New York      | 212-771-4680 | Christian |
+| Palo Alto     | 650-836-7128 |           |
+| Sarasota      | 941-925-0752 | Paddy     |
++---------------|--------------|-----------+
+7 rows in set (0.001 sec)
+</code></pre></td></tr></table>
+</div>
+</div><p>使用 * 可以检索全部的列</p>
+<h2 id="使有-as-创建别名">使有 AS 创建别名</h2>
+<p>可以修改结果显示时的列名, 使用 AS 子句, 指定别名时 AS 有时是可选的, 不过建议加上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">au_fname</span> <span class="k">AS</span> <span class="s2">&#34;first name&#34;</span><span class="p">,</span>
+       <span class="n">au_lname</span> <span class="k">AS</span> <span class="s2">&#34;last name&#34;</span>
+  <span class="k">FROM</span> <span class="n">authors</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------------|-------------+
+| first name | last name   |
++------------|-------------+
+| Sarah      | Buchman     |
+| Wendy      | Heydemark   |
+| Hallie     | Hull        |
+| Klee       | Hull        |
+| Christian  | Kells       |
+|            | Kellsey     |
+| Paddy      | O&#39;Furniture |
++------------|-------------+
+7 rows in set (0.001 sec)
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使有-distinct-消除重复行">使有 <code>DISTINCT</code> 消除重复行</h2>
+<ul>
+<li>如果有多列, 则所有列的值的组合来决定重复行</li>
+<li>只返回一个空值</li>
+<li>有显示所有行的 ALL 关键字, 不过因为与默认行为相同, 很少使用</li>
+<li>DISTINCT 需要排序, 会花费大量时间, 如无必要, 不要使用</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="k">state</span>
+    <span class="k">FROM</span> <span class="n">authors</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-order-by-排序行">使用 <code>ORDER BY</code> 排序行</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">au_fname</span> <span class="k">AS</span> <span class="s2">&#34;first name&#34;</span><span class="p">,</span>
+       <span class="n">au_lname</span> <span class="k">AS</span> <span class="s2">&#34;last name&#34;</span><span class="p">,</span>
+       <span class="n">city</span><span class="p">,</span> <span class="k">state</span>
+  <span class="k">FROM</span> <span class="n">authors</span>
+  <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">au_lname</span> <span class="k">ASC</span>
+           <span class="n">city</span> <span class="k">DESC</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>ORDER BY</code> 需要指定排序列, 该列不用是检索的列, 默认是 <code>ASC</code> 递增排序, 可以指定 <code>DESC</code> 递减排序, 升序时空串在前, 降序时空串在后</p>
+<ul>
+<li>ORDER BY 允许用数字引用检索列中的列名</li>
+<li>子串排序 MYSQL 支持 substr(str, begin)</li>
+<li>CASE 根据逻辑排序</li>
+</ul>
+<p><code>CASE WHEN ... THEN... ELSE... END</code></p>
+<h2 id="使用-where-筛选行">使用 <code>WHERE</code> 筛选行</h2>
+<p>条件</p>
+<ol>
+<li>比较
+<ol>
+<li>相等 =</li>
+<li>不等 &lt;&gt;</li>
+<li>小于 &lt;</li>
+<li>大于 &gt;</li>
+<li>小于等于 &lt;=</li>
+<li>大于等于 &gt;=</li>
+</ol>
+</li>
+<li>模式匹配 <code>LIKE</code></li>
+<li>范围筛选 <code>BETWEEN</code></li>
+<li>列表筛选 <code>IN</code></li>
+<li>空值测试 <code>IS NULL</code></li>
+</ol>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">WHERE 计算在 SELECT 之前, 所以无法引用别名. 不过可以通过 FROM 来使用别名
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span>
+  <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">sales</span> <span class="k">AS</span> <span class="n">copies_sold</span> <span class="k">FROM</span> <span class="n">title</span><span class="p">)</span> <span class="k">AS</span> <span class="n">ta</span>
+  <span class="k">WHERE</span> <span class="n">copies_sold</span> <span class="o">&gt;=</span> <span class="mi">10000</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="逻辑运算">逻辑运算</h3>
+<h4 id="and">AND</h4>
+<ul>
+<li>连接两个条件且只在两个条件都为真时返回真</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>AND</th>
+<th>1</th>
+<th>0</th>
+<th>NULL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>0</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<h4 id="or">OR</h4>
+<table>
+<thead>
+<tr>
+<th>OR</th>
+<th>1</th>
+<th>0</th>
+<th>NULL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td>1</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<h4 id="not">NOT</h4>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<h4 id="优先级">优先级</h4>
+<p>NOT &gt; AND &gt; OR</p>
+<h3 id="like-模式匹配">LIKE 模式匹配</h3>
+<ul>
+<li>只对字符串有用</li>
+<li>可以使用 NOT LIKE 否定条件</li>
+</ul>
+<p>通配符</p>
+<ol>
+<li>% 匹配 0 个或多个字符 (类似于正则表达式的 .*)</li>
+<li>_ 匹配任意 1 个字符(类似于正则表达式的 .)</li>
+</ol>
+<p>可以使用 ESCAPE 指定转义符</p>
+<h3 id="between">BETWEEN</h3>
+<p><code>test_column BETWEEN lval AND rval</code> 等价于 <code>(test_column &gt;\equal lval) AND (test_column &lt;\equal rval)</code></p>
+<h3 id="in">IN</h3>
+<p><code>test_column IN (val1, val2, val3)</code> 等价于 <code>(test_column = val1) OR (test_column = val2) OR (test_column = val3)</code></p>
+<h3 id="is-null">IS NULL</h3>
+<p>测试空值</p>
+<h3 id="正则表达式">正则表达式</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">prod_name</span>
+<span class="k">FROM</span> <span class="n">products</span>
+<span class="k">WHERE</span> <span class="n">prod_name</span> <span class="n">REGEXP</span> <span class="s1">&#39;1000&#39;</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">prod_name</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>关键字 LIKE 被 REGEXP 替代, 别的地方类似于 LIKE</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-12
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/net_architecture/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">chapter III 计算机网络体系结构(Computer Network Architecture)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/sql_base/">
+            <span class="next-text nav-default">SQL 基础</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-12 16:28:00 \u002b0800 CST',
+        title: '从表中检索数据',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

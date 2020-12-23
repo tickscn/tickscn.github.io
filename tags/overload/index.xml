@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>overload on ticks blog</title>
+    <link>https://tickscn.github.io/tags/overload/</link>
+    <description>Recent content in overload on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 02 May 2020 09:16:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/overload/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>运算符重载和转换</title>
+      <link>https://tickscn.github.io/post/operator_overload/</link>
+      <pubDate>Sat, 02 May 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/operator_overload/</guid>
+      <description>基础概念 重载运处符是特殊的函数: 定义 operator symbol(). 一元运算符有一个参数, 二元运算符有两. 二元运算符的左操作数是第一个参数, 右操作数是第二个参数. 如果运</description>
+    </item>
+    
+  </channel>
+</rss>

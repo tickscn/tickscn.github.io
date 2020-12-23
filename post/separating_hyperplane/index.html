@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>分离与支撑超平面 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="分离超平面 两个不相交的凸集可以用一个超平面或仿射函数分离开来假设凸集 \(C\) 和 \(D\) 且 \(C\cap D=\emptyset\), 那么存在 \(\boldsymbol{a\neq 0}, b\) 使得 \(\forall\boldysmbol{x}\in C, \boldsymbol{a^Tx}\leqslant b. \forall\boldsymbol{x}\in D, \boldsymbol{a^Tx}\geqslant b\). 超平面 \(\{\boldsymbol{x\arrowvert a^Tx}=b\}\) 被称为集合 C,D 的分" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/separating_hyperplane/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="分离与支撑超平面" />
+<meta property="og:description" content="分离超平面 两个不相交的凸集可以用一个超平面或仿射函数分离开来假设凸集 \(C\) 和 \(D\) 且 \(C\cap D=\emptyset\), 那么存在 \(\boldsymbol{a\neq 0}, b\) 使得 \(\forall\boldysmbol{x}\in C, \boldsymbol{a^Tx}\leqslant b. \forall\boldsymbol{x}\in D, \boldsymbol{a^Tx}\geqslant b\). 超平面 \(\{\boldsymbol{x\arrowvert a^Tx}=b\}\) 被称为集合 C,D 的分" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/separating_hyperplane/" />
+<meta property="article:published_time" content="2020-11-22T20:13:00+08:00" />
+<meta property="article:modified_time" content="2020-11-22T20:13:00+08:00" />
+<meta itemprop="name" content="分离与支撑超平面">
+<meta itemprop="description" content="分离超平面 两个不相交的凸集可以用一个超平面或仿射函数分离开来假设凸集 \(C\) 和 \(D\) 且 \(C\cap D=\emptyset\), 那么存在 \(\boldsymbol{a\neq 0}, b\) 使得 \(\forall\boldysmbol{x}\in C, \boldsymbol{a^Tx}\leqslant b. \forall\boldsymbol{x}\in D, \boldsymbol{a^Tx}\geqslant b\). 超平面 \(\{\boldsymbol{x\arrowvert a^Tx}=b\}\) 被称为集合 C,D 的分">
+<meta itemprop="datePublished" content="2020-11-22T20:13:00+08:00" />
+<meta itemprop="dateModified" content="2020-11-22T20:13:00+08:00" />
+<meta itemprop="wordCount" content="294">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="分离与支撑超平面"/>
+<meta name="twitter:description" content="分离超平面 两个不相交的凸集可以用一个超平面或仿射函数分离开来假设凸集 \(C\) 和 \(D\) 且 \(C\cap D=\emptyset\), 那么存在 \(\boldsymbol{a\neq 0}, b\) 使得 \(\forall\boldysmbol{x}\in C, \boldsymbol{a^Tx}\leqslant b. \forall\boldsymbol{x}\in D, \boldsymbol{a^Tx}\geqslant b\). 超平面 \(\{\boldsymbol{x\arrowvert a^Tx}=b\}\) 被称为集合 C,D 的分"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">分离与支撑超平面</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-22 </span>
+        <div class="post-category">
+            <a href="/categories/convex-optimization/"> Convex-Optimization </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#分离超平面">分离超平面</a>
+          <ul>
+            <li><a href="#严格分离">严格分离</a></li>
+            <li><a href="#超平面分离定理的逆定理">超平面分离定理的逆定理</a></li>
+          </ul>
+        </li>
+        <li><a href="#支撑超平面">支撑超平面</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="分离超平面">分离超平面</h2>
+<p>两个不相交的凸集可以用一个超平面或仿射函数分离开来假设凸集 \(C\) 和 \(D\) 且 \(C\cap D=\emptyset\), 那么存在 \(\boldsymbol{a\neq 0}, b\) 使得 \(\forall\boldysmbol{x}\in C, \boldsymbol{a^Tx}\leqslant b. \forall\boldsymbol{x}\in D,  \boldsymbol{a^Tx}\geqslant b\). 超平面 \(\{\boldsymbol{x\arrowvert a^Tx}=b\}\) 被称为集合 C,D 的分离超平面</p>
+<blockquote>
+<p>线性空间中一条直线有界, 说明其系数为 0</p>
+</blockquote>
+<h3 id="严格分离">严格分离</h3>
+<p>要求凸集与超平面没有交点</p>
+<h3 id="超平面分离定理的逆定理">超平面分离定理的逆定理</h3>
+<p>如果没有更多约束, 超平面的逆定理是不成立的. 只要两个凸集的交集在一条直线上. 添加一些条件的逆定理</p>
+<blockquote>
+<p>如果两个凸集 C 和 D. 其中一个是开集. 如果存在一个仿射函数在 C 中非正, 在 D 中非负. 那么 C 和 D 不相交</p>
+</blockquote>
+<ol>
+<li>\(\boldsymbol{Ax}\prec \boldsymbol{b}\)</li>
+<li>\(\begin{cases}\boldsymbol{\lambda} &amp;\neq \boldymbol{0}\ \boldsymbol{\lambda} &amp;\succeq \boldsymbol{0}\ \boldsymbol{A^T\lambda} &amp;= \boldsymbol{0} \\\<br>
+\boldsymbol{\lambda^Tb}&amp;\leqslant 0\end{cases}\)</li>
+</ol>
+<p>上述两个方程只能有一个有解</p>
+<h2 id="支撑超平面">支撑超平面</h2>
+<p>设集合 \(C\subseteq \bf{R}^n\), 存在边界上一点
+\[\boldsymbol{x_0}\in \bf{bd}\ C=\bf{cl}\ C\smallsetminus \bf{int}\ C\]
+如果 \(\exists\boldsymbol{a}\) 使得 \(\forall\boldsymbol{x}\in C, \boldsymbol{a^Tx\leqslant a^Tx_0}\) 称超平面 \(\{\boldsymbol{x}\arrowvert \boldsymbol{a^Tx=a^Tx_0}\}\) 为集合 \(C\) 在点 \(\boldsymbol{x_0}\) 处的支撑超平面</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-22
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/sipingfang/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">四平方定理</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/generalized_inequality/">
+            <span class="next-text nav-default">广义不等式</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-11-22 20:13:00 \u002b0800 CST',
+        title: '分离与支撑超平面',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

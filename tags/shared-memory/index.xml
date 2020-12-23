@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shared memory on ticks blog</title>
+    <link>https://tickscn.github.io/tags/shared-memory/</link>
+    <description>Recent content in shared memory on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 23 Nov 2019 17:57:08 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/shared-memory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IPC例子</title>
+      <link>https://tickscn.github.io/post/ipc%E4%BE%8B%E5%AD%90/</link>
+      <pubDate>Sat, 23 Nov 2019 17:57:08 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ipc%E4%BE%8B%E5%AD%90/</guid>
+      <description>POSIX 共享内存 系统调用shm_open 1 2 3 4 5 6 7 8 9 10 11 12 13 14 NAME shm_open, shm_unlink - create/open or unlink POSIX shared memory ob‐ jects SYNOPSIS #include &amp;lt;sys/mman.h&amp;gt; #include &amp;lt;sys/stat.h&amp;gt; /* For mode constants */ #include &amp;lt;fcntl.h&amp;gt; /* For O_* constants */ int shm_open(const char *name, int oflag, mode_t mode);</description>
+    </item>
+    
+  </channel>
+</rss>

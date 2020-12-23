@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>library on ticks blog</title>
+    <link>https://tickscn.github.io/tags/library/</link>
+    <description>Recent content in library on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 04 Jun 2020 18:07:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/library/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>专门的库特性</title>
+      <link>https://tickscn.github.io/post/cpp_libiary_future/</link>
+      <pubDate>Thu, 04 Jun 2020 18:07:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_libiary_future/</guid>
+      <description>元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&amp;lt;T1, T2, &amp;hellip;, Tn&amp;gt; t; t 是一个有着 n 个类型分别为 T1, T2</description>
+    </item>
+    
+  </channel>
+</rss>

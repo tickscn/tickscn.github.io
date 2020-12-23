@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>锁 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表. lock 与 latch latch 一" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/innodb_lock/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="锁" />
+<meta property="og:description" content="锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表. lock 与 latch latch 一" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/innodb_lock/" />
+<meta property="article:published_time" content="2020-08-06T17:02:00+08:00" />
+<meta property="article:modified_time" content="2020-08-06T17:02:00+08:00" />
+<meta itemprop="name" content="锁">
+<meta itemprop="description" content="锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表. lock 与 latch latch 一">
+<meta itemprop="datePublished" content="2020-08-06T17:02:00+08:00" />
+<meta itemprop="dateModified" content="2020-08-06T17:02:00+08:00" />
+<meta itemprop="wordCount" content="1479">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="锁"/>
+<meta name="twitter:description" content="锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表. lock 与 latch latch 一"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">锁</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-06 </span>
+        <div class="post-category">
+            <a href="/categories/innodb/"> InnoDB </a>
+            <a href="/categories/mysql/"> MySQL </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#lock-与-latch">lock 与 latch</a></li>
+        <li><a href="#innodb-存储引擎中的锁">InnoDB 存储引擎中的锁</a>
+          <ul>
+            <li><a href="#锁的类型">锁的类型</a></li>
+            <li><a href="#一致性非锁定读">一致性非锁定读</a></li>
+            <li><a href="#一致性锁定读">一致性锁定读</a></li>
+            <li><a href="#自增长与锁">自增长与锁</a></li>
+            <li><a href="#外键和锁">外键和锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#锁的算法">锁的算法</a>
+          <ul>
+            <li><a href="#行锁的-3-种算法">行锁的 3 种算法</a></li>
+            <li><a href="#解决幻读问题">解决幻读问题</a></li>
+          </ul>
+        </li>
+        <li><a href="#锁问题">锁问题</a>
+          <ul>
+            <li><a href="#脏读">脏读</a></li>
+            <li><a href="#不可重复读">不可重复读</a></li>
+            <li><a href="#幻读">幻读</a></li>
+            <li><a href="#丢失更新">丢失更新</a></li>
+          </ul>
+        </li>
+        <li><a href="#阻塞">阻塞</a></li>
+        <li><a href="#锁升级">锁升级</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表.</p>
+<h2 id="lock-与-latch">lock 与 latch</h2>
+<p>latch 一般称为闩锁, 是一种轻量级的锁, 要求锁定时间要短. 在 InnoDB 中 latch 又可分为 mutex(互斥量)和 rwlock(读写锁). 是用来保证并发线程操作临界资源的正确性, 并且通常没有死锁检测机制</p>
+<p>lock 的对象是事务, 用来锁定的是数据库中的对象, 如表, 页, 行. 并且一般 lock 的对象仅在事务提交和回滚时进行释放(不同的隔离级别释放的时间可能不同). 此外 lock 是有死锁机制的</p>
+<p>mutex 的一些状态说明</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count</td>
+<td>被请求次数</td>
+</tr>
+<tr>
+<td>spin_waits</td>
+<td>自旋锁的次数</td>
+</tr>
+<tr>
+<td>spin_rounds</td>
+<td>自旋内部循环的总次数</td>
+</tr>
+<tr>
+<td>os_waits</td>
+<td>表示操作系统等待的次数, 当 spin lock 通过自旋不能获得 latch 时会进入操作系统生等待状态</td>
+</tr>
+<tr>
+<td>os_yields</td>
+<td>进行操作系统唤醒的次数</td>
+</tr>
+<tr>
+<td>os_wait_times</td>
+<td>操作系统等待时间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="innodb-存储引擎中的锁">InnoDB 存储引擎中的锁</h2>
+<h3 id="锁的类型">锁的类型</h3>
+<p>InnoDB 存储引擎实现了两种标准的行级锁</p>
+<ul>
+<li>共享锁(S Lock). 允许事务读一行数据</li>
+<li>排它锁(X Lock). 允许事务删除或更新一行数据</li>
+</ul>
+<p>共享锁相互兼容, 可以由多个事务共享, 而想要获取排它锁, 需要其它事务释放所有的锁.</p>
+<p>InnoDB 存储引擎支持多粒度的锁定, 允许行级锁和表级锁同时存在. 为了支持这种操作, 支持了一种额外的加锁方式, 称为意向锁. 意向锁意味着事务希望在更细的粒度上加锁. 在更细粒度的地方加锁需要在它的上层加意向锁</p>
+<p>InnoDB 的意向锁是表级锁, 支持两种意向锁</p>
+<ul>
+<li>意向共享锁(IS Lock). 事务想获取表中某几行的共享锁</li>
+<li>意向排它锁(IX Lock). 事务想获取表中某几行的排它锁</li>
+</ul>
+<p>因为 InnoDB 实际上支持的是行级锁, 所以意向锁不会阻塞除全表扫以外的任何请求</p>
+<h3 id="一致性非锁定读">一致性非锁定读</h3>
+<p>一致性非锁定读是指 InnoDB 存储引擎通过 MVCC 的方法来读取当前执行时间数据库中行的数据.
+这是默认的读取方式, 不过在不同的隔离级别下读取方式可能不同</p>
+<h3 id="一致性锁定读">一致性锁定读</h3>
+<p>可以使用两种方式</p>
+<ul>
+<li>SELECT &hellip; FOR UPDATE: 加 X 锁</li>
+<li>SELECT &hellip; FOR SHARE MODE: 加 S 锁</li>
+</ul>
+<h3 id="自增长与锁">自增长与锁</h3>
+<p>自增长在数据结构中是非常常见的一种属性. 每个含有自增长的表都有一个自增长计数器. 当对该表执行插入操作时会对计数器加锁. AUTO_INC locking 是一个表锁, 还是有一些性能上的问题</p>
+<p>新的版本提供了一种轻量级互斥量的自增长实现机制</p>
+<h3 id="外键和锁">外键和锁</h3>
+<p>InnoDB 会默认为没有显式建立索引的外键列建立索引. 对于外键的插入或更新, 首先需要查询父表的记录, 为了一致性, 使用的是 SELECT&hellip;FOR SHARE MODE, 为父表加上 S 锁</p>
+<h2 id="锁的算法">锁的算法</h2>
+<h3 id="行锁的-3-种算法">行锁的 3 种算法</h3>
+<ul>
+<li>Record Lock: 单个行记录上的锁</li>
+<li>Gap Lock: 间隙锁, 锁定一个范围. 不包括记录本身</li>
+<li>Next-Key Lock: 上两个锁的和, 锁定记录本身和一个范围</li>
+</ul>
+<p>如果索引有唯一属性, Next-Key Lock 会将级为 Record Lock. 这种将级必须是查询联合索引中的所有列或单列锁引</p>
+<h3 id="解决幻读问题">解决幻读问题</h3>
+<p>在默认事务隔离级别(可重复读)下, 使用 Next-Key Locking 机制来避免幻读问题. 再标准隔离级别下必须在串行化级别才可以避免</p>
+<h2 id="锁问题">锁问题</h2>
+<h3 id="脏读">脏读</h3>
+<p>脏数据是指事务对缓冲池中行记录未提交的修改, 如果一个事务读取到了另一个事务未提交的脏数据变违反了数据库的隔离性</p>
+<h3 id="不可重复读">不可重复读</h3>
+<p>读到的是已提交数据, 不过违反了一致性要求. 不过因为读到的就是以提交数据, 所以大部分情况下没有大问题. 所以有很多数据库的默认隔离级别</p>
+<h3 id="幻读">幻读</h3>
+<p>同样的读取两次的结果条目不同</p>
+<h3 id="丢失更新">丢失更新</h3>
+<p>数据库的提交逻辑上是不会有丢失更新的问题的. 问题是用户的操作逻辑. 如转账业务余额为 10000 的账户, 执行两次转出操作, 一次转出 9999, 另一次转出 1. 如果后一次的提交导致了前一次的转出数据丢失, 用户账户中就会剩下 9999 元. 解决办法是串行化</p>
+<h2 id="阻塞">阻塞</h2>
+<p>因为不同锁的兼容性关系, 在有些时刻一个事务中的锁需要等待另一个事务中的锁释放它所占用的资源. 超时异常, 超时抛出异常用户需要判断接下来是提交还是回滚</p>
+<h2 id="锁升级">锁升级</h2>
+<p>有大量的高粒度锁时升级为粗粒度的锁</p>
+<ul>
+<li>
+<p>单独的 SQL 语句持有的行锁超过了域值, 升级为页锁或表锁</p>
+</li>
+<li>
+<p>锁资源占用的内存资源占用了激活内存的 40% 时发生锁升级</p>
+<p>InnoDB 不存在锁升级的问题</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-06
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/osc_system_protected/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">系统保护</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/mysql_index/">
+            <span class="next-text nav-default">索引与算法</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-08-06 17:02:00 \u002b0800 CST',
+        title: '锁',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

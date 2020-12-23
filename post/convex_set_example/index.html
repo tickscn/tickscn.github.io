@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>凸集重要的例子 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="一些重要的凸集的例子 空集 \(\emptyset\), 单点集, 全空间都是全空间的仿射子集, 都是凸集 任意直线是仿射的. 通过零点直线同时也是锥. 长度非 0 的线段是凸的但不是仿" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/convex_set_example/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="凸集重要的例子" />
+<meta property="og:description" content="一些重要的凸集的例子 空集 \(\emptyset\), 单点集, 全空间都是全空间的仿射子集, 都是凸集 任意直线是仿射的. 通过零点直线同时也是锥. 长度非 0 的线段是凸的但不是仿" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/convex_set_example/" />
+<meta property="article:published_time" content="2020-11-20T20:28:00+08:00" />
+<meta property="article:modified_time" content="2020-11-20T20:28:00+08:00" />
+<meta itemprop="name" content="凸集重要的例子">
+<meta itemprop="description" content="一些重要的凸集的例子 空集 \(\emptyset\), 单点集, 全空间都是全空间的仿射子集, 都是凸集 任意直线是仿射的. 通过零点直线同时也是锥. 长度非 0 的线段是凸的但不是仿">
+<meta itemprop="datePublished" content="2020-11-20T20:28:00+08:00" />
+<meta itemprop="dateModified" content="2020-11-20T20:28:00+08:00" />
+<meta itemprop="wordCount" content="631">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="凸集重要的例子"/>
+<meta name="twitter:description" content="一些重要的凸集的例子 空集 \(\emptyset\), 单点集, 全空间都是全空间的仿射子集, 都是凸集 任意直线是仿射的. 通过零点直线同时也是锥. 长度非 0 的线段是凸的但不是仿"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">凸集重要的例子</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-20 </span>
+        <div class="post-category">
+            <a href="/categories/convex-optimization/"> Convex-Optimization </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#超平面">超平面</a>
+          <ul>
+            <li><a href="#半空间">半空间</a></li>
+          </ul>
+        </li>
+        <li><a href="#欧几里得--euclid--球和椭球">欧几里得(Euclid)球和椭球</a></li>
+        <li><a href="#范数球和范数锥">范数球和范数锥</a></li>
+        <li><a href="#多面体">多面体</a>
+          <ul>
+            <li><a href="#单纯形">单纯形</a></li>
+          </ul>
+        </li>
+        <li><a href="#半正定锥">半正定锥</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>一些重要的凸集的例子</p>
+<ol>
+<li>空集 \(\emptyset\), 单点集, 全空间都是全空间的仿射子集, 都是凸集</li>
+<li>任意直线是仿射的. 通过零点直线同时也是锥.</li>
+<li>长度非 0 的线段是凸的但不是仿射的</li>
+<li>一条射线是凸的, 不是仿射的. 如果射线和基点是零点, 它也是锥</li>
+</ol>
+<h2 id="超平面">超平面</h2>
+<p>定义在 \(\bf{R}^n\) 的点集 \(\{\boldsymbol{x}\arrowvert \boldsymbol{a^Tx}=b\}\), 其中 \(\boldsymbol{a\in R^n, a\neq 0}. b\in \bf{R}\)</p>
+<ol>
+<li>解析的看, 可以将其看作一个非平凡线性方程的解空间. 所以它是仿射的</li>
+<li>几何上看, 可以将其看作一个法线向量为 \(\boldsymbol{a}\) 的超平面</li>
+</ol>
+<h3 id="半空间">半空间</h3>
+<p>一个超平面可以将全空间划分为两个半空间. 表示为 \(\{\boldysmbol{x}\arrowvert \boldsymbol{a^Tx}\leqslant b\}\).</p>
+<blockquote>
+<p>半平面是凸的, 但是不是仿射的</p>
+</blockquote>
+<p>半平面 \(C\) 凸性的证明: \(x_1, x_2 \in C, 0\leqslant \theta \leqslant 1. a^T(\theta x_1 +(1-theta)x_2) = \theta a^Tx_1 + (1-\theta)a^Tx_2\leqslant \theta b + (1-theta)b=b\)</p>
+<h2 id="欧几里得--euclid--球和椭球">欧几里得(Euclid)球和椭球</h2>
+<p>\(\bf{R}^n\) 空间中的 Euclid 球定义为
+\[B(\boldsymbol{x}_c, r)=\{\boldsymbol{x}\arrowvert\Vert \boldsymbol{x-x_c}\Vert_2\leqslant r\}=\{\boldsymbol{x}\arrowvert \boldsymbol{(x-x_c)^T(x-x_c)}\leqslant r^2\}\]
+其中 \(\Vert\cdot\Vert_2\) 指 Euclid 范数. 称 \(x_c\) 为球心, \(r\) 为半径. 它是凸集</p>
+<p>一类相关的凸集为椭球
+\[\epsilon = \{\boldsymbol{x}\arrowvert \boldsymbol{(x-x_c)^P^{-1}(x-x_c)}\leqslant 1\}\]
+其中 \(P=P^T\succ 0\) 是对称正定矩阵. P 的特征值 \(\lambda_i\) 决定了半长轴</p>
+<h2 id="范数球和范数锥">范数球和范数锥</h2>
+<p>一般的范数 \(\Vert\cdot\Vert\), 定义的范数球 \(\{\boldsymbol{x}\arrowvert \Vert\boldsymbol{x-x_c}\Vert\leqslant r\}\) 是凸的</p>
+<h2 id="多面体">多面体</h2>
+<p>多面体是有限个线性不等式和等式的解集. 是有限个半空间和超平面的交集
+\[\mathcal{P}=\{\boldsymbol{x}\arrowvert \boldsymbol{Ax\preceq b, Cx=d}\}\]
+\(\preceq\) 表示 <strong>向量不等式</strong> 或 <strong>分量不等式</strong></p>
+<h3 id="单纯形">单纯形</h3>
+<p>单纯形是一类多面体. 设 k+1 个点 \(\boldsymbol{v_0, v_1, \cdots, v_k}\) 仿射独立. 它们决定了一个单纯形
+\[C=\bf{conv}\{\boldsymbol{v_0,v_1,\cdots,v_k}\}=\{\theta_0v_0+\theta_2v_2+\cdots+\theta_kv_k\arrowvert \boldsymbol{\theta\succeq 0, 1^T\theta}=1\}\]</p>
+<blockquote>
+<p>仿射独立类似于线性独立, 不存在不全为 0 的 \(a_1+a_2+\cdots+a_k=0\) 且 \(a_1v_1+a_2v_2+\cdots+a_kv_k=0\). 称 \(v_1, v_2, \cdots, v_k\) 仿射独立</p>
+</blockquote>
+<p>\(\boldsymbol{x}\in C\) 的充要条件是存在 \(\boldsymbol{\theta\succeq 0, 1^T\theta}=1\) 使得 \(\boldsymbol{x}=\theta_0\boldsymbol{v}_0+\theta_1\boldsymbol{v}_1+\cdots+\theta_k\boldsymbol{v}_k\)</p>
+<p>等价描述. 定义 \(\boldsymbol{y}=(\theta_1, \theta_2,\cdots,\theta_k)\) 和 \(B=[\boldsymbol{v_1-v_0, v_2-v_0,\cdots,v_k-v_0}]\in \bf{R}^{n\times k}\). \(\boldsymbol{x}\in C\) 的充要条件件是
+\[\boldsymbol{x=v_0+By, y\succeq 0, 1^Ty}\leqslant 1\]
+B 的秩是 k, 所以存在非奇异矩阵 \(\boldsymbol{A=(A_1, A_2)}\in \bf{R}^{n\times n}\) 使得
+\[\boldysmbol{AB=(A_1, A_2)B=(I,0)}\]
+所以充要条件是
+\[\boldysmbol{A_2x=A_2v_0, A_1x\succeq A_1v_0, 1^TA_1x\leqslant 1^TA_1v_0}+1\]</p>
+<h2 id="半正定锥">半正定锥</h2>
+<p>用 \(\bf{S}^n\) 表示 \(n\times n\) 的对称阵的集合. \(\bf{S}^n = \{\boldsymbol{A}\in \bf{R}^{n\times n}\arrowvert \boldsymbol{A=A}^T\}\). \(\bf{S}_+\) 半正定对称矩阵集合. \(\bf{S}_{++}\) 正定矩阵集合</p>
+<p>$\bf{S}_+^n$是一个凸锥</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-20
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/convex_keep/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">保凸运算</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/convex_set/">
+            <span class="next-text nav-default">仿射集合和凸集</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-11-20 20:28:00 \u002b0800 CST',
+        title: '凸集重要的例子',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

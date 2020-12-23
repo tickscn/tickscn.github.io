@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>X86 on ticks blog</title>
+    <link>https://tickscn.github.io/tags/x86/</link>
+    <description>Recent content in X86 on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 26 Nov 2019 18:42:59 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/x86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>汇编基础</title>
+      <link>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Tue, 26 Nov 2019 18:42:59 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/</guid>
+      <description>语法元素 整数常量(Integers) Intel [{+ | -}] digits [radix] radix 进制 h 16 d 10(默认) q/o 8 b 二进制 r 编码实数 t 10(备用) y 2(备用) AT&amp;amp;T prefix 进制 0b/0B 2 0 8 0x/0X 16</description>
+    </item>
+    
+    <item>
+      <title>计算机组件</title>
+      <link>https://tickscn.github.io/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Mon, 25 Nov 2019 19:06:29 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E4%BB%B6/</guid>
+      <description>主板(motherboard) 主板有不同的组件. 但是一般都有基础组件 CPU 插座 存储器插槽(SIMM 或 DIMM) BIOS CMOS RAM, 电池供电 大容量设备(硬盘, CD) 接口 外设</description>
+    </item>
+    
+  </channel>
+</rss>

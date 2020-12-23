@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MySQL on ticks blog</title>
+    <link>https://tickscn.github.io/categories/mysql/</link>
+    <description>Recent content in MySQL on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 06 Aug 2020 17:02:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>锁</title>
+      <link>https://tickscn.github.io/post/innodb_lock/</link>
+      <pubDate>Thu, 06 Aug 2020 17:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/innodb_lock/</guid>
+      <description>锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表. lock 与 latch latch 一</description>
+    </item>
+    
+    <item>
+      <title>索引与算法</title>
+      <link>https://tickscn.github.io/post/mysql_index/</link>
+      <pubDate>Thu, 06 Aug 2020 14:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_index/</guid>
+      <description>InnoDB 索引概述 B+ 树索引 全文索引 哈希索引 哈希索引是自适应的, 不能控制是否生成. B+树就是数据库中最常用和最有效的索引 基础数据结构回顾 二叉搜索树与平</description>
+    </item>
+    
+    <item>
+      <title>InnoDB 存储引擎</title>
+      <link>https://tickscn.github.io/post/mysql_innodb/</link>
+      <pubDate>Wed, 05 Aug 2020 17:03:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_innodb/</guid>
+      <description>InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数</description>
+    </item>
+    
+    <item>
+      <title>MySQL 体系结构和存储引擎</title>
+      <link>https://tickscn.github.io/post/mysql_engines/</link>
+      <pubDate>Wed, 05 Aug 2020 15:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_engines/</guid>
+      <description>MySQL 体系结构 MySQL 由以下几个部分组成 连接池组件 管理服务和工具组件 SQL 接口组件 查询分析器组件 优化器组件 缓冲组件 插件式存储引擎 物理文件 MySQL 存储引擎 对于开发</description>
+    </item>
+    
+  </channel>
+</rss>

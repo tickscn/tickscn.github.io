@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>design-pattern on ticks blog</title>
+    <link>https://tickscn.github.io/categories/design-pattern/</link>
+    <description>Recent content in design-pattern on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 27 Jul 2020 14:48:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/design-pattern/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>行为模式</title>
+      <link>https://tickscn.github.io/post/design_behavior/</link>
+      <pubDate>Mon, 27 Jul 2020 14:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_behavior/</guid>
+      <description>责任链模式(Chain of Responsibility) 意图: 使多个对象都有机会处理请求, 从而避免了请求的发送者和接收者之间的耦合关系. 将这些对象连成一条链, 并沿链传递请</description>
+    </item>
+    
+    <item>
+      <title>结构型模型</title>
+      <link>https://tickscn.github.io/post/design_construction/</link>
+      <pubDate>Sat, 25 Jul 2020 16:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_construction/</guid>
+      <description>结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的</description>
+    </item>
+    
+    <item>
+      <title>创建型模型</title>
+      <link>https://tickscn.github.io/post/design_creator/</link>
+      <pubDate>Wed, 22 Jul 2020 23:23:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_creator/</guid>
+      <description>抽象工厂模式(Abstract Factory) 意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类 别名: Kit 动机: 有很多个类, 它们相互关联. 因为不同</description>
+    </item>
+    
+    <item>
+      <title>一个所见即所得(WYSIWYG)的编辑器</title>
+      <link>https://tickscn.github.io/post/design_wysiwyg/</link>
+      <pubDate>Mon, 20 Jul 2020 20:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_wysiwyg/</guid>
+      <description>设计问题 设计中的 7 个主要问题 文档结构: 对文档内部的表示 格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何</description>
+    </item>
+    
+    <item>
+      <title>设计模式引言</title>
+      <link>https://tickscn.github.io/post/design_introduction/</link>
+      <pubDate>Sun, 19 Jul 2020 19:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_introduction/</guid>
+      <description>设计可复用的面向对象程序, 必须找到相关的对象, 以适当的粒度将他们归类, 再定义类的接口和继承层次, 建立对象之间的基本关系. 每一个设计模式系统的</description>
+    </item>
+    
+  </channel>
+</rss>

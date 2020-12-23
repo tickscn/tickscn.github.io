@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>assert on ticks blog</title>
+    <link>https://tickscn.github.io/tags/assert/</link>
+    <description>Recent content in assert on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 04 Apr 2020 21:05:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/assert/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>异常、断言、日志</title>
+      <link>https://tickscn.github.io/post/java_exception/</link>
+      <pubDate>Sat, 04 Apr 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_exception/</guid>
+      <description>异常 异常分类 Java 中异常对象都派生于 Throwable 类的一个实例.分为两个分支 Error Exception Error 类表示系统内部错误和资源耗尽错误. 只能通告用户并尽力使程序安全退出 Exception RuntimeException 程序</description>
+    </item>
+    
+  </channel>
+</rss>

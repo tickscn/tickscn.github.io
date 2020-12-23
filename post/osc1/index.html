@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>OSC1 导论 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="简介 操作系统的功能 计算机系统 硬件 中央处理器(Central Processing Unit, CPU) 内存(Memory) 输入/输出设备(Input/Output device, I/O device 软件 数据 可" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/osc1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="OSC1 导论" />
+<meta property="og:description" content="简介 操作系统的功能 计算机系统 硬件 中央处理器(Central Processing Unit, CPU) 内存(Memory) 输入/输出设备(Input/Output device, I/O device 软件 数据 可" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/osc1/" />
+<meta property="article:published_time" content="2019-11-16T15:51:51+00:00" />
+<meta property="article:modified_time" content="2019-11-16T15:51:51+00:00" />
+<meta itemprop="name" content="OSC1 导论">
+<meta itemprop="description" content="简介 操作系统的功能 计算机系统 硬件 中央处理器(Central Processing Unit, CPU) 内存(Memory) 输入/输出设备(Input/Output device, I/O device 软件 数据 可">
+<meta itemprop="datePublished" content="2019-11-16T15:51:51+00:00" />
+<meta itemprop="dateModified" content="2019-11-16T15:51:51+00:00" />
+<meta itemprop="wordCount" content="745">
+
+
+
+<meta itemprop="keywords" content="操作系统,OS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OSC1 导论"/>
+<meta name="twitter:description" content="简介 操作系统的功能 计算机系统 硬件 中央处理器(Central Processing Unit, CPU) 内存(Memory) 输入/输出设备(Input/Output device, I/O device 软件 数据 可"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">OSC1 导论</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-16 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"> 操作系统 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a>
+      <ul>
+        <li><a href="#操作系统的功能">操作系统的功能</a></li>
+        <li><a href="#计算机系统的运行">计算机系统的运行</a></li>
+        <li><a href="#存储结构">存储结构</a></li>
+        <li><a href="#io-结构">I/O 结构</a></li>
+        <li><a href="#操作系统的结构">操作系统的结构</a></li>
+        <li><a href="#操作系统执行">操作系统执行</a>
+          <ul>
+            <li><a href="#双重模式与多重模式的执行">双重模式与多重模式的执行</a></li>
+            <li><a href="#定时器">定时器</a></li>
+            <li><a href="#进程管理">进程管理</a></li>
+          </ul>
+        </li>
+        <li><a href="#存储管理">存储管理</a></li>
+        <li><a href="#其它">其它</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="简介">简介</h1>
+<h2 id="操作系统的功能">操作系统的功能</h2>
+<ol>
+<li>计算机系统
+<ul>
+<li>硬件
+<ul>
+<li>中央处理器(Central Processing Unit, CPU)</li>
+<li>内存(Memory)</li>
+<li>输入/输出设备(Input/Output device, I/O device</li>
+</ul>
+</li>
+<li>软件</li>
+<li>数据</li>
+</ul>
+</li>
+<li>可将操作系统看作资源分配器</li>
+</ol>
+<h2 id="计算机系统的运行">计算机系统的运行</h2>
+<p>CPU 与各设备控制器并发执行, 并且竞争访问内存.</p>
+<p>开机</p>
+<ol>
+<li>引导程序(bootstrap program)
+<ol>
+<li>通常位于计算机的固件(firmware), 如只读存储器(Read-Only Memory, ROM).</li>
+<li>初始化组件, 并将内核加载到内存</li>
+</ol>
+</li>
+<li>内核(Kernel)
+<ol>
+<li>除了内核, 系统程序加载到内存成为系统进程(system process) 或系统后台程序(system daemon), 生命周期与内核一样</li>
+<li>等待事件发生</li>
+</ol>
+</li>
+<li>中断(interrupt)
+<ol>
+<li>硬件通过系统总线发送信号到 CPU</li>
+<li>软件通过系统调用</li>
+</ol>
+</li>
+</ol>
+<h2 id="存储结构">存储结构</h2>
+<p>CPU 从内存加载指令, 通用计算机的运行程序位于主存(main memory), 通常为动态随机访问内存(Dynamic Random Access Memory, DRAM)</p>
+<p>内存的缺陷</p>
+<ol>
+<li>容量较小</li>
+<li>内存是易失性(volatile), 掉电失去所有数据</li>
+</ol>
+<p>需要外存(secondary storage)</p>
+<ol>
+<li>常用磁盘或硬盘(magnetic disk)</li>
+</ol>
+<h2 id="io-结构">I/O 结构</h2>
+<ol>
+<li>驱动加载适当寄存器</li>
+<li>控制器检查寄存器, 决定采取操作</li>
+<li>加载数据到本地缓冲区</li>
+<li>中断</li>
+</ol>
+<h2 id="操作系统的结构">操作系统的结构</h2>
+<ol>
+<li>分时(time shared)</li>
+<li>调度(scheduling)</li>
+</ol>
+<h2 id="操作系统执行">操作系统执行</h2>
+<ul>
+<li>中断驱动(interrupt driven)</li>
+</ul>
+<h3 id="双重模式与多重模式的执行">双重模式与多重模式的执行</h3>
+<p>至少需要两种单独运行模式</p>
+<ol>
+<li>用户模式(user mode)</li>
+<li>内核模式(kernel mode) ( 监视模式(supervisor mode), 系统模式(system mode), 特权模式(privileged mode))</li>
+</ol>
+<h3 id="定时器">定时器</h3>
+<p>防止用户程序一直占用, 可通过计时器来产生中断</p>
+<h3 id="进程管理">进程管理</h3>
+<ul>
+<li>在CPU上调度进程和线程</li>
+<li>创建和删除进程</li>
+<li>挂起和重启进程</li>
+<li>进程同步</li>
+<li>进程通信</li>
+</ul>
+<h2 id="存储管理">存储管理</h2>
+<p>逻辑存储单元&ndash;文件(file)</p>
+<h2 id="其它">其它</h2>
+<ol>
+<li>保护和安全</li>
+<li>内核数据结构
+<ul>
+<li>单向链表</li>
+<li>双向链表</li>
+<li>循环链表</li>
+<li>堆栈</li>
+<li>队列</li>
+<li>树</li>
+<li>哈希函数和哈希表</li>
+<li>位图</li>
+</ul>
+</li>
+<li>计算环境</li>
+<li>历史
+<ol>
+<li>Linux</li>
+<li>BSD Unix
+<ul>
+<li>Mac OSX 的核心内核组件 Darwin 是基于 BSD Unix的</li>
+</ul>
+</li>
+<li>Solaris</li>
+</ol>
+</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-16
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+          <a href="/tags/os/">OS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/algo19/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">斐波那契堆</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/tf_keras_normal_module/">
+            <span class="next-text nav-default">Keras 常见功能模块</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-11-16 15:51:51 \u002b0000 UTC',
+        title: 'OSC1 导论',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

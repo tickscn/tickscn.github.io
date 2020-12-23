@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>process-scheduling on ticks blog</title>
+    <link>https://tickscn.github.io/tags/process-scheduling/</link>
+    <description>Recent content in process-scheduling on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 21 Jun 2020 21:45:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/process-scheduling/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>进程调度</title>
+      <link>https://tickscn.github.io/post/osc_scheduling/</link>
+      <pubDate>Sun, 21 Jun 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_scheduling/</guid>
+      <description>程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执</description>
+    </item>
+    
+  </channel>
+</rss>

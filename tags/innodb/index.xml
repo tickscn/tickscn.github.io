@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>InnoDb on ticks blog</title>
+    <link>https://tickscn.github.io/tags/innodb/</link>
+    <description>Recent content in InnoDb on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 05 Aug 2020 17:03:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/innodb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>InnoDB 存储引擎</title>
+      <link>https://tickscn.github.io/post/mysql_innodb/</link>
+      <pubDate>Wed, 05 Aug 2020 17:03:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_innodb/</guid>
+      <description>InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数</description>
+    </item>
+    
+  </channel>
+</rss>

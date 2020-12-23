@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>汇编基本运算 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="整型运算 加 (addition) add 指令 add 指令用来加两个整型 1 add source, destination source 可以是寄存器, 内存, 立即数 destination 可以是寄存器, 内存 但是 source 和 destination 不可以同时是内存 add 后面应该加上后缀来" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/asm-num-arithmetic/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="汇编基本运算" />
+<meta property="og:description" content="整型运算 加 (addition) add 指令 add 指令用来加两个整型 1 add source, destination source 可以是寄存器, 内存, 立即数 destination 可以是寄存器, 内存 但是 source 和 destination 不可以同时是内存 add 后面应该加上后缀来" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/asm-num-arithmetic/" />
+<meta property="article:published_time" content="2019-12-14T20:04:00+08:00" />
+<meta property="article:modified_time" content="2019-12-14T20:04:00+08:00" />
+<meta itemprop="name" content="汇编基本运算">
+<meta itemprop="description" content="整型运算 加 (addition) add 指令 add 指令用来加两个整型 1 add source, destination source 可以是寄存器, 内存, 立即数 destination 可以是寄存器, 内存 但是 source 和 destination 不可以同时是内存 add 后面应该加上后缀来">
+<meta itemprop="datePublished" content="2019-12-14T20:04:00+08:00" />
+<meta itemprop="dateModified" content="2019-12-14T20:04:00+08:00" />
+<meta itemprop="wordCount" content="1070">
+
+
+
+<meta itemprop="keywords" content="汇编,assembly,CS,arithmetic," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="汇编基本运算"/>
+<meta name="twitter:description" content="整型运算 加 (addition) add 指令 add 指令用来加两个整型 1 add source, destination source 可以是寄存器, 内存, 立即数 destination 可以是寄存器, 内存 但是 source 和 destination 不可以同时是内存 add 后面应该加上后缀来"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">汇编基本运算</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-14 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"> 汇编语言 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#整型运算">整型运算</a>
+          <ul>
+            <li><a href="#加--addition">加 (addition)</a></li>
+            <li><a href="#减法--subtraction">减法(subtraction)</a></li>
+            <li><a href="#加-1-和减-1--incrementing-and-decrementing">加 1 和减 1(incrementing and decrementing)</a></li>
+            <li><a href="#乘法--multiplication">乘法 (multiplication)</a></li>
+            <li><a href="#除法--division">除法(division)</a></li>
+            <li><a href="#移位运算--shift">移位运算(shift)</a></li>
+            <li><a href="#循环位移">循环位移</a></li>
+          </ul>
+        </li>
+        <li><a href="#十进制运算">十进制运算</a>
+          <ul>
+            <li><a href="#未压缩-bcd--1-byte-表示一个-10-进制位">未压缩 BCD(1 byte 表示一个 10 进制位)</a></li>
+            <li><a href="#压缩-bcd--1-byte-表示两个-10-进制位">压缩 BCD(1 byte 表示两个 10 进制位)</a></li>
+          </ul>
+        </li>
+        <li><a href="#布尔运算">布尔运算</a></li>
+        <li><a href="#置位检测">置位检测</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="整型运算">整型运算</h2>
+<h3 id="加--addition">加 (addition)</h3>
+<h4 id="add-指令">add 指令</h4>
+<p>add 指令用来加两个整型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">add source, destination
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>source 可以是寄存器, 内存, 立即数</li>
+<li>destination 可以是寄存器, 内存</li>
+</ul>
+<p>但是 source 和 destination 不可以同时是内存</p>
+<p>add 后面应该加上后缀来表示操作数的 size. b(byte), w(word), l(doubleword), q(quadword)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm">  <span class="c"># test.s
+</span><span class="c"></span><span class="na">.section</span> <span class="no">.data</span>
+<span class="nl">data:</span>
+    <span class="na">.int</span> <span class="mi">40</span>
+<span class="na">.section</span> <span class="no">.text</span>
+<span class="na">.globl</span> <span class="no">_start</span>
+<span class="nl">_start:</span>
+    <span class="nf">movl</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%eax</span>
+    <span class="nf">movl</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%ebx</span>
+    <span class="nf">movl</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%ecx</span>
+    <span class="nf">movb</span> <span class="no">$20</span><span class="p">,</span> <span class="nv">%al</span>
+    <span class="nf">addb</span> <span class="no">$10</span><span class="p">,</span> <span class="nv">%al</span>
+    <span class="nf">movsx</span> <span class="nv">%al</span><span class="p">,</span> <span class="nv">%eax</span>
+    <span class="nf">movw</span> <span class="no">$100</span><span class="p">,</span> <span class="nv">%cx</span>
+    <span class="nf">addw</span> <span class="nv">%cx</span><span class="p">,</span>  <span class="nv">%bx</span>
+    <span class="nf">movsx</span> <span class="nv">%bx</span><span class="p">,</span> <span class="nv">%ebx</span>
+    <span class="nf">addl</span> <span class="nv">%edx</span><span class="p">,</span> <span class="nv">%edx</span>
+    <span class="nf">addl</span> <span class="no">data</span><span class="p">,</span> <span class="nv">%eax</span>
+    <span class="nf">addl</span> <span class="nv">%eax</span><span class="p">,</span> <span class="no">data</span>
+
+    <span class="nf">movq</span> <span class="no">$1</span><span class="p">,</span> <span class="nv">%rax</span>
+    <span class="nf">movq</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%rbx</span>
+    <span class="nf">int</span> <span class="no">$0x80</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="检查-cf-和-of">检查 CF 和 OF</h4>
+<p>执行 add 指令时需要注意 FLAGS 寄存器, 确认计算正常.</p>
+<ul>
+<li>CF 无符号相加结果过大</li>
+<li>OF 有符号相加结果过大或过小</li>
+</ul>
+<h4 id="adc-指令">ADC 指令</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">adc source, destination
+</code></pre></td></tr></table>
+</div>
+</div><p>将 source 和 carry flag 的值加到 destination</p>
+<h3 id="减法--subtraction">减法(subtraction)</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">sub source, destination
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>与 sub 指令相关的一个指令是 NEG, NEG 产生一个数的补码. 结果与 0 减去这个数相同. 不过 NEG 更快</p>
+</blockquote>
+<h4 id="cf-和-of">CF 和 OF</h4>
+<ul>
+<li>CF 无符号减法运算出现负数</li>
+<li>OF 有符号运算超限(符号位改变)</li>
+</ul>
+<h4 id="sbb">SBB</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">sbb source, destination
+</code></pre></td></tr></table>
+</div>
+</div><p>destination - source - carry</p>
+<h3 id="加-1-和减-1--incrementing-and-decrementing">加 1 和减 1(incrementing and decrementing)</h3>
+<p><code>INC</code> 和 <code>DEC</code> 指令用来递增和递减. 不会影响 CF. 最好还是用来处理无符号数</p>
+<h3 id="乘法--multiplication">乘法 (multiplication)</h3>
+<p>乘法对有符号数和无符号数有不同的操作指令</p>
+<h4 id="无符号乘法指令-mul">无符号乘法指令 <code>MUL</code></h4>
+<p>可能与想像中的格式不同. <code>mul</code> 的使用格式为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">mul source
+</code></pre></td></tr></table>
+</div>
+</div><p>mul 的目标数己经确定是 al, ax, eax, rax 中的一个, 取决于 source 的 size</p>
+<ul>
+<li>32 位</li>
+</ul>
+<pre><code>| source size | destination          |
+|-------------|----------------------|
+| 8           | ax(al\*source)       |
+| 16          | dx:ax(ax\*source)    |
+| 32          | edx:eax(eax\*source) |
+</code></pre>
+<ul>
+<li>64 位</li>
+</ul>
+<pre><code>64 位 source size 可以是 64 位, 结果存放在 rdx:rax
+进位标志位 CF 可以表示高半部分是否为 0
+</code></pre>
+<h4 id="有符号乘法指令-imul">有符号乘法指令 <code>IMUL</code></h4>
+<ul>
+<li>单操作数格式</li>
+</ul>
+<pre><code>```text
+imul source
+```
+
+| source size | destination          |
+|-------------|----------------------|
+| 8           | ax(al\*source)       |
+| 16          | dx:ax(ax\*source)    |
+| 32          | edx:eax(eax\*source) |
+| 64          | rdx:rax(rax\*source) |
+</code></pre>
+<ul>
+<li>双操作数格式</li>
+</ul>
+<pre><code>```text
+imul source, destination
+```
+
+| source size | destination size |
+|-------------|------------------|
+| 16          | 16               |
+| 32          | 32               |
+</code></pre>
+<ul>
+<li>三操作数格式</li>
+</ul>
+<pre><code>```text
+imul multiplier, source, destination
+```
+
+multiplier 是立即数
+</code></pre>
+<ul>
+<li>OF</li>
+</ul>
+<pre><code>若有效位被丢弃, OF 置 1
+</code></pre>
+<h3 id="除法--division">除法(division)</h3>
+<h4 id="无符号除法指令-div">无符号除法指令 <code>DIV</code></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">div divisor
+</code></pre></td></tr></table>
+</div>
+</div><table>
+<thead>
+<tr>
+<th>被除数</th>
+<th>除数</th>
+<th>商</th>
+<th>余数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AX</td>
+<td>reg8/mem8</td>
+<td>AL</td>
+<td>AH</td>
+</tr>
+<tr>
+<td>DX:AX</td>
+<td>reg16/mem16</td>
+<td>AX</td>
+<td>DX</td>
+</tr>
+<tr>
+<td>EDX:EAX</td>
+<td>reg32/mem32</td>
+<td>EAX</td>
+<td>EDX</td>
+</tr>
+</tbody>
+</table>
+<h4 id="有符号除法指令-idiv">有符号除法指令 <code>IDIV</code></h4>
+<p>与乘法不同中, 只有一种格式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">idiv source
+</code></pre></td></tr></table>
+</div>
+</div><p>几乎与无符号数除法相同. 只不过结果是有符号数.</p>
+<blockquote>
+<p>余数的符号总是与被除数相同</p>
+</blockquote>
+<h4 id="发现除法错误">发现除法错误</h4>
+<p>当除数为 0, 或者结果溢出时, 运行结果出错</p>
+<h3 id="移位运算--shift">移位运算(shift)</h3>
+<h4 id="左移运算">左移运算</h4>
+<ul>
+<li>逻辑左移 <code>shl</code></li>
+</ul>
+<pre><code>```text
+shl destination
+```
+
+左移一位
+
+```text
+shl %cl, destination
+```
+
+左移的位数取决于 cl 寄存器
+
+```text
+shl shifter, destination
+```
+
+左移 shifter 位
+</code></pre>
+<ul>
+<li>算术左移 <code>sal</code></li>
+</ul>
+<pre><code>与逻辑左移效果相同
+</code></pre>
+<h4 id="右移运算">右移运算</h4>
+<ul>
+<li>逻辑右移 <code>shr</code></li>
+</ul>
+<pre><code>```text
+shr destination
+```
+
+右移一位
+
+```text
+shr %cl, destination
+```
+
+右移的位数取决于 cl 寄存器
+
+```text
+shr shifter, destination
+```
+
+右移 shifter 位
+</code></pre>
+<ul>
+<li>算术右移 <code>sar</code></li>
+</ul>
+<pre><code>右移时最左端的填充与符号位相同
+</code></pre>
+<h3 id="循环位移">循环位移</h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ROL</td>
+<td>循环在移</td>
+</tr>
+<tr>
+<td>ROR</td>
+<td>循环右移</td>
+</tr>
+<tr>
+<td>RCL</td>
+<td>带 CF 的循环左移</td>
+</tr>
+<tr>
+<td>RCR</td>
+<td>带 CF 的循环右移</td>
+</tr>
+</tbody>
+</table>
+<h2 id="十进制运算">十进制运算</h2>
+<h3 id="未压缩-bcd--1-byte-表示一个-10-进制位">未压缩 BCD(1 byte 表示一个 10 进制位)</h3>
+<p>4 个指令可以将二进制算术结果转为未压缩二进制数.</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AAA</td>
+<td>执行加法后调整</td>
+</tr>
+<tr>
+<td>AAS</td>
+<td>执行减法后调整</td>
+</tr>
+<tr>
+<td>AAM</td>
+<td>执行乘法后调整</td>
+</tr>
+<tr>
+<td>AAD</td>
+<td>执行除法前调整</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>x64 不支持</p>
+</blockquote>
+<h3 id="压缩-bcd--1-byte-表示两个-10-进制位">压缩 BCD(1 byte 表示两个 10 进制位)</h3>
+<p><code>DAA</code>
+<code>DAS</code></p>
+<h2 id="布尔运算">布尔运算</h2>
+<p>直接支持 4 种运算</p>
+<table>
+<thead>
+<tr>
+<th>运算</th>
+<th>中文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AND</td>
+<td>与</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>或</td>
+</tr>
+<tr>
+<td>NOT</td>
+<td>非</td>
+</tr>
+<tr>
+<td>XOR</td>
+<td>或非</td>
+</tr>
+</tbody>
+</table>
+<p><code>and</code>, <code>or</code>, <code>xor</code> 指令的格式相同</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">instruction source, destination
+</code></pre></td></tr></table>
+</div>
+</div><p><code>not</code> 格式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">not destination
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="置位检测">置位检测</h2>
+<p><code>test</code> 进行 and 运算并设置 SF, PF, ZF. 与 and 不同, test 不会修改目标的值</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-14
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+          <a href="/tags/assembly/">assembly</a>
+          <a href="/tags/cs/">CS</a>
+          <a href="/tags/arithmetic/">arithmetic</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/cppprimer1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">C&#43;&#43; Primer chapter1 部分答案</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/multhread-issues/">
+            <span class="next-text nav-default">多线程问题</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-12-14 20:04:00 \u002b0800 CST',
+        title: '汇编基本运算',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

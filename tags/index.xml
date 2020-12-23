@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on ticks blog</title>
+    <link>https://tickscn.github.io/tags/</link>
+    <description>Recent content in Tags on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 27 Oct 2020 18:59:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>system-security</title>
+      <link>https://tickscn.github.io/tags/system-security/</link>
+      <pubDate>Tue, 27 Oct 2020 18:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/system-security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis-event</title>
+      <link>https://tickscn.github.io/tags/redis-event/</link>
+      <pubDate>Tue, 01 Sep 2020 21:12:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/redis-event/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis-db</title>
+      <link>https://tickscn.github.io/tags/redis-db/</link>
+      <pubDate>Tue, 01 Sep 2020 20:47:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/redis-db/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>thread-sync</title>
+      <link>https://tickscn.github.io/tags/thread-sync/</link>
+      <pubDate>Mon, 17 Aug 2020 17:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/thread-sync/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>thread-safe</title>
+      <link>https://tickscn.github.io/tags/thread-safe/</link>
+      <pubDate>Sun, 16 Aug 2020 16:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/thread-safe/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MySQL-Index</title>
+      <link>https://tickscn.github.io/tags/mysql-index/</link>
+      <pubDate>Thu, 06 Aug 2020 14:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/mysql-index/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>InnoDb</title>
+      <link>https://tickscn.github.io/tags/innodb/</link>
+      <pubDate>Wed, 05 Aug 2020 17:03:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/innodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Storage-Engine</title>
+      <link>https://tickscn.github.io/tags/storage-engine/</link>
+      <pubDate>Wed, 05 Aug 2020 15:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/storage-engine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>socket-introduction</title>
+      <link>https://tickscn.github.io/tags/socket-introduction/</link>
+      <pubDate>Mon, 03 Aug 2020 11:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/socket-introduction/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IO-System</title>
+      <link>https://tickscn.github.io/tags/io-system/</link>
+      <pubDate>Wed, 29 Jul 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/io-system/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>storage</title>
+      <link>https://tickscn.github.io/tags/storage/</link>
+      <pubDate>Tue, 28 Jul 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>file-system</title>
+      <link>https://tickscn.github.io/tags/file-system/</link>
+      <pubDate>Tue, 28 Jul 2020 15:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/file-system/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>osc-file-system-</title>
+      <link>https://tickscn.github.io/tags/osc-file-system/</link>
+      <pubDate>Tue, 28 Jul 2020 12:31:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/osc-file-system/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Construction</title>
+      <link>https://tickscn.github.io/tags/construction/</link>
+      <pubDate>Sat, 25 Jul 2020 16:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/construction/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Creator</title>
+      <link>https://tickscn.github.io/tags/creator/</link>
+      <pubDate>Wed, 22 Jul 2020 23:23:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/creator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>application-layer</title>
+      <link>https://tickscn.github.io/tags/application-layer/</link>
+      <pubDate>Wed, 22 Jul 2020 19:52:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/application-layer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lexi</title>
+      <link>https://tickscn.github.io/tags/lexi/</link>
+      <pubDate>Mon, 20 Jul 2020 20:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/lexi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>UDP</title>
+      <link>https://tickscn.github.io/tags/udp/</link>
+      <pubDate>Mon, 20 Jul 2020 16:43:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/udp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>design-pattern-introduction</title>
+      <link>https://tickscn.github.io/tags/design-pattern-introduction/</link>
+      <pubDate>Sun, 19 Jul 2020 19:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/design-pattern-introduction/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>template</title>
+      <link>https://tickscn.github.io/tags/template/</link>
+      <pubDate>Thu, 02 Jul 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/template/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>match</title>
+      <link>https://tickscn.github.io/tags/match/</link>
+      <pubDate>Wed, 01 Jul 2020 19:43:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/match/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tools</title>
+      <link>https://tickscn.github.io/tags/tools/</link>
+      <pubDate>Wed, 24 Jun 2020 22:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tricks</title>
+      <link>https://tickscn.github.io/tags/tricks/</link>
+      <pubDate>Wed, 24 Jun 2020 22:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/tricks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>process-scheduling</title>
+      <link>https://tickscn.github.io/tags/process-scheduling/</link>
+      <pubDate>Sun, 21 Jun 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/process-scheduling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>thread-scheduling</title>
+      <link>https://tickscn.github.io/tags/thread-scheduling/</link>
+      <pubDate>Sun, 21 Jun 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/thread-scheduling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>library</title>
+      <link>https://tickscn.github.io/tags/library/</link>
+      <pubDate>Thu, 04 Jun 2020 18:07:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/library/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>object-oriented</title>
+      <link>https://tickscn.github.io/tags/object-oriented/</link>
+      <pubDate>Sat, 30 May 2020 13:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/object-oriented/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>copy-control</title>
+      <link>https://tickscn.github.io/tags/copy-control/</link>
+      <pubDate>Wed, 27 May 2020 17:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/copy-control/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dynamic-memory</title>
+      <link>https://tickscn.github.io/tags/dynamic-memory/</link>
+      <pubDate>Mon, 25 May 2020 21:14:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/dynamic-memory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>algorithms</title>
+      <link>https://tickscn.github.io/tags/algorithms/</link>
+      <pubDate>Sat, 23 May 2020 16:10:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/algorithms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IO</title>
+      <link>https://tickscn.github.io/tags/io/</link>
+      <pubDate>Tue, 19 May 2020 14:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/io/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Containers</title>
+      <link>https://tickscn.github.io/tags/containers/</link>
+      <pubDate>Fri, 08 May 2020 15:27:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>overload</title>
+      <link>https://tickscn.github.io/tags/overload/</link>
+      <pubDate>Sat, 02 May 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/overload/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stream</title>
+      <link>https://tickscn.github.io/tags/stream/</link>
+      <pubDate>Sat, 18 Apr 2020 21:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/stream/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>concurrency</title>
+      <link>https://tickscn.github.io/tags/concurrency/</link>
+      <pubDate>Wed, 15 Apr 2020 21:41:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/concurrency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>swing</title>
+      <link>https://tickscn.github.io/tags/swing/</link>
+      <pubDate>Fri, 10 Apr 2020 21:51:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/swing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>event</title>
+      <link>https://tickscn.github.io/tags/event/</link>
+      <pubDate>Fri, 10 Apr 2020 20:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/event/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gui</title>
+      <link>https://tickscn.github.io/tags/gui/</link>
+      <pubDate>Wed, 08 Apr 2020 22:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/gui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>collection</title>
+      <link>https://tickscn.github.io/tags/collection/</link>
+      <pubDate>Wed, 08 Apr 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/collection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>map</title>
+      <link>https://tickscn.github.io/tags/map/</link>
+      <pubDate>Wed, 08 Apr 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/map/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>assert</title>
+      <link>https://tickscn.github.io/tags/assert/</link>
+      <pubDate>Sat, 04 Apr 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/assert/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>exception</title>
+      <link>https://tickscn.github.io/tags/exception/</link>
+      <pubDate>Sat, 04 Apr 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/exception/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>log</title>
+      <link>https://tickscn.github.io/tags/log/</link>
+      <pubDate>Sat, 04 Apr 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/log/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>interface</title>
+      <link>https://tickscn.github.io/tags/interface/</link>
+      <pubDate>Thu, 26 Mar 2020 23:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/interface/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lambda</title>
+      <link>https://tickscn.github.io/tags/lambda/</link>
+      <pubDate>Thu, 26 Mar 2020 23:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/lambda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>subclass</title>
+      <link>https://tickscn.github.io/tags/subclass/</link>
+      <pubDate>Sun, 08 Mar 2020 21:29:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/subclass/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>class</title>
+      <link>https://tickscn.github.io/tags/class/</link>
+      <pubDate>Sat, 07 Mar 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/class/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hello</title>
+      <link>https://tickscn.github.io/tags/hello/</link>
+      <pubDate>Sat, 07 Mar 2020 21:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/hello/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CS</title>
+      <link>https://tickscn.github.io/tags/cs/</link>
+      <pubDate>Wed, 25 Dec 2019 15:47:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/cs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OSC</title>
+      <link>https://tickscn.github.io/tags/osc/</link>
+      <pubDate>Wed, 25 Dec 2019 15:47:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/osc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>arithmetic</title>
+      <link>https://tickscn.github.io/tags/arithmetic/</link>
+      <pubDate>Sat, 14 Dec 2019 20:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/arithmetic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>assembly</title>
+      <link>https://tickscn.github.io/tags/assembly/</link>
+      <pubDate>Sat, 14 Dec 2019 20:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/assembly/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>汇编</title>
+      <link>https://tickscn.github.io/tags/%E6%B1%87%E7%BC%96/</link>
+      <pubDate>Sat, 14 Dec 2019 20:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E6%B1%87%E7%BC%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>多线程</title>
+      <link>https://tickscn.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Mon, 09 Dec 2019 20:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>number</title>
+      <link>https://tickscn.github.io/tags/number/</link>
+      <pubDate>Mon, 09 Dec 2019 19:55:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/number/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>BCD</title>
+      <link>https://tickscn.github.io/tags/bcd/</link>
+      <pubDate>Sun, 08 Dec 2019 20:06:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/bcd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IEEE754</title>
+      <link>https://tickscn.github.io/tags/ieee754/</link>
+      <pubDate>Sun, 08 Dec 2019 20:06:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/ieee754/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rust</title>
+      <link>https://tickscn.github.io/tags/rust/</link>
+      <pubDate>Thu, 05 Dec 2019 18:25:53 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>操作系统</title>
+      <link>https://tickscn.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Wed, 04 Dec 2019 14:43:49 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>算法</title>
+      <link>https://tickscn.github.io/tags/%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Wed, 27 Nov 2019 14:59:46 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E7%AE%97%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>X86</title>
+      <link>https://tickscn.github.io/tags/x86/</link>
+      <pubDate>Tue, 26 Nov 2019 18:42:59 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/x86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OS</title>
+      <link>https://tickscn.github.io/tags/os/</link>
+      <pubDate>Mon, 25 Nov 2019 15:57:28 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/os/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>进程</title>
+      <link>https://tickscn.github.io/tags/%E8%BF%9B%E7%A8%8B/</link>
+      <pubDate>Mon, 25 Nov 2019 15:57:28 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E8%BF%9B%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>graph</title>
+      <link>https://tickscn.github.io/tags/graph/</link>
+      <pubDate>Mon, 25 Nov 2019 15:38:47 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/graph/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>图</title>
+      <link>https://tickscn.github.io/tags/%E5%9B%BE/</link>
+      <pubDate>Sat, 23 Nov 2019 18:38:02 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E5%9B%BE/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IPC</title>
+      <link>https://tickscn.github.io/tags/ipc/</link>
+      <pubDate>Sat, 23 Nov 2019 17:57:08 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/ipc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>POSIX</title>
+      <link>https://tickscn.github.io/tags/posix/</link>
+      <pubDate>Sat, 23 Nov 2019 17:57:08 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/posix/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shared memory</title>
+      <link>https://tickscn.github.io/tags/shared-memory/</link>
+      <pubDate>Sat, 23 Nov 2019 17:57:08 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/shared-memory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>广度优先搜索</title>
+      <link>https://tickscn.github.io/tags/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/</link>
+      <pubDate>Thu, 21 Nov 2019 14:00:25 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>深度优先算法</title>
+      <link>https://tickscn.github.io/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Thu, 21 Nov 2019 14:00:25 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>process</title>
+      <link>https://tickscn.github.io/tags/process/</link>
+      <pubDate>Wed, 20 Nov 2019 16:36:38 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/process/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>algorithes</title>
+      <link>https://tickscn.github.io/tags/algorithes/</link>
+      <pubDate>Wed, 20 Nov 2019 13:56:10 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/algorithes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://tickscn.github.io/tags/linux/</link>
+      <pubDate>Tue, 19 Nov 2019 16:47:29 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FIB-HEAP</title>
+      <link>https://tickscn.github.io/tags/fib-heap/</link>
+      <pubDate>Tue, 19 Nov 2019 14:22:42 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/fib-heap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>algotithms</title>
+      <link>https://tickscn.github.io/tags/algotithms/</link>
+      <pubDate>Sun, 17 Nov 2019 14:25:44 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/algotithms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>I/O</title>
+      <link>https://tickscn.github.io/tags/i/o/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/tags/i/o/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

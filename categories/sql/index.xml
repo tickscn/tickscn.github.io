@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SQL on ticks blog</title>
+    <link>https://tickscn.github.io/categories/sql/</link>
+    <description>Recent content in SQL on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 04 Aug 2020 20:09:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/sql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用触发器</title>
+      <link>https://tickscn.github.io/post/mysql_trigger/</link>
+      <pubDate>Tue, 04 Aug 2020 20:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_trigger/</guid>
+      <description>触发器 想要某些语句在事件发生时自动执行. 触发器可以响应以下语句 DELETE INSERT UPDATE 创建触发器 需要以下四条信息 唯一触发器名字 触发器关联的表 触发器应响应的语句</description>
+    </item>
+    
+    <item>
+      <title>数据库管理</title>
+      <link>https://tickscn.github.io/post/mysql_manager/</link>
+      <pubDate>Tue, 04 Aug 2020 20:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_manager/</guid>
+      <description>访问控制 GRANT 授予权限 REVOKE 撤销权限 备份数据 因为 MySQL 是基于磁盘的文件, 所以普通的文件备份系统就可以备份 MySQL 数据库. 不过考虑到数据库的文件总是被打开和使用</description>
+    </item>
+    
+    <item>
+      <title>使用游标</title>
+      <link>https://tickscn.github.io/post/mysql_cursor/</link>
+      <pubDate>Tue, 04 Aug 2020 13:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_cursor/</guid>
+      <description>有时, 需要在检索出来的结果行中前进或后退一行或多行. 这就是游标的用处 MySQL 游标只能用于存储过程(函数) 使用游标 首先需要声明它, 定义要使用的 SELECT 语句</description>
+    </item>
+    
+    <item>
+      <title>全文本搜索</title>
+      <link>https://tickscn.github.io/post/mysql_fulltext_serch/</link>
+      <pubDate>Mon, 03 Aug 2020 18:46:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_fulltext_serch/</guid>
+      <description>常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM 使用全文本搜索 启用全文本搜索 创建 table 时使用 FULLTEXT 子语句 1 2 3 4 5 6 7 CREATE TABLE productnotes( note_id int NOT NULL AUTO_INCREMET, ... note_text text NULL, PRIMARY KEY(note_id), FULLTEXT(note_text)</description>
+    </item>
+    
+    <item>
+      <title>技巧</title>
+      <link>https://tickscn.github.io/post/sql_statistics/</link>
+      <pubDate>Thu, 02 Jul 2020 08:50:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_statistics/</guid>
+      <description>动态统计 使用不断增多的值, 一行接一行的计算, 开始是对一个值, 最后是对所有值. 动态合计(running sum) 和 动态平均(running averag</description>
+    </item>
+    
+    <item>
+      <title>事务</title>
+      <link>https://tickscn.github.io/post/sql_event/</link>
+      <pubDate>Tue, 16 Jun 2020 17:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_event/</guid>
+      <description>事务保证多条语句同时执行或不执行 术语 提交(committing): 固化修改 回滚(rolling back): 撤销 事务日志 创建事务 显式开始一个事务 BEGIN TRANSACTION; or START</description>
+    </item>
+    
+    <item>
+      <title>视图</title>
+      <link>https://tickscn.github.io/post/sql_view/</link>
+      <pubDate>Tue, 16 Jun 2020 17:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_view/</guid>
+      <description>视图的基础表可以是基本表, 临时表, 其它视图 视图是虚拟表 视图只存了 SELECT 语句, 没有存数据 视图的作用 简化数据访问 重用 SQL 语句 自动更新 增强安全性 逻辑上的</description>
+    </item>
+    
+    <item>
+      <title>索引</title>
+      <link>https://tickscn.github.io/post/sql_index/</link>
+      <pubDate>Tue, 16 Jun 2020 16:50:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_index/</guid>
+      <description>创建索引 CREATE INDEX. 创建索引也有代价, 对必要的列创建, 即经常 查询 WHERE 排序 ORDER BY 分组 GROUP BY 联结 JOIN 计算统计顺序 : MIN(), MAX() 或中位数 有些列不应创建索引 只接受很少的值.</description>
+    </item>
+    
+    <item>
+      <title>创建, 更改, 删除表</title>
+      <link>https://tickscn.github.io/post/sql_update_table/</link>
+      <pubDate>Tue, 16 Jun 2020 16:36:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_update_table/</guid>
+      <description>创建表 表名 列名 列的数据类型 列的默认值 约束 约束 说明 NOT NULL 不允许空值 PRIMARY KEY 主键 FOREIGN KEY 外键 UNIQUE 不允许重复 CHECK 使用 boolean 限制插入的值 CREATE TABLE 1 2 3 4 5 6 7 8 9 10 11 12 CREATE</description>
+    </item>
+    
+    <item>
+      <title>插入, 更新, 删除行</title>
+      <link>https://tickscn.github.io/post/sql_update_row/</link>
+      <pubDate>Mon, 15 Jun 2020 19:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_update_row/</guid>
+      <description>INSERT 插入行 UPDATE 更新值 DELETE 删除行 显示表结构 列的顺序 列的名称 列的数据类型 列是否为主键 列中的值是否必须唯一 列中的值是否允许为空 列的默认值 表和列的约束 Mysql 使</description>
+    </item>
+    
+    <item>
+      <title>集合操作</title>
+      <link>https://tickscn.github.io/post/sql_colluction/</link>
+      <pubDate>Mon, 15 Jun 2020 19:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_colluction/</guid>
+      <description>并集 UNION \(A\cup B\) 交集 INTERSECT \(A\cap B\) 差集 EXCEPT \(A - B\) 优先级: SQL 标准中 INTERSECT &amp;gt; UNION, 不过不同的 DBMS 可能有不同的实现, 使有括号可以使执行顺序更清晰 UNION UNION 去掉重复行, UNION ALL 不去重复</description>
+    </item>
+    
+    <item>
+      <title>子查询</title>
+      <link>https://tickscn.github.io/post/sql_subquery/</link>
+      <pubDate>Sun, 14 Jun 2020 18:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_subquery/</guid>
+      <description>嵌套在另一 SQL 语句中的 SELECT 语句 1 2 3 4 5 6 7 8 9 10 -- 列出传记的出版社 SELECT DISTINCT pub_name FROM publishers p JOIN titles t ON t.pub_id = p.pub_id WHERE t.type=&amp;#39;biography&amp;#39;; -- 另一种方法 SELECT p.pub_name FROM publishers p WHERE p.pub_id IN (SELECT t.pub_id FROM titles t WHERE t.type=&amp;#39;biogrphay&amp;#39;); 子查</description>
+    </item>
+    
+    <item>
+      <title>联结</title>
+      <link>https://tickscn.github.io/post/sql_join/</link>
+      <pubDate>Sun, 14 Jun 2020 16:38:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_join/</guid>
+      <description>使用联结可以同时在多个表中检索行. 限定列名 列名在不同表中是可以相同的, 为了唯一标识一个列, 可以使用限定命名 table.column 完整的限定列名 server.database.user.table 使用 AS 创建表的别</description>
+    </item>
+    
+    <item>
+      <title>汇总和分组数据</title>
+      <link>https://tickscn.github.io/post/sql_group/</link>
+      <pubDate>Sun, 14 Jun 2020 13:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_group/</guid>
+      <description>使用聚合函数 function return 备注 MIN(exprs) minimum MAX(exprs) maximum SUM(exprs) summation 空行返回空, 不是 0 AVG(exprs) average COUNT(exprs) nonNULL count COUNT(*) rows 创建聚合表达式 聚合表达式不能出现在 WHERE 子句中 WHERE price = MAX(price) 不合法 SELECT 子句中不能混用非聚</description>
+    </item>
+    
+    <item>
+      <title>操作符和函数</title>
+      <link>https://tickscn.github.io/post/sql_operator_function/</link>
+      <pubDate>Sat, 13 Jun 2020 16:50:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_operator_function/</guid>
+      <description>算术运算 字符串运算 日期和时间运算 系统运算 创建派生列 操作符和函数的结果列, 不会成为表中的永久列 执行算术运算 operator 描述 -expr 取反 +expr 不变 expr1+expr2 求和 expr1-expr2 求差 expr1*expr2 求积</description>
+    </item>
+    
+    <item>
+      <title>从表中检索数据</title>
+      <link>https://tickscn.github.io/post/sql_select/</link>
+      <pubDate>Fri, 12 Jun 2020 16:28:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_select/</guid>
+      <description>介绍 SQL 重点 SELECT 语句 1 2 3 4 5 6 7 SELECT columns FROM tables [JOIN join] [WHERE search_condition] [GROUP BY grouping_columns] [HAVING search_condition] [ORDER BY sort_column] 方框中是可选语句 使用 SELECT 和 FROM 检索 可以使用 SELECT 检索一列, 多列或全部的列, FROM 指定检索的</description>
+    </item>
+    
+    <item>
+      <title>SQL 基础</title>
+      <link>https://tickscn.github.io/post/sql_base/</link>
+      <pubDate>Thu, 11 Jun 2020 19:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_base/</guid>
+      <description>SQL 语法 注释: 以两个连字符开始 &amp;ndash;, 持续到行尾 SQL 语句: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点 子句: SQL 语句片断 关键字</description>
+    </item>
+    
+    <item>
+      <title>关系模型</title>
+      <link>https://tickscn.github.io/post/sql_relational/</link>
+      <pubDate>Thu, 11 Jun 2020 19:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_relational/</guid>
+      <description>关系模型的基础是集合论. 让人已数据集合而不是已孤立的数据来思考. 该模型描述了如何在数据库表(table)上运行集合运算. 表(table) 类似</description>
+    </item>
+    
+  </channel>
+</rss>

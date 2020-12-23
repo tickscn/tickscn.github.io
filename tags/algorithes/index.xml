@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>algorithes on ticks blog</title>
+    <link>https://tickscn.github.io/tags/algorithes/</link>
+    <description>Recent content in algorithes on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 20 Nov 2019 13:56:10 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/algorithes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>图的表示</title>
+      <link>https://tickscn.github.io/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/</link>
+      <pubDate>Wed, 20 Nov 2019 13:56:10 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/</guid>
+      <description>对于图 G = (V, E) , V是顶点(Vertex)的集合, E是边(Edge) 的集合 邻接链表 稀疏图($|E| &amp;laquo; |V|^2$) 邻接距阵 多用在稠密图($|E| \approx |V|^2$), 或需要</description>
+    </item>
+    
+  </channel>
+</rss>

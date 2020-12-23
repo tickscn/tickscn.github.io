@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>输入与输出 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="输入输出流 输入流: 可以读入一个字节序列的对象 输出流: 可以写入一个字节序列的对象 来源和目的地可以是文件, 网络链接或者是内存块 抽象类 InputStream/OutputStream 处理 Unicode 可以" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_io/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="输入与输出" />
+<meta property="og:description" content="输入输出流 输入流: 可以读入一个字节序列的对象 输出流: 可以写入一个字节序列的对象 来源和目的地可以是文件, 网络链接或者是内存块 抽象类 InputStream/OutputStream 处理 Unicode 可以" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_io/" />
+<meta property="article:published_time" content="2020-04-21T18:22:00+08:00" />
+<meta property="article:modified_time" content="2020-04-21T18:22:00+08:00" />
+<meta itemprop="name" content="输入与输出">
+<meta itemprop="description" content="输入输出流 输入流: 可以读入一个字节序列的对象 输出流: 可以写入一个字节序列的对象 来源和目的地可以是文件, 网络链接或者是内存块 抽象类 InputStream/OutputStream 处理 Unicode 可以">
+<meta itemprop="datePublished" content="2020-04-21T18:22:00+08:00" />
+<meta itemprop="dateModified" content="2020-04-21T18:22:00+08:00" />
+<meta itemprop="wordCount" content="3097">
+
+
+
+<meta itemprop="keywords" content="IO," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="输入与输出"/>
+<meta name="twitter:description" content="输入输出流 输入流: 可以读入一个字节序列的对象 输出流: 可以写入一个字节序列的对象 来源和目的地可以是文件, 网络链接或者是内存块 抽象类 InputStream/OutputStream 处理 Unicode 可以"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">输入与输出</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-21 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#输入输出流">输入输出流</a>
+          <ul>
+            <li><a href="#读写字节">读写字节</a></li>
+            <li><a href="#完整的流家族">完整的流家族</a></li>
+            <li><a href="#组合输入-输出流过滤器">组合输入/输出流过滤器</a></li>
+          </ul>
+        </li>
+        <li><a href="#文本输入与输出">文本输入与输出</a>
+          <ul>
+            <li><a href="#如何写出文本输出">如何写出文本输出</a></li>
+            <li><a href="#如何读入文本输入">如何读入文本输入</a></li>
+          </ul>
+        </li>
+        <li><a href="#读写二进制">读写二进制</a>
+          <ul>
+            <li><a href="#datainput-和-dataoutput-接口">DataInput 和 DataOutput 接口</a></li>
+            <li><a href="#随机访问文件">随机访问文件</a></li>
+            <li><a href="#zip-文档">ZIP 文档</a></li>
+          </ul>
+        </li>
+        <li><a href="#对象输入-输出流与序列化">对象输入/输出流与序列化</a>
+          <ul>
+            <li><a href="#对象序列化的格式">对象序列化的格式</a></li>
+            <li><a href="#修改默认的序列化机制">修改默认的序列化机制</a></li>
+            <li><a href="#序列化单例和类型安全的枚举">序列化单例和类型安全的枚举</a></li>
+            <li><a href="#版本管理">版本管理</a></li>
+            <li><a href="#克隆使用序列化">克隆使用序列化</a></li>
+          </ul>
+        </li>
+        <li><a href="#操作文件">操作文件</a>
+          <ul>
+            <li><a href="#path">Path</a></li>
+            <li><a href="#读写文件">读写文件</a></li>
+            <li><a href="#创建文件和目录">创建文件和目录</a></li>
+            <li><a href="#复制-移动和删除文件">复制, 移动和删除文件</a></li>
+            <li><a href="#获取文件信息">获取文件信息</a></li>
+            <li><a href="#访问目录中的项">访问目录中的项</a></li>
+            <li><a href="#使用目录流">使用目录流</a></li>
+          </ul>
+        </li>
+        <li><a href="#内存映射">内存映射</a>
+          <ul>
+            <li><a href="#缓冲区数据结构">缓冲区数据结构</a></li>
+            <li><a href="#文件加锁">文件加锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#正则表达式">正则表达式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="输入输出流">输入输出流</h2>
+<ul>
+<li>输入流: 可以读入一个字节序列的对象</li>
+<li>输出流: 可以写入一个字节序列的对象</li>
+<li>来源和目的地可以是文件, 网络链接或者是内存块</li>
+<li>抽象类 InputStream/OutputStream</li>
+<li>处理 Unicode 可以使用抽象类 Reader 和 Writer 继承的类</li>
+</ul>
+<h3 id="读写字节">读写字节</h3>
+<p>InputStream 有一个抽象方法</p>
+<p><code>abstract int read()</code></p>
+<p>将读入一个字节并返回, 文件末尾返回 -1</p>
+<p>与此类似, OutputStream 定义了抽象方法</p>
+<p><code>abstract void write(int b)</code></p>
+<p>read 和 write 都是阻塞执行</p>
+<ul>
+<li>available 方法检查可以读入的字节数目</li>
+<li>close 方法释放操作系统资源. 关闭输出流的同时刷新缓冲区</li>
+<li>flush 方法刷新输出缓冲区</li>
+<li>long skip(long n) 在输入流中跳过 n 个字节. 返回跳过的字节数</li>
+<li>boolean markSupported() 是不支持打标记</li>
+<li>void mark(int readlimit) 打标记, 但是读入的字节数多于 readlimit, 可忽略该标记</li>
+<li>void reset() 返回上一个标记</li>
+</ul>
+<h3 id="完整的流家族">完整的流家族</h3>
+<p>与 C 语言只用 FILE * 不同, Java 包含超过 60 种输入/输出流</p>
+<h3 id="组合输入-输出流过滤器">组合输入/输出流过滤器</h3>
+<p>可以通过文件名或完整路径来打开一个 FileInputStream/FileOutputStream</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">java.io 中的所有类都将相对路径名解释为用户工作目录开始
+调用 System.getProperty(&#34;user.dir&#34;)
+</code></pre></td></tr></table>
+</div>
+</div><p>这些类只支持字节级别的读写. 而 DataInputStream 只支持数值的读入, 想要从文作中读入数据可以将 FileInputStream 传递给 DataInputStream 的构造器</p>
+<ul>
+<li>带缓冲的输入流 BufferedInputStream</li>
+<li>可以预览的输入流 BushbackInputStream</li>
+</ul>
+<h2 id="文本输入与输出">文本输入与输出</h2>
+<p>保存数据时可以选则文本或二进制格式. 使用文本存储时需要考虑 b 字符编码. Java 内部使用 UTF-16.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">OutputStreamWriter 和 InputStreamReader 类可以将编码转换
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="如何写出文本输出">如何写出文本输出</h3>
+<ul>
+<li>PrintWriter.</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">PrinterWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrinterWriter</span><span class="o">(</span><span class="s">&#34;text.txt&#34;</span><span class="o">,</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">);</span>
+<span class="cm">/* 等同于
+</span><span class="cm"> * PrinterWriter out = new PrinterWriter(new FileOutputStream(&#34;text.txt&#34;, &#34;UTF-8&#34;));
+</span><span class="cm"> */</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用 print, println, printf 方法写入到打印器</p>
+<h3 id="如何读入文本输入">如何读入文本输入</h3>
+<ul>
+<li>Scanner</li>
+<li>静态方法 Files.readAllBytes(&ldquo;text.txt&rdquo;, charset)</li>
+<li>静态方法 Files.readAllLines(&ldquo;text.txt&rdquo;, charset)</li>
+</ul>
+<h2 id="读写二进制">读写二进制</h2>
+<h3 id="datainput-和-dataoutput-接口">DataInput 和 DataOutput 接口</h3>
+<p>DataOutput 定义了以下方法</p>
+<ul>
+<li>writeChars</li>
+<li>writeByte</li>
+<li>writeInt</li>
+<li>writeShort</li>
+<li>writeLong</li>
+<li>writeFloat</li>
+<li>writeDouble</li>
+<li>writeboolean</li>
+<li>writeUTF</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">c/c++ 按照来台来决定采用大端序还是小端序. Java 采用大端序
+</code></pre></td></tr></table>
+</div>
+</div><p>读回数据, 使用 DataInput 中相以应的方法</p>
+<h3 id="随机访问文件">随机访问文件</h3>
+<p>RandomAccessFile 可以在文件中的任何位置查找或写入数据</p>
+<p>有一个文件指针, 表示下一个将要被处理的字节位置.</p>
+<ul>
+<li>seek 方法可以设置这个指针指向任意位置</li>
+<li>getFilePointer 返回当前位置</li>
+</ul>
+<h3 id="zip-文档">ZIP 文档</h3>
+<p>ZipInputStream 和 ZipOutputStream</p>
+<p>get/putNextEntry</p>
+<p>getInputStream</p>
+<h2 id="对象输入-输出流与序列化">对象输入/输出流与序列化</h2>
+<p>二进制保存对象, 可以方便的读入和写出使用 ObjectInputStream/ObjectOutputStream 的
+readObject/writeObject 方法</p>
+<p>需要实面现 Serialization 接口, 该接口没有方法</p>
+<p>写时的算法</p>
+<ul>
+<li>每一个对象都关联到一个序列号</li>
+<li>对于每一个对象, 第一次遇到时, 保存其对象数据到输出流</li>
+<li>如果以保存过, 只写第一次保存的序列号相同</li>
+</ul>
+<h3 id="对象序列化的格式">对象序列化的格式</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">$ hexdump -C employee.dat
+00000000  ac ed 00 05 75 72 00 18  5b 4c 6f 62 6a 65 63 74  |....ur..[Lobject|
+00000010  53 74 72 65 61 6d 2e 45  6d 70 6c 6f 79 65 65 3b  |Stream.Employee;|
+00000020  24 ad 95 40 99 dc 5e 26  02 00 00 78 70 00 00 00  |$..@..^&amp;...xp...|
+00000030  03 73 72 00 14 6f 62 6a  65 63 74 53 74 72 65 61  |.sr..objectStrea|
+00000040  6d 2e 4d 61 6e 61 67 65  72 ed e9 2f ba c4 76 19  |m.Manager../..v.|
+00000050  c0 02 00 01 4c 00 09 73  65 63 72 65 74 61 72 79  |....L..secretary|
+00000060  74 00 17 4c 6f 62 6a 65  63 74 53 74 72 65 61 6d  |t..LobjectStream|
+00000070  2f 45 6d 70 6c 6f 79 65  65 3b 78 72 00 15 6f 62  |/Employee;xr..ob|
+00000080  6a 65 63 74 53 74 72 65  61 6d 2e 45 6d 70 6c 6f  |jectStream.Emplo|
+00000090  79 65 65 9c 6b 01 82 34  4f 2e b2 02 00 03 44 00  |yee.k..4O.....D.|
+000000a0  06 73 61 6c 61 72 79 4c  00 07 68 69 72 65 44 61  |.salaryL..hireDa|
+000000b0  79 74 00 15 4c 6a 61 76  61 2f 74 69 6d 65 2f 4c  |yt..Ljava/time/L|
+000000c0  6f 63 61 6c 44 61 74 65  3b 4c 00 04 6e 61 6d 65  |ocalDate;L..name|
+000000d0  74 00 12 4c 6a 61 76 61  2f 6c 61 6e 67 2f 53 74  |t..Ljava/lang/St|
+000000e0  72 69 6e 67 3b 78 70 40  f3 88 00 00 00 00 00 73  |ring;xp@.......s|
+000000f0  72 00 0d 6a 61 76 61 2e  74 69 6d 65 2e 53 65 72  |r..java.time.Ser|
+00000100  95 5d 84 ba 1b 22 48 b2  0c 00 00 78 70 77 07 03  |.]...&#34;H....xpw..|
+00000110  00 00 07 c3 0c 0f 78 74  00 0c 43 61 72 6c 20 43  |......xt..Carl C|
+00000120  72 61 63 6b 65 72 73 71  00 7e 00 04 40 e8 6a 00  |rackersq.~..@.j.|
+00000130  00 00 00 00 73 71 00 7e  00 08 77 07 03 00 00 07  |....sq.~..w.....|
+00000140  c5 0a 01 78 74 00 0c 48  61 72 72 79 20 48 61 63  |...xt..Harry Hac|
+00000150  6b 65 72 71 00 7e 00 0b  73 71 00 7e 00 02 40 e3  |kerq.~..sq.~..@.|
+00000160  88 00 00 00 00 00 73 71  00 7e 00 08 77 07 03 00  |......sq.~..w...|
+00000170  00 07 c6 03 0f 78 74 00  0b 54 6f 6e 79 20 54 65  |.....xt..Tony Te|
+00000180  73 74 65 72 71 00 7e 00  0b                       |sterq.~..|
+00000189
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="每个文件的开头-magic-number">每个文件的开头 &ldquo;magic number&rdquo;</h4>
+<p>AC ED</p>
+<h4 id="序列化版本号">序列化版本号</h4>
+<p>目前是 00 05</p>
+<h4 id="字符串对象">字符串对象</h4>
+<p>74 xx xx 所有字符, xx xx 两个字节表示长度</p>
+<ul>
+<li>如 74 00 0c 48 61 72 72 79 20 48 61 63 6b 65 72 表示&quot;Harry Hacker&quot;</li>
+</ul>
+<h4 id="对象所属的类也要存储">对象所属的类也要存储</h4>
+<p>类的描述包含</p>
+<ul>
+<li>类名</li>
+<li>序列化的版本唯一的 ID. 数据数类型和方法签名的指纹</li>
+<li>描述序列化方法的标志集</li>
+<li>对数据域的描述</li>
+</ul>
+<h4 id="类标识符">类标识符</h4>
+<ol>
+<li>类描述符
+<ol>
+<li>
+<p>72</p>
+</li>
+<li>
+<p>2 字节的类名长度</p>
+</li>
+<li>
+<p>类名</p>
+</li>
+<li>
+<p>8 字节长的指纹</p>
+</li>
+<li>
+<p>1 字节长的标志</p>
+<ol>
+<li>01 有 writeObject 方法来保存附加的数据</li>
+<li>02 实现了 Serialization 接口的类</li>
+<li>04 实现了 Externalizable 接口的类</li>
+</ol>
+</li>
+<li>
+<p>2 字节数据描述数量</p>
+</li>
+<li>
+<p>数据域描述符</p>
+<ul>
+<li>1byte 类型编码
+<ul>
+<li>B(42) byte</li>
+<li>C(43) char</li>
+<li>D(44) double</li>
+<li>F(46) float</li>
+<li>I(49) int</li>
+<li>J(4a) long</li>
+<li>L(4c) 对象</li>
+<li>S(53) short</li>
+<li>Z(5a) boolean</li>
+<li>[(5b) 数组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>结束标记</p>
+</li>
+<li>
+<p>超类类型(没有是 70)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">72 00 15
+6f 62 6a 65 63 74 53 74 72 65  61 6d 2e 45 6d 70 6c 6f 79 65 65 (objectStream.Employee)
+9c 6b 01 82 34 4f 2e b2 (fingerprint)
+02  (flag Serialization)
+00 03 (实例域数量3)
+44 00 06 73 61 6c 61 72 79                                              (D 00 06 salary -- double salary)
+4c 00 07 68 69 72 65 44 61 79                                           (L 00 07 hireDay -- 对象 hireDay)
+74 00 15 4c 6a 61 76 61 2f 74 69 6d 65 2f 4c 6f 63 61 6c 44 61 74 65 3b (实例域的类名 Ljava/time/LocaleData;)
+4c 00 04 6e 61 6d 65                                                    (L 00 04 name -- 对象 name)
+74 00 12 4c 6a 61 76 61  2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b         (实例域的类名 Ljava/lang/String;)
+78 70
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+</li>
+<li>再次使用该描述符可以使用缩写
+71 xx xx xx xx (4 byte 序列号)</li>
+</ol>
+<h4 id="对象被存储为">对象被存储为</h4>
+<p>73 类描述符 对象数据</p>
+<h4 id="数组">数组</h4>
+<p>75 类描述符  数组项数量(4byte)  数组项</p>
+<h3 id="修改默认的序列化机制">修改默认的序列化机制</h3>
+<p>不可序列化的域 用 <code>transient</code> 标记.
+可序列化的类可以定义</p>
+<ul>
+<li>private void readObject(ObjectInputStream in) throws IOException, FileNotFoundException;</li>
+<li>private void writeObject(ObjectOutputStream out) throws IOException;</li>
+</ul>
+<p>之后数据域不会自动序列化, 而是调用上面两个方法</p>
+<h3 id="序列化单例和类型安全的枚举">序列化单例和类型安全的枚举</h3>
+<p>enum 可以正常工作</p>
+<p>遗留代码, 假设包含以下枚举类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Orientation</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Orientation</span> <span class="n">HORIZONTAL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Orientation</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Orientation</span> <span class="n">VERTICAL</span>   <span class="o">=</span> <span class="k">new</span> <span class="n">Orientation</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nf">Orientation</span><span class="o">(</span><span class="kt">int</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span><span class="n">value</span> <span class="o">=</span> <span class="n">v</span><span class="o">;}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>此时保存在读取后会生成全新对象, 即使构造函数是私有的此时定义</p>
+<ul>
+<li>pritected Object readResolv() throws ObjectStreamException</li>
+</ul>
+<h3 id="版本管理">版本管理</h3>
+<p>序列化保存的的对象可以用更新的版本来读吗? 一般来说, 当类的定义发生了变化其 SHA 指纹也会跟着变化.
+但是可以特别表明其对早期版本兼容</p>
+<ol>
+<li>获取早期版本的指纹   <code>serialver xxx</code></li>
+<li>定义 <code>public static final long serivalVersionUID = xxx</code></li>
+</ol>
+<h3 id="克隆使用序列化">克隆使用序列化</h3>
+<p>可以序列化一个对象到输出流, 然后读回即可得到一个原对象的深拷备</p>
+<h2 id="操作文件">操作文件</h2>
+<h3 id="path">Path</h3>
+<p>Path 表示目录名序列, 其后可以跟着文件名. 如果第一个部件是根部件, 该路径是绝对路径, 否则是相对路径.</p>
+<p>Paths.get 可以通过多个部件字符串或是一个包含多个部件的字符串</p>
+<ul>
+<li>Path absolute = Paths.get(&quot;/home&quot;, &ldquo;ticks&rdquo;);</li>
+<li>String baseDir = props.getProperty(&ldquo;base.dir&rdquo;); Path basePath = Paths.get(baseDir);</li>
+</ul>
+<p>p.resolve(q) q 是绝对路径,返回 q. 否则返回 p+q</p>
+<p>relativize 返回相对路径</p>
+<h3 id="读写文件">读写文件</h3>
+<p>Files 类中有很多静态方法, 使得读写文件变得很简单</p>
+<ul>
+<li>byte[] readAllBytes(Path path)</li>
+<li>List<String> readAllLines(Path path, Charset charset)</li>
+<li>Path write(Path path, byte[] content, OpenOption&hellip; options)</li>
+<li>InputStream newInputStream(Path path, options)</li>
+<li>OutputStream newOutputStream(Path path, options)</li>
+<li>BufferedReader newBufferedReader(Path path, charset)</li>
+<li>BufferedWriter newBufferedWriter(Path path, charset)</li>
+</ul>
+<h3 id="创建文件和目录">创建文件和目录</h3>
+<ul>
+<li>creatFile</li>
+<li>creatDirectory</li>
+<li>creatTempFile</li>
+<li>creatTempDirectory</li>
+</ul>
+<h3 id="复制-移动和删除文件">复制, 移动和删除文件</h3>
+<ul>
+<li>copy(from, to)</li>
+<li>move(from, to)</li>
+</ul>
+<h3 id="获取文件信息">获取文件信息</h3>
+<p>返回 boolean</p>
+<ul>
+<li>exists</li>
+<li>isHidden</li>
+<li>isReadable, isWriteable, isExecutable</li>
+<li>isRegularFile, isDirectory, isSymbolicLink</li>
+</ul>
+<p>其它</p>
+<ul>
+<li>size 返回字节数</li>
+<li>getOwner</li>
+</ul>
+<h4 id="基本属性集">基本属性集</h4>
+<p>封装在 BasicFileAttributes 中</p>
+<ul>
+<li>创建, 最后一次访问, 最后一次修改时间. 保存为 java.nio.file.attribute.FileTime</li>
+<li>文件类型</li>
+<li>文件尺寸</li>
+<li>文件主键</li>
+</ul>
+<h3 id="访问目录中的项">访问目录中的项</h3>
+<p>Files.List 返回 Stream<Path> 对象
+Files.walk 会进入子目录</p>
+<h3 id="使用目录流">使用目录流</h3>
+<p>想要对遍历有更细的操作, 可以使用 newDirectoryStream</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">try</span><span class="o">(</span><span class="n">DirectoryStream</span><span class="o">&lt;</span><span class="n">Path</span><span class="o">&gt;</span> <span class="n">entries</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">newDirectoryStream</span><span class="o">(</span><span class="n">dir</span><span class="o">)){</span>
+    <span class="k">for</span><span class="o">(</span><span class="n">Path</span> <span class="n">entry</span><span class="o">:</span><span class="n">entrys</span><span class="o">){</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以使用 glob 语法</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>匹配路径组成部分中的一个或多个字符</td>
+<td>*.txt 匹配当前目录的所有 txt 文件</td>
+</tr>
+<tr>
+<td>**</td>
+<td>匹配跨路径边界的一个或多个字符</td>
+<td>**.txt 匹配所有子目录中的 txt 文件</td>
+</tr>
+<tr>
+<td>?</td>
+<td>匹配一个字符</td>
+<td></td>
+</tr>
+<tr>
+<td>[&hellip;]</td>
+<td>匹配符集合, 可以使用连线符</td>
+<td>[0-9A-F] 匹配一个 16 进制数字</td>
+</tr>
+<tr>
+<td>{&hellip;}</td>
+<td>匹配多个逗号隔开的匹配项</td>
+<td></td>
+</tr>
+<tr>
+<td>\</td>
+<td>转义</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="内存映射">内存映射</h2>
+<ol>
+<li>获取 FileChannel. FileChannel.open</li>
+<li>通过 map 方法获取 ByteBuffer
+<ol>
+<li>只读</li>
+<li>读写</li>
+<li>可写</li>
+</ol>
+</li>
+</ol>
+<h3 id="缓冲区数据结构">缓冲区数据结构</h3>
+<p>ByteBuffer, CharBuffer, IntBuffer, LongBuffer, DoubleBuffer, ShortBuffer</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">StringBuffer 与这些缓冲区没有关系
+</code></pre></td></tr></table>
+</div>
+</div><p>这些 Buffer 都有</p>
+<ul>
+<li>容量, 不可变</li>
+<li>读写位置</li>
+<li>界限</li>
+<li>标记</li>
+</ul>
+<h3 id="文件加锁">文件加锁</h3>
+<ul>
+<li>FileChannel.lock</li>
+<li>FileChannel.tryLock</li>
+</ul>
+<h2 id="正则表达式">正则表达式</h2>
+<ul>
+<li>字符类: [Jj], [0-9],[A-Za-z],[^0-9] &ldquo;-&ldquo;表示 Unicode 值在边界之间的值, &ldquo;^&rdquo; 表示补集指定字符之外</li>
+<li>需要对 &lsquo;[&rsquo; 和 &lsquo;\&rsquo; 转义</li>
+<li>有预定义字符 \d 数字 \p{Sc} Unicode 货币符号</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>描述</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>除 .*+?{|()[\^$ 之外的字符 c</td>
+<td>字符 c</td>
+<td>J</td>
+</tr>
+<tr>
+<td>\x{p}</td>
+<td>Unicode 十六进制码</td>
+<td>\x{1D546}𝕆</td>
+</tr>
+<tr>
+<td>\uhhhh, \xhh, \0o, \0oo, \0ooo</td>
+<td>具有给定十六制或八进制的码元</td>
+<td>\uFEFF﻿</td>
+</tr>
+<tr>
+<td>\a, \e, \f, \n, \r, \t</td>
+<td>响铃, 转义, 换页, 换行, 回车符, 指示符</td>
+<td></td>
+</tr>
+<tr>
+<td>\cc</td>
+<td>对应 c 的控制字符</td>
+<td>\cH 退格符</td>
+</tr>
+<tr>
+<td>\c 不是字母和数字</td>
+<td>c</td>
+<td>\\</td>
+</tr>
+<tr>
+<td>\Q&hellip;\E</td>
+<td>左引号与右引号之间的所有字符</td>
+<td>\Q(&hellip;)\E 匹配(&hellip;)</td>
+</tr>
+<tr>
+<td>字符类</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[CDE&hellip;]CDE 是多个字符或是字符类</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[^&hellip;]</td>
+<td>字符类的补集</td>
+<td>[^\d] 数字外的所有字符</td>
+</tr>
+<tr>
+<td>[&hellip;&amp;&amp;&hellip;]</td>
+<td>字符类的交集</td>
+<td></td>
+</tr>
+<tr>
+<td>\p{&hellip;}, \P{&hellip;}</td>
+<td>预定义字符类, 它的补集</td>
+<td></td>
+</tr>
+<tr>
+<td>\d;\D</td>
+<td>数字</td>
+<td>\d+ 数字序列</td>
+</tr>
+<tr>
+<td>\w;\W</td>
+<td>单词字符</td>
+<td></td>
+</tr>
+<tr>
+<td>\s;§</td>
+<td>空白符</td>
+<td></td>
+</tr>
+<tr>
+<td>\h;\v;\H;\V</td>
+<td>水平空白符, 垂直空白符;它们的补集</td>
+<td></td>
+</tr>
+<tr>
+<td>序列和选则</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>XY</td>
+<td>任何 X 中的字符串后面跟着 Y 中的任意字符串</td>
+<td>[1-9][0-9]* 不带前导 0 的 10 进制正整数</td>
+</tr>
+<tr>
+<td>X| Y</td>
+<td>X 或 Y 中的字符串</td>
+<td></td>
+</tr>
+<tr>
+<td>群组</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>(X)</td>
+<td>捕获 X 的匹配</td>
+<td>&lsquo;([^'])&rsquo; 捕获被引用文本</td>
+</tr>
+<tr>
+<td>\num</td>
+<td>第 num 组</td>
+<td>(['&quot;]).*\1 可以匹配 &ldquo;xxx&rdquo;, &lsquo;xxx&rsquo;</td>
+</tr>
+<tr>
+<td>(?<name>X)</td>
+<td>捕获 X 并命名为 name</td>
+<td></td>
+</tr>
+<tr>
+<td>\k<name></td>
+<td>匹配名为 name 的组</td>
+<td></td>
+</tr>
+<tr>
+<td>(?:X)</td>
+<td>不捕获</td>
+<td></td>
+</tr>
+<tr>
+<td>量词</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>X?</td>
+<td>可选 X</td>
+<td>\+? +号可选</td>
+</tr>
+<tr>
+<td>X*, X+</td>
+<td>0 或多个 X; 1 或多个 X</td>
+<td>[1-9][0-9]+ 大于 10 的整数</td>
+</tr>
+<tr>
+<td>X{n}, X{n,}, X{n,m}</td>
+<td>正好 n 个 X, 至少 n 个 X, n 到 m 个 X</td>
+<td>0[0-7]{0,3} 以 0 开头的 3 位 8 进制数</td>
+</tr>
+<tr>
+<td>Q(量词表达式)?</td>
+<td>先尝试最短匹配</td>
+<td></td>
+</tr>
+<tr>
+<td>Q(量词表达式)+</td>
+<td>不回溯获取最长匹配</td>
+<td></td>
+</tr>
+<tr>
+<td>边界匹配</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>^, $</td>
+<td>开头和结尾</td>
+<td>^JAVA$ 以 JAVA 开头获结尾</td>
+</tr>
+<tr>
+<td>&hellip;&hellip;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-21
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/io/">IO</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java_xml/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">可扩展标记语言(Extensible Markup Language, XML)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_stream/">
+            <span class="next-text nav-default">流库</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-04-21 18:22:00 \u002b0800 CST',
+        title: '输入与输出',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

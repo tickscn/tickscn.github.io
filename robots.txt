@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://tickscn.github.io/sitemap.xml

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>socket-introduction on ticks blog</title>
+    <link>https://tickscn.github.io/categories/socket-introduction/</link>
+    <description>Recent content in socket-introduction on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language><atom:link href="https://tickscn.github.io/categories/socket-introduction/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>listen 函数</title>
+      <link>https://tickscn.github.io/post/unp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp/</guid>
+      <description>1 2 #include &amp;lt;sys/socket.h&amp;gt;int listen(int socket, int backlog);</description>
+    </item>
+    
+  </channel>
+</rss>

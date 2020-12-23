@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rust on ticks blog</title>
+    <link>https://tickscn.github.io/tags/rust/</link>
+    <description>Recent content in rust on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 05 Dec 2019 18:25:53 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>rust(2)-data-type</title>
+      <link>https://tickscn.github.io/post/rust-2-data-type/</link>
+      <pubDate>Thu, 05 Dec 2019 18:25:53 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/rust-2-data-type/</guid>
+      <description>数据类型 数据类型有两个子集. 标量(scalar) 混合(compound) rust 是静态类型语言, 编译期时就需要知道数据类型. 当有多种可能时, rus</description>
+    </item>
+    
+    <item>
+      <title>rust(1)</title>
+      <link>https://tickscn.github.io/post/rust-1/</link>
+      <pubDate>Wed, 04 Dec 2019 16:21:59 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/rust-1/</guid>
+      <description>一般概念 需要了解 变量 基本类型 函数 注释 关键字: rust 像其它语言一样有着保留的关键字, 关键字不能用作变量名和函数名等其它地方 变量(Variables</description>
+    </item>
+    
+  </channel>
+</rss>

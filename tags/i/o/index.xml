@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>I/O on ticks blog</title>
+    <link>https://tickscn.github.io/tags/i/o/</link>
+    <description>Recent content in I/O on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language><atom:link href="https://tickscn.github.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I/O系统</title>
+      <link>https://tickscn.github.io/post/i-o%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Mon, 25 Nov 2019 19:24:57 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/i-o%E7%B3%BB%E7%BB%9F/</guid>
+      <description>I/O 访问层次 高级语言函数: 可移值 操作系统: 使用API BIOS 例: 写入字符到显示器 程序调用库函数, 写入标准输出 库函数调用系统函数, 传入字符串指针 操作系</description>
+    </item>
+    
+  </channel>
+</rss>

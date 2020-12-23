@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>同步 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰 临界区问" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/osc_synchronism/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="同步" />
+<meta property="og:description" content="多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰 临界区问" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/osc_synchronism/" />
+<meta property="article:published_time" content="2020-06-28T16:18:00+08:00" />
+<meta property="article:modified_time" content="2020-06-28T16:18:00+08:00" />
+<meta itemprop="name" content="同步">
+<meta itemprop="description" content="多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰 临界区问">
+<meta itemprop="datePublished" content="2020-06-28T16:18:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-28T16:18:00+08:00" />
+<meta itemprop="wordCount" content="3285">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="同步"/>
+<meta name="twitter:description" content="多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰 临界区问"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">同步</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-28 </span>
+        <div class="post-category">
+            <a href="/categories/osc/"> OSC </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#临界区问题">临界区问题</a></li>
+        <li><a href="#peterson">Peterson</a></li>
+        <li><a href="#硬件同步">硬件同步</a></li>
+        <li><a href="#互斥锁">互斥锁</a></li>
+        <li><a href="#信号量">信号量</a>
+          <ul>
+            <li><a href="#信号量使用">信号量使用</a></li>
+            <li><a href="#信号量的实现">信号量的实现</a></li>
+            <li><a href="#死锁和饥饿">死锁和饥饿</a></li>
+            <li><a href="#优先级反转">优先级反转</a></li>
+          </ul>
+        </li>
+        <li><a href="#经典同步问题">经典同步问题</a>
+          <ul>
+            <li><a href="#有界缓冲问题">有界缓冲问题</a></li>
+            <li><a href="#读者-作者问题">读者-作者问题</a></li>
+            <li><a href="#哲学家就餐问题">哲学家就餐问题</a></li>
+          </ul>
+        </li>
+        <li><a href="#管程--monitor">管程(monitor)</a>
+          <ul>
+            <li><a href="#使用方法">使用方法</a></li>
+            <li><a href="#采用信号量的管程实现">采用信号量的管程实现</a></li>
+            <li><a href="#管程内进程重启">管程内进程重启</a></li>
+          </ul>
+        </li>
+        <li><a href="#替代方案">替代方案</a>
+          <ul>
+            <li><a href="#事务内存">事务内存</a></li>
+            <li><a href="#openmp">OpenMP</a></li>
+            <li><a href="#函数式编程语言">函数式编程语言</a></li>
+          </ul>
+        </li>
+        <li><a href="#习题">习题</a>
+          <ul>
+            <li><a href="#6-dot-1">6.1</a></li>
+            <li><a href="#6-dot-2">6.2</a></li>
+            <li><a href="#6-dot-6">6.6</a></li>
+            <li><a href="#6-dot-8">6.8</a></li>
+            <li><a href="#6-dot-9">6.9</a></li>
+            <li><a href="#6-dot-10">6.10</a></li>
+            <li><a href="#6-dot-13">6.13</a></li>
+            <li><a href="#6-dot-31">6.31</a></li>
+            <li><a href="#6-dot-34">6.34</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰</p>
+<h2 id="临界区问题">临界区问题</h2>
+<p>假设某个系统有 n 个进程, 它们有一段代码操作公共数据, 这一段代码被称为临界区(critical section), 为了进程协调, 不能有两个进程同时执行临界区代码.
+为了实现这一目标, 进程进入临界区时应申请许可, 申请许可的代码被称为进入区(entry section), 临界区之后还有退出区(exit section). 其它代码为剩余区(remainder section). 解决方案应满足</p>
+<ol>
+<li>互斥(mutual exclusion)</li>
+<li>前进(progress): 当没有进程正在执行临界区代码, 且有进程需要进入临界区, 那些不在剩余区执行的进程可以被选择</li>
+<li>有限等待(bounded waiting)</li>
+</ol>
+<h2 id="peterson">Peterson</h2>
+<p>由于现代计算机执行基本机器指令的方式不同, Peterson 方案以经不能确保正确, 不过该方案的思想与算法还是不错的. 该方案适用于两个进程交错执行临界区和剩余区代码的情况, 两个进程为 \(P_0\) 和 \(P_{1}\) . Peterson 要求两个进程共享两个数据项:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">int turn;
+boolean flag[2];
+</code></pre></td></tr></table>
+</div>
+</div><p>变量 true 表示允许进入临界区的进程, flag 表示准备进入临界区的进程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">do</span>
+<span class="p">{</span>
+    <span class="c1">// entry section
+</span><span class="c1"></span>    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">turn</span>    <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">turn</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span>
+        <span class="p">;</span>
+    <span class="c1">// critical section ...
+</span><span class="c1"></span>
+    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="c1">// remainder section
+</span><span class="c1"></span><span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="硬件同步">硬件同步</h2>
+<ul>
+<li>单处理器可以在修改变量时禁止中断来保证</li>
+</ul>
+<p>多处理器就比较复杂. 禁止中断需要通知所有处理器, 会比较耗时且有可能影响依靠中断的系统时钟, 因此需多现代芯片提供特殊硬件指令用来检测和修改字的内容, 或原子的(atomically)交换两个字. 用 <code>test_and_set</code> 和 <code>compare_and_swap</code> 抽象了这两个指令.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">boolean</span> <span class="nf">test_and_set</span><span class="p">(</span><span class="n">boolean</span><span class="o">*</span> <span class="n">target</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">boolean</span> <span class="n">rv</span> <span class="o">=</span> <span class="o">*</span><span class="n">target</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">target</span>    <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">rv</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Pi
+</span><span class="c1"></span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">test_and_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">))</span>
+        <span class="p">;</span>
+
+    <span class="c1">// ... critical section
+</span><span class="c1"></span>    <span class="n">lock</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="c1">//... remainder section
+</span><span class="c1"></span><span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>不满足有限等待</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">boolean</span> <span class="nf">compare_and_swap</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">value</span><span class="p">,</span> <span class="kt">int</span> <span class="n">excpected</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new_value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">value</span> <span class="o">==</span> <span class="n">excpected</span><span class="p">)</span> <span class="o">*</span><span class="n">value</span> <span class="o">=</span> <span class="n">new_value</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">temp</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*  Pi */</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">;</span>
+    <span class="c1">// critical section
+</span><span class="c1"></span>    <span class="n">lock</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="互斥锁">互斥锁</h2>
+<p>对硬件的软件包装. 一个进程进入临界区前先请求互斥锁(mutex lock), 退出临界区时释放锁</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">acquire</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">available</span><span class="p">)</span>
+        <span class="p">;</span> <span class="c1">// busy wait
+</span><span class="c1"></span>    <span class="n">available</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">release</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">available</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>需要忙等待, 等待进程需要不断循环调用 acquire, 浪费 CPU 周期.</p>
+<h2 id="信号量">信号量</h2>
+<p>一个信号量(semaphore) <strong><code>S</code></strong> 是个整型变量, 除了被始化外只能通过两个原子操作: <code>wait()</code> , <code>signal()</code> 来访问. 操作系统通常区分计数信号量(counting semaphore)和二进制信号量(binary semaphore). 二进制信号量只能是 0 或 1, 类似于互斥锁.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">wait</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">S</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">;</span>
+    <span class="o">--</span><span class="n">S</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">signal</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">++</span><span class="n">S</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="信号量使用">信号量使用</h3>
+<p>用信号量表示资源数目, 当进程需要资源时执行 <code>wait()</code> 操作, 如果资源大于 0, 就将资源减 1, 否则阻塞. 使用完资源调用 <code>signal()</code> 将信号量加 1.</p>
+<h3 id="信号量的实现">信号量的实现</h3>
+<p>之前的信号量有忙等待, 可以进行改进. 调用 <code>wait()</code> 时发现信号量非正, 进程不是忙等待, 而是将自己放入与信号量相关的队列中并将自己状态改为等待.
+当有进程调用 <code>signal()</code> 释放资源时, 需要调用 <code>weakup()</code> 重新执行等待的进程. 可以这样定义信号量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">process</span><span class="o">*</span> <span class="n">list</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">semaphore</span><span class="p">;</span>
+
+<span class="cm">/*  对应的 wait() 和 signal()  */</span>
+
+<span class="n">wait</span><span class="p">(</span><span class="n">semaphore</span> <span class="n">S</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">add</span> <span class="n">this</span> <span class="n">process</span> <span class="n">to</span> <span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span>
+        <span class="n">block</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">signal</span><span class="p">(</span><span class="n">semaphore</span> <span class="n">S</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">remove</span> <span class="n">a</span> <span class="n">process</span> <span class="n">P</span> <span class="n">from</span> <span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span>
+        <span class="n">weakup</span><span class="p">(</span><span class="n">P</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="死锁和饥饿">死锁和饥饿</h3>
+<p>两个或多个进程等待一个事件, 而该事件必须由这些被阻塞的进程产生, 就会产生死锁.</p>
+<p>饥饿是指无限等待, 如采用后进先出的顺序时, 先进栈的进程可能会被一直阻塞</p>
+<h3 id="优先级反转">优先级反转</h3>
+<p>如果一个进资源被一个低优先级的进程使用, 一个高优先级的进程就需要等待低优先级进程用完资源. 如果低优级的进程被其它中等优先进程抢占, 高优先级的进程就会被中等优先的进程卡住. 这时需要一个优先级继承协议, 进程使用资源时继承想使用该资源进程中最高的优先级.</p>
+<h2 id="经典同步问题">经典同步问题</h2>
+<h3 id="有界缓冲问题">有界缓冲问题</h3>
+<p>生产者和消费者共用数据结构</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">int</span> <span class="n">n</span><span class="p">;</span>                <span class="c1">//&lt; 缓冲池中缓冲区数目
+</span><span class="c1"></span><span class="n">semaphore</span> <span class="n">mutex</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">//&lt; 提供互斥
+</span><span class="c1"></span><span class="n">semaphore</span> <span class="n">empty</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>  <span class="c1">//&lt; 表示空的缓冲区数目
+</span><span class="c1"></span><span class="n">semaphore</span> <span class="n">full</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//&lt; 满的缓冲区数目
+</span><span class="c1"></span>
+<span class="cm">/*  生产者 */</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="cm">/*  prodeuce an item in next_prodeuced */</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">empty</span><span class="p">);</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="cm">/*  add next_prodeuced to buffer */</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">empty</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="cm">/*  消费者 */</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="cm">/*  remove an item from buffer to next_consumed */</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="读者-作者问题">读者-作者问题</h3>
+<ul>
+<li>读者, 只需要读数据.</li>
+<li>作者. 可能执行更新数据</li>
+</ul>
+<h4 id="第一读者-作者">第一读者-作者</h4>
+<p>读者不应等待, 除非作者己获取资源权限. 读者进程其享数据结构</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">int</span> <span class="n">read_count</span>     <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 共享资源的读进程数目
+</span><span class="c1"></span><span class="n">semaphore</span> <span class="n">rw_mutex</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 读写其用锁
+</span><span class="c1"></span><span class="n">semaphore</span> <span class="n">mutex</span>    <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 更改 read_count时互斥
+</span><span class="c1"></span>
+<span class="cm">/*  作者进程 */</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span>
+    <span class="c1">// ...
+</span><span class="c1"></span>    <span class="n">signal</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="cm">/*  读者进程 */</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">read_count</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">read_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="n">wait</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+
+    <span class="c1">// ...
+</span><span class="c1"></span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">read_count</span><span class="o">--</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">read_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">signal</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="哲学家就餐问题">哲学家就餐问题</h3>
+<p>是一个多进程多资源的问题, 绕圈而坐的哲学家需要左右来两个筷子才能进食, 邻座的哲学家有可能会争抢筷子, 一个有问题的方法(有可能死锁)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">semaphore</span> <span class="n">chopstick</span><span class="p">[</span><span class="n">NUM_CHOPSTICK</span><span class="p">];</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">NUM_CHOPSTICK</span><span class="p">]);</span>
+    <span class="c1">// ...
+</span><span class="c1"></span>    <span class="n">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">NUM_CHOPSTICK</span><span class="p">]);</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>有 n 个筷子时的补救措施</p>
+<ol>
+<li>只允许 n-1 个哲学家就座</li>
+<li>必须在临界区拿起两根筷子</li>
+<li>使用非对称方案, 单数先拿左, 后拿右; 双数先拿右, 后拿左</li>
+</ol>
+<h2 id="管程--monitor">管程(monitor)</h2>
+<p>信号量过于底层, 程序员的误使有会导致各种问题.
+管程的抽象数据类型(Abstract data type, ADT). 管程结构确保一次只有一个进程在管程内处于活动状态.</p>
+<h3 id="使用方法">使用方法</h3>
+<p>条件变量 x, 条件变量只可以调用 wait 和 signal, 调用 x.wait 的线程会挂起直到其它线程调用 x.signal
+一个哲学家就餐问题的无死锁解答</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">monitor</span> <span class="n">DiningPhilosophers</span>
+<span class="p">{</span>
+    <span class="k">enum</span> <span class="p">{</span> <span class="n">THINKING</span><span class="p">,</span> <span class="n">HUNGRY</span><span class="p">,</span> <span class="n">EATING</span> <span class="p">}</span> <span class="n">state</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+    <span class="n">condition</span> <span class="n">self</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+    <span class="kt">void</span> <span class="nf">pickup</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">HUNGRY</span><span class="p">;</span>
+        <span class="n">test</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span><span class="p">)</span> <span class="n">self</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">wait</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">putdown</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">THINKING</span><span class="p">;</span>
+        <span class="n">test</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">);</span>
+        <span class="n">test</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">test</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span> <span class="o">&amp;&amp;</span> <span class="n">state</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span> <span class="o">&amp;&amp;</span> <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">HUNGRY</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">EATING</span><span class="p">;</span>
+            <span class="n">self</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">signal</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">initialization_code</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">THINKING</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>该方法在一个哲学家的两个邻座交替吃饭时被饿死</p>
+<h3 id="采用信号量的管程实现">采用信号量的管程实现</h3>
+<p>每个管程都有一个信号量 mutex, 每个进程进入前执行 <code>wait(mutex)</code>; 退出时执行 <code>signal(mutex)</code>. 信号量 <code>next</code> 使进程可以挂起自己. 用整型变量 <code>next_count</code> 对在 <code>next</code> 挂起的进程计数.</p>
+<ul>
+<li>管程内进程互斥</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<span class="c1">// ...
+</span><span class="c1"></span><span class="n">body</span> <span class="n">of</span> <span class="n">function</span> <span class="n">F</span><span class="p">;</span>
+<span class="c1">// ...
+</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">next_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
+<span class="k">else</span>
+    <span class="nf">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>条件变量</li>
+</ul>
+<p>每个条件变量 x 有信号量 x_sem 和 x_count, 两者均初始化为 0. 其 wait 实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">x</span><span class="p">.</span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">next_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
+<span class="k">else</span>
+    <span class="nf">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<span class="n">wait</span><span class="p">(</span><span class="n">x_sem</span><span class="p">);</span>
+<span class="n">x</span><span class="p">.</span><span class="n">count</span><span class="o">--</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>x.signal 实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">next</span><span class="p">.</span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">x_sem</span><span class="p">);</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
+    <span class="n">next</span><span class="p">.</span><span class="n">count</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="管程内进程重启">管程内进程重启</h3>
+<p>可以使用一些调度算法来决定唤醒的进程</p>
+<h2 id="替代方案">替代方案</h2>
+<h3 id="事务内存">事务内存</h3>
+<p>内存事务是指内存读写操作的序列, 只有所有操作都完成了, 事务才被提交(commit), 不然操作会回滚</p>
+<h3 id="openmp">OpenMP</h3>
+<p>编译指令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#pragma omp parallel  </span><span class="c1">// 之后的代码为并行区域
+</span><span class="c1"></span>
+<span class="cp">#pragma omp critical  </span><span class="c1">// 之后的代码为临界区
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="函数式编程语言">函数式编程语言</h3>
+<p>函数式语言不维护状态, 变量被赋值后是不可变的. 所以没有竞争的问题</p>
+<h2 id="习题">习题</h2>
+<h3 id="6-dot-1">6.1</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">银行系统的 deposit(amount) 和 withdraw(amount), 讨论竞争条件和如何防止
+</code></pre></td></tr></table>
+</div>
+</div><p>可以使用互斥锁, 一次只有一个操作可以执行</p>
+<h3 id="6-dot-2">6.2</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">证明以下算法(Dekker 算法) 满足临界区问题的三个要素
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cm">/* 共享数据结构 */</span>
+<span class="n">boolean</span> <span class="n">flag</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">turn</span><span class="p">;</span>
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">turn</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">turn</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span>
+                <span class="p">;</span>
+            <span class="n">flag</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span>    <span class="n">turn</span>    <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+    <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>互斥: 若 P_{j} 正在临界区执行则 flag[j]==true, P_{i} 会不断执行 while(flag[j]) 语句, 不会进入临界区, 反之亦然. 若 P_{i}, P_{j}同时到达进入区, turn 只可能是 i 和 j 其中之一, 也就只有一个进程可以完成 while(turn == x) 语句. 互斥成立</li>
+<li>进步: 若 P_{j} 退出临界区, 会设置 turn = i; flag[j] = false. 若 P_{i} 想要进入临界区, 其可以进入</li>
+<li>有限等待: P_{i} 等待 P_{j} 执行一次临界区后即可进入</li>
+</ul>
+<h3 id="6-dot-6">6.6</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Linux 不允许持有自旋锁的进程获取信号量, 为啥?
+</code></pre></td></tr></table>
+</div>
+</div><p>获取信号量的时候有可能会需要睡眠等待, 而想要获取自旋锁的进程就会被其它的条件所影响</p>
+<h3 id="6-dot-8">6.8</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">使用 compare_and_swap() 来实现互斥和有限等待
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cm">/*  共享数据结构  */</span>
+<span class="kt">int</span> <span class="n">waiting</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">lock</span><span class="p">;</span>
+
+<span class="k">do</span>
+<span class="p">{</span>
+    <span class="n">waiting</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">key</span>        <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">waiting</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">key</span><span class="p">)</span> <span class="n">key</span> <span class="o">=</span> <span class="n">compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">waiting</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="cm">/*  critical section */</span>
+
+    <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">i</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">waiting</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">waiting</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="cm">/* remainder section */</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="6-dot-9">6.9</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">使用 test_and_set() 和 compare_and_swap() 实现互斥锁的
+- void acquire(lock* mutex)
+- void release(lock* mutex)
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">available</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">lock</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">acquire</span><span class="p">(</span><span class="n">lock</span><span class="o">*</span> <span class="n">mutex</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">test_and_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">))</span>
+        <span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">release</span><span class="p">(</span><span class="n">lock</span><span class="o">*</span> <span class="n">mutex</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="6-dot-10">6.10</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">void</span> <span class="nf">acquire</span><span class="p">(</span><span class="n">lock</span><span class="o">*</span> <span class="n">mutex</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">mutex</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">add_process_to_list</span><span class="p">(</span><span class="n">current_process</span><span class="p">);</span>
+        <span class="n">block</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">release</span><span class="p">(</span><span class="n">lock</span><span class="o">*</span> <span class="n">mutex</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">weakup</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="6-dot-13">6.13</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">互斥锁与原子整数哪个更适合计数器?
+</code></pre></td></tr></table>
+</div>
+</div><p>建议使用原子整数</p>
+<h3 id="6-dot-31">6.31</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#define MAX_RESOURCES 5
+</span><span class="cp"></span><span class="kt">int</span> <span class="n">available_resources</span> <span class="o">=</span> <span class="n">MAX_RESOURCES</span><span class="p">;</span>
+<span class="n">semaphore</span> <span class="n">mutex</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">decrease_count</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">available_resources</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="n">available_resources</span> <span class="o">-=</span> <span class="n">count</span><span class="p">;</span>
+        <span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">increase_count</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="n">available_resources</span> <span class="o">+=</span> <span class="n">count</span><span class="p">;</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="6-dot-34">6.34</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">蒙特卡洛估算 Pi
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">inCyc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">total</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+<span class="cp">#pragma omp parallel for
+</span><span class="cp"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">total</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">RAND_MAX</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">RAND_MAX</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+<span class="cp">#pragma omp critical
+</span><span class="cp"></span>            <span class="o">++</span><span class="n">inCyc</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%f&#34;</span><span class="p">,</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">inCyc</span> <span class="o">/</span> <span class="n">total</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-28
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/string_match/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">字符串匹配算法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/cpp_extra_trick/">
+            <span class="next-text nav-default">专门工具和技巧</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-28 16:18:00 \u002b0800 CST',
+        title: '同步',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

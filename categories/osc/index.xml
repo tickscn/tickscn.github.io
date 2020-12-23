@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OSC on ticks blog</title>
+    <link>https://tickscn.github.io/categories/osc/</link>
+    <description>Recent content in OSC on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 27 Oct 2020 18:59:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/osc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>系统安全</title>
+      <link>https://tickscn.github.io/post/osc_security/</link>
+      <pubDate>Tue, 27 Oct 2020 18:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_security/</guid>
+      <description>安全问题 一些安全违归 违反机密: 涉及未经授权的数据读取 违反诚信: 涉及未经授权的数据修改 违反可用: 涉及未经授权的数据破坏 盗窃服务: 涉及未经授权的</description>
+    </item>
+    
+    <item>
+      <title>系统保护</title>
+      <link>https://tickscn.github.io/post/osc_system_protected/</link>
+      <pubDate>Fri, 07 Aug 2020 14:23:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_system_protected/</guid>
+      <description>保护目标 最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源</description>
+    </item>
+    
+    <item>
+      <title>I/O 系统</title>
+      <link>https://tickscn.github.io/post/osc_io_system/</link>
+      <pubDate>Wed, 29 Jul 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_io_system/</guid>
+      <description>概述 因为 I/O 设备的功能和速度差异很大, 所以需要不同听方式不控制设备. 这些方法构成了内核的 I/O 子系统. 设备驱动程序为 I/O 子系统提供了统一的访问接口.</description>
+    </item>
+    
+    <item>
+      <title>大容量存储结构</title>
+      <link>https://tickscn.github.io/post/osc_storage_structure/</link>
+      <pubDate>Tue, 28 Jul 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_storage_structure/</guid>
+      <description>概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t</description>
+    </item>
+    
+    <item>
+      <title>文件系统实现</title>
+      <link>https://tickscn.github.io/post/osc_file_system_imp/</link>
+      <pubDate>Tue, 28 Jul 2020 15:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_file_system_imp/</guid>
+      <description>文件系统结构 为了提高 I/O 效率, 内存和磁盘之间以块(block)为单位传输. 每个块有一个或多个扇区. 根据驱动不同, 扇区大小从 32B 到 4096B 不等, 一个磁盘</description>
+    </item>
+    
+    <item>
+      <title>文件系统</title>
+      <link>https://tickscn.github.io/post/osc_file_system/</link>
+      <pubDate>Tue, 28 Jul 2020 12:31:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_file_system/</guid>
+      <description>文件概念 计算机可以在各种存储介质上存储信息, 为了方便使用, 操作系统提供了信息存储的统一视图, 对存储设备的物理属性加以抽象, 从而定义逻辑存储单</description>
+    </item>
+    
+    <item>
+      <title>虚拟内存管理</title>
+      <link>https://tickscn.github.io/post/osc_virtual_memory/</link>
+      <pubDate>Thu, 09 Jul 2020 15:54:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_virtual_memory/</guid>
+      <description>请求调页 仅在需要时再加载程序页到内存 基本概念 调页程序猜测下次换出之前会用到的页. 调页程序不是调入整个程序, 而是调入需要使用的页. 这种方案需要</description>
+    </item>
+    
+    <item>
+      <title>内存管理策略</title>
+      <link>https://tickscn.github.io/post/osc_memory_management/</link>
+      <pubDate>Sun, 05 Jul 2020 15:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_memory_management/</guid>
+      <description>基本介绍 硬件 CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下 确保每个进程有一个单独的内存空间</description>
+    </item>
+    
+    <item>
+      <title>死锁</title>
+      <link>https://tickscn.github.io/post/osc_deadlock/</link>
+      <pubDate>Thu, 02 Jul 2020 15:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_deadlock/</guid>
+      <description>系统模型 使用资源的顺序 申请 使用 释放 加锁可以避免竞争条件, 开发人员应小心可能的死锁 死锁特征 必要条件 互斥: 一个资源不是共享的 占有并等待: 一个占有</description>
+    </item>
+    
+    <item>
+      <title>同步</title>
+      <link>https://tickscn.github.io/post/osc_synchronism/</link>
+      <pubDate>Sun, 28 Jun 2020 16:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_synchronism/</guid>
+      <description>多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰 临界区问</description>
+    </item>
+    
+    <item>
+      <title>进程调度</title>
+      <link>https://tickscn.github.io/post/osc_scheduling/</link>
+      <pubDate>Sun, 21 Jun 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_scheduling/</guid>
+      <description>程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执</description>
+    </item>
+    
+  </channel>
+</rss>

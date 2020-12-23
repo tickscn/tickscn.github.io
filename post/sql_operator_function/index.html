@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>操作符和函数 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="算术运算 字符串运算 日期和时间运算 系统运算 创建派生列 操作符和函数的结果列, 不会成为表中的永久列 执行算术运算 operator 描述 -expr 取反 &#43;expr 不变 expr1&#43;expr2 求和 expr1-expr2 求差 expr1*expr2 求积" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/sql_operator_function/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="操作符和函数" />
+<meta property="og:description" content="算术运算 字符串运算 日期和时间运算 系统运算 创建派生列 操作符和函数的结果列, 不会成为表中的永久列 执行算术运算 operator 描述 -expr 取反 &#43;expr 不变 expr1&#43;expr2 求和 expr1-expr2 求差 expr1*expr2 求积" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/sql_operator_function/" />
+<meta property="article:published_time" content="2020-06-13T16:50:00+08:00" />
+<meta property="article:modified_time" content="2020-06-13T16:50:00+08:00" />
+<meta itemprop="name" content="操作符和函数">
+<meta itemprop="description" content="算术运算 字符串运算 日期和时间运算 系统运算 创建派生列 操作符和函数的结果列, 不会成为表中的永久列 执行算术运算 operator 描述 -expr 取反 &#43;expr 不变 expr1&#43;expr2 求和 expr1-expr2 求差 expr1*expr2 求积">
+<meta itemprop="datePublished" content="2020-06-13T16:50:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-13T16:50:00+08:00" />
+<meta itemprop="wordCount" content="568">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="操作符和函数"/>
+<meta name="twitter:description" content="算术运算 字符串运算 日期和时间运算 系统运算 创建派生列 操作符和函数的结果列, 不会成为表中的永久列 执行算术运算 operator 描述 -expr 取反 &#43;expr 不变 expr1&#43;expr2 求和 expr1-expr2 求差 expr1*expr2 求积"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">操作符和函数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-13 </span>
+        <div class="post-category">
+            <a href="/categories/sql/"> SQL </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#创建派生列">创建派生列</a></li>
+        <li><a href="#执行算术运算">执行算术运算</a></li>
+        <li><a href="#计算顺序">计算顺序</a></li>
+        <li><a href="#使用-连接串">使用 || 连接串</a></li>
+        <li><a href="#substring-提取子串">SUBSTRING() 提取子串</a></li>
+        <li><a href="#upper-和-lower">UPPER() 和 LOWER()</a></li>
+        <li><a href="#trim">TRIM()</a></li>
+        <li><a href="#charactr-length">CHARACTR_LENGTH()</a></li>
+        <li><a href="#position-查找子串">POSITION 查找子串</a></li>
+        <li><a href="#日期和间隔运算">日期和间隔运算</a></li>
+        <li><a href="#获得当前时间-日期-时间戳">获得当前时间, 日期, 时间戳</a></li>
+        <li><a href="#获取用户信息">获取用户信息</a></li>
+        <li><a href="#类型分配">类型分配</a></li>
+        <li><a href="#条件计算">条件计算</a>
+          <ul>
+            <li><a href="#case">CASE</a></li>
+            <li><a href="#coalesce">COALESCE</a></li>
+            <li><a href="#nullif">NULLIF()</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <ul>
+<li>算术运算</li>
+<li>字符串运算</li>
+<li>日期和时间运算</li>
+<li>系统运算</li>
+</ul>
+<h2 id="创建派生列">创建派生列</h2>
+<p>操作符和函数的结果列, 不会成为表中的永久列</p>
+<h2 id="执行算术运算">执行算术运算</h2>
+<table>
+<thead>
+<tr>
+<th>operator</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-expr</td>
+<td>取反</td>
+</tr>
+<tr>
+<td>+expr</td>
+<td>不变</td>
+</tr>
+<tr>
+<td>expr1+expr2</td>
+<td>求和</td>
+</tr>
+<tr>
+<td>expr1-expr2</td>
+<td>求差</td>
+</tr>
+<tr>
+<td>expr1*expr2</td>
+<td>求积</td>
+</tr>
+<tr>
+<td>expr1/expr2</td>
+<td>求商</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Microsoft SQL Server, DB2, PostgreSQL 会执行整除
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="计算顺序">计算顺序</h2>
+<p>算术操作符 &gt; 比较操作符 &gt; 逻辑操作符</p>
+<h2 id="使用-连接串">使用 || 连接串</h2>
+<ul>
+<li>连接不会加入空格</li>
+<li>可以连续操作</li>
+<li>与 NULL 相连为 NULL</li>
+<li>连接串与非串时, 如果 DBMS 不能隐式转换, 需要将非串转为串</li>
+</ul>
+<p>MySQL 使用||作为 OR 的同意词. 连接串使用 CONCAT()</p>
+<h2 id="substring-提取子串">SUBSTRING() 提取子串</h2>
+<p><code>SUBSTRING(str FROM beg [FOR length])</code></p>
+<h2 id="upper-和-lower">UPPER() 和 LOWER()</h2>
+<p>转为大写和转为小写</p>
+<h2 id="trim">TRIM()</h2>
+<p>删除串两端不需要的字符</p>
+<ul>
+<li>只能处理前缀和后缀, 不能处理中间字符. 默认修整前缀和后缀</li>
+<li>默认修整空格</li>
+<li>通常用于格式化结果和 WHERE 中的比较</li>
+</ul>
+<p><code>TRIM([[LEADING | TRATLING| BOTH][trim_char][FROM]] string)</code></p>
+<h2 id="charactr-length">CHARACTR_LENGTH()</h2>
+<p>返回串中字符个数</p>
+<ul>
+<li>是字符的个数</li>
+<li>字节个数可以用 BIT_LENGTH(), OCTET_LENGTH(). MySQL 使用 BIT_COUNT()</li>
+</ul>
+<h2 id="position-查找子串">POSITION 查找子串</h2>
+<p>POSITION(substring IN string)</p>
+<ul>
+<li>REPLACE 可以替换</li>
+</ul>
+<h2 id="日期和间隔运算">日期和间隔运算</h2>
+<p>+, - , *, /
+EXTRACT(fields FROM datatime_or_interval)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">title_id</span><span class="p">,</span> <span class="n">pubdata</span>
+  <span class="k">FROM</span> <span class="n">titles</span>
+  <span class="k">WHERE</span> <span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span> <span class="k">FROM</span> <span class="n">pubdata</span><span class="p">)</span>
+          <span class="k">BETWEEN</span> <span class="mi">2001</span> <span class="k">AND</span> <span class="mi">2002</span>
+    <span class="k">AND</span> <span class="k">EXTRACT</span><span class="p">(</span><span class="k">MONTH</span> <span class="k">FROM</span> <span class="n">pubdata</span><span class="p">)</span>
+          <span class="k">BETWEEN</span> <span class="mi">1</span> <span class="k">AND</span> <span class="mi">6</span>
+ <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">pubdata</span> <span class="k">DESC</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="获得当前时间-日期-时间戳">获得当前时间, 日期, 时间戳</h2>
+<p>CUAAENT_TIME, CURRENT_DATE, CURRENT_TIMESTAMP</p>
+<h2 id="获取用户信息">获取用户信息</h2>
+<p>CURRENT_USER</p>
+<h2 id="类型分配">类型分配</h2>
+<p>使用 <code>CAST()</code> 转换数据类型</p>
+<ul>
+<li>可以将任意的数字或日期转为字符数据类型</li>
+<li>符合目标类型格式的字符类型可以转为相应类型</li>
+<li>某些数字转换会发生舍入或截断(取决于 DBMS)</li>
+<li>VARCHAR 转 CHAR 会截断</li>
+<li>数字转换溢出时有可能发生错误</li>
+</ul>
+<p><code>CAST(expr AS data_type)</code></p>
+<h2 id="条件计算">条件计算</h2>
+<h3 id="case">CASE</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CASE</span> <span class="n">comparison_value</span>
+  <span class="k">WHEN</span> <span class="n">value1</span> <span class="k">THEN</span> <span class="n">result1</span>
+  <span class="k">WHEN</span> <span class="n">value2</span> <span class="k">THEN</span> <span class="n">result2</span>
+  <span class="p">...</span>
+  <span class="k">WHEN</span> <span class="n">valueN</span> <span class="k">THEN</span> <span class="n">resultN</span>
+  <span class="p">[</span><span class="k">ELSE</span> <span class="n">default_result</span><span class="p">]</span>
+<span class="k">END</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="coalesce">COALESCE</h3>
+<p><code>COALESCE(expr1, expr2, expr3)</code>
+等价于</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CASE</span>
+  <span class="k">WHEN</span> <span class="n">expr1</span> <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">THEN</span> <span class="n">expr1</span>
+  <span class="k">WHEN</span> <span class="n">expr2</span> <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">THEN</span> <span class="n">expr2</span>
+  <span class="k">ELSE</span> <span class="n">expr3</span>
+<span class="k">END</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从表达式中选择第一个非空的值</p>
+<h3 id="nullif">NULLIF()</h3>
+<p><code>NULLIF(expr1, expr2)</code> 两个表达式相等返回空, 否则返回第一个表达式</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-13
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/sql_group/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">汇总和分组数据</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/net_architecture/">
+            <span class="next-text nav-default">chapter III 计算机网络体系结构(Computer Network Architecture)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-13 16:50:00 \u002b0800 CST',
+        title: '操作符和函数',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

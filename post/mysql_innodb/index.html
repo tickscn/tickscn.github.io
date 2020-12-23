@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>InnoDB 存储引擎 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/mysql_innodb/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="InnoDB 存储引擎" />
+<meta property="og:description" content="InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/mysql_innodb/" />
+<meta property="article:published_time" content="2020-08-05T17:03:00+08:00" />
+<meta property="article:modified_time" content="2020-08-05T17:03:00+08:00" />
+<meta itemprop="name" content="InnoDB 存储引擎">
+<meta itemprop="description" content="InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数">
+<meta itemprop="datePublished" content="2020-08-05T17:03:00+08:00" />
+<meta itemprop="dateModified" content="2020-08-05T17:03:00+08:00" />
+<meta itemprop="wordCount" content="931">
+
+
+
+<meta itemprop="keywords" content="InnoDb," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="InnoDB 存储引擎"/>
+<meta name="twitter:description" content="InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">InnoDB 存储引擎</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-05 </span>
+        <div class="post-category">
+            <a href="/categories/innodb/"> InnoDB </a>
+            <a href="/categories/mysql/"> MySQL </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#innodb-体系架构">InnoDB 体系架构</a>
+          <ul>
+            <li><a href="#后台线程">后台线程</a></li>
+            <li><a href="#内存">内存</a></li>
+            <li><a href="#checkpoint-技术">CheckPoint 技术</a></li>
+            <li><a href="#master-thread">Master Thread</a></li>
+          </ul>
+        </li>
+        <li><a href="#innodb-关键特性">InnoDB 关键特性</a>
+          <ul>
+            <li><a href="#insert-buffer">insert buffer</a></li>
+            <li><a href="#两次写">两次写</a></li>
+            <li><a href="#自适应哈希索引">自适应哈希索引</a></li>
+          </ul>
+        </li>
+        <li><a href="#启动-关闭与恢复">启动, 关闭与恢复</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="innodb-体系架构">InnoDB 体系架构</h2>
+<h3 id="后台线程">后台线程</h3>
+<p>InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务</p>
+<ol>
+<li>主线程(Master Thread)
+是核心的后台线程, 负责将缓冲池中的数据异步刷新到磁盘, 保证数据一致性.</li>
+<li>IO 线程负责异步 IO(Async IO, AIO)</li>
+<li>Purge 线程
+<ol>
+<li>用来回收事务提交后不再需要的 undo 表</li>
+</ol>
+</li>
+</ol>
+<h3 id="内存">内存</h3>
+<ol>
+<li>缓冲池:
+因为磁盘的速度相对于 CPU 来说过慢, 基于磁盘的引擎需要一块内存区域来缓存磁盘页到内存中</li>
+<li>LRU List, FREE List , FLUSH List
+改动的 LRU 算法不是将新的页放入列表首部, 而是一个中间位置.</li>
+<li>重做日志缓冲: 默认 8MB, 用来缓冲 1s 中内产生的可重做请求</li>
+</ol>
+<h3 id="checkpoint-技术">CheckPoint 技术</h3>
+<p>内存中数据改变时, 缓冲页比磁盘页中的数据要新, 要是每次改变都写入磁盘, 效率极差. 一般采用 Write Ahead Log. 先写重做日志, 再修改页.
+可以通过重做日志来从崩溃中恢复, 不过如果运行时间很长的数据库, 恢复时需要将开机到崩溃的操作重做来恢复到崩溃之前的状态太浪费时间. 可以使用 CheckPoint 技术来解决以下几个问题</p>
+<ol>
+<li>缩短数据库的恢复时间</li>
+<li>缓冲池不够用时将脏页刷新到磁盘</li>
+<li>重做日志不可用时刷新脏页</li>
+</ol>
+<h3 id="master-thread">Master Thread</h3>
+<h4 id="innodb-1-dot-0-dot-x-之前的版本">InnoDB 1.0.x 之前的版本</h4>
+<p>Master Thread 具有最高的线程优先级别. 内部由多个循环组成: 主循环, 后台循环, 刷新循环, 暂停循环. 该线程会根据数据库运行状态在这几个循环中切换.</p>
+<!--list-separator-->
+<ul>
+<li>
+<p>主循环</p>
+<p>包括 1s 一次的操作和 10s 一次的操作. 是通常循环来完成的不一定精确每秒 1 次的包括</p>
+<ul>
+<li>日志缓冲刷新到磁盘(总是)</li>
+<li>合并插入缓冲(可能)</li>
+<li>刷新最多 100 个脏页到磁盘(可能)</li>
+<li>如果没有用户活动, 切换到后台循环(可能)</li>
+</ul>
+<p>每 10s 一次的操作</p>
+<ul>
+<li>合并至多 5 个插入缓冲(总是)</li>
+<li>日志缓冲写入磁盘(总是)</li>
+<li>刷新至多 100 个脏页到磁盘(可能)</li>
+<li>删除无用的 undo 页(总是)</li>
+<li>刷新 100 个或 10 个脏页到磁盘(总是)</li>
+</ul>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>后台循环</p>
+<ul>
+<li>删除无用的 undo 页(总是)</li>
+<li>合并 20 个插入缓冲(总是)</li>
+<li>跳回到主循环(总是)</li>
+<li>不继刷新 100 个页直到符合条件(可能)</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-dot-2-dot-x-之前的版本">1.2.x 之前的版本</h4>
+<p>1.0.x 对 IO 是有硬编码限制的, 有可能不能充分发挥新的硬件设备的能力. 新的版本可以控制 IO 吞吐量. 控制脏页的比例</p>
+<h2 id="innodb-关键特性">InnoDB 关键特性</h2>
+<ul>
+<li>插入缓冲</li>
+<li>两次写</li>
+<li>自适应哈希索引</li>
+<li>异步 IO</li>
+<li>刷新邻接页</li>
+</ul>
+<h3 id="insert-buffer">insert buffer</h3>
+<p>先将插入加入 insert buffer. 再在合适的时间将其插入表中叶节点. 需要</p>
+<ul>
+<li>索引是辅助索引</li>
+<li>索引不是唯一的</li>
+</ul>
+<p>可以提高写的性能</p>
+<h3 id="两次写">两次写</h3>
+<p>提高写的可靠性</p>
+<h3 id="自适应哈希索引">自适应哈希索引</h3>
+<p>自动构建能提高性能的哈希索引</p>
+<h2 id="启动-关闭与恢复">启动, 关闭与恢复</h2>
+<p>正常关闭后打开也会很正常. 但是如果没有正常关闭, 打开时发执行恢复操作, 可以通过重做日志来恢复或直接加载备份</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-05
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/innodb/">InnoDb</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/mysql_index/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">索引与算法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/mysql_engines/">
+            <span class="next-text nav-default">MySQL 体系结构和存储引擎</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-08-05 17:03:00 \u002b0800 CST',
+        title: 'InnoDB 存储引擎',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

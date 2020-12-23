@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>object-oriented on ticks blog</title>
+    <link>https://tickscn.github.io/tags/object-oriented/</link>
+    <description>Recent content in object-oriented on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 30 May 2020 13:58:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/object-oriented/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>面像对象编程</title>
+      <link>https://tickscn.github.io/post/oop/</link>
+      <pubDate>Sat, 30 May 2020 13:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/oop/</guid>
+      <description>Objet_Oriented Program, OOP 数据抽象 (分离接口和实现) 继承 动态绑定 继承 类之间通过层级结构继承相关联. 层级结构的根是基类. 其它类直接或间接的继承于它. 继承的类被称为</description>
+    </item>
+    
+  </channel>
+</rss>

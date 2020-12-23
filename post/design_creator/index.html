@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>创建型模型 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="抽象工厂模式(Abstract Factory) 意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类 别名: Kit 动机: 有很多个类, 它们相互关联. 因为不同" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/design_creator/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="创建型模型" />
+<meta property="og:description" content="抽象工厂模式(Abstract Factory) 意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类 别名: Kit 动机: 有很多个类, 它们相互关联. 因为不同" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/design_creator/" />
+<meta property="article:published_time" content="2020-07-22T23:23:00+08:00" />
+<meta property="article:modified_time" content="2020-07-22T23:23:00+08:00" />
+<meta itemprop="name" content="创建型模型">
+<meta itemprop="description" content="抽象工厂模式(Abstract Factory) 意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类 别名: Kit 动机: 有很多个类, 它们相互关联. 因为不同">
+<meta itemprop="datePublished" content="2020-07-22T23:23:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-22T23:23:00+08:00" />
+<meta itemprop="wordCount" content="1729">
+
+
+
+<meta itemprop="keywords" content="Creator," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="创建型模型"/>
+<meta name="twitter:description" content="抽象工厂模式(Abstract Factory) 意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类 别名: Kit 动机: 有很多个类, 它们相互关联. 因为不同"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">创建型模型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-22 </span>
+        <div class="post-category">
+            <a href="/categories/design-pattern/"> design-pattern </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#抽象工厂模式--abstract-factory">抽象工厂模式(Abstract Factory)</a></li>
+        <li><a href="#建造者模式--builder">建造者模式(Builder)</a></li>
+        <li><a href="#工厂方法--factory-method">工厂方法(Factory Method)</a></li>
+        <li><a href="#原型模式--prototype">原型模式 (Prototype)</a></li>
+        <li><a href="#单件模式--singleton">单件模式(singleton)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="抽象工厂模式--abstract-factory">抽象工厂模式(Abstract Factory)</h2>
+<ol>
+<li>意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类</li>
+<li>别名: Kit</li>
+<li>动机: 有很多个类, 它们相互关联. 因为不同的要求它们有不同的系列, 将不同系列的实例化进行硬编码, 不利于维护. 定义一个抽象工厂类, 它对每个系列有一个具体的子类, 该子类的创建接口会调用相应系列类的构造器</li>
+<li>适用性
+<ol>
+<li>一个系统要独立于它的产品的创建, 组合和表示时</li>
+<li>一个系统要用多个产品系列中的一个来配置时</li>
+<li>当你要强调一系列相关产品的设计以便联合使用时</li>
+<li>当你提供一个产品类库, 而只想提供接口, 不想提供实现时</li>
+</ol>
+</li>
+<li>参与者
+<ul>
+<li><strong>AbstractFactory</strong>
+<ul>
+<li>声明一个创建抽象产品对象的接口</li>
+</ul>
+</li>
+<li><strong>ConCreteFactory</strong>
+<ul>
+<li>实现创建具体产品对象的操作</li>
+</ul>
+</li>
+<li><strong>AbstracProduct</strong>
+<ul>
+<li>为一类产品对象声明接口</li>
+</ul>
+</li>
+<li><strong>ConCreteProduct</strong>
+<ul>
+<li>定义一个会被相应工厂创建的具体产品类</li>
+<li>实现接口</li>
+</ul>
+</li>
+<li><strong>Client</strong>
+<ul>
+<li>仅使用抽象类提供的接口</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>协作
+<ul>
+<li>通常运行时刻创建一个 <strong>ConcreteFactory</strong> 实例</li>
+</ul>
+</li>
+<li>效果
+<ul>
+<li>它分离了具体的类</li>
+<li>易于更改产品系列</li>
+<li>有得于产品的一致性</li>
+<li>不过难以新的产品种类, 因为需要更改增加创建接口, 会影响抽象工厂和它的所有子类</li>
+</ul>
+</li>
+<li>实现
+<ul>
+<li>一个应用中一般只需要一个工厂, 应该最好实现为一个 Singleleton</li>
+<li>创建产品: 抽象工厂为每个产品定义一个创建接口, 由它的子类来实现</li>
+<li>定义可扩展的操作: 通常需要在抽象工厂类中添加新的接口, 并修改所有相关的子类</li>
+</ul>
+</li>
+</ol>
+<h2 id="建造者模式--builder">建造者模式(Builder)</h2>
+<ol>
+<li>意图: 将一个复杂对象的构建与表示分离, 使得同样的构建过程可以构建不同的类</li>
+<li>动机: 一个富文本(RTF)可以转换为不同的表示方法(HTML, ASCII, Org, Tex), 可能的表示方式是无限的, 当想要添加新的目标表示时, 不想修改复杂的文本阅读类(RTFReader), 一种方法是使用可以进行标记转换的类来配置 RTFReader(), RTFReader 只负责文档分析, 文档的转换由 TextConvert 的子类来实现</li>
+<li>适用性:
+<ul>
+<li>当创建复杂对象的算法应该独立于该对象的的组成部分以用它们的装配方式时</li>
+<li>当构造过程必须允许被构造的对象有不同的表示时</li>
+</ul>
+</li>
+<li>参与者
+<ul>
+<li><strong>Builder</strong>: 为创建一个产品的各个部件指定抽向接口</li>
+<li><strong>ConcreteBuilder</strong>
+<ul>
+<li>实现 <strong>Builder</strong> 的接口, 创建产品的各个部件</li>
+<li>定义并明确它所创建的表示</li>
+<li>提供一个检索产品的接口</li>
+</ul>
+</li>
+<li><strong>Product</strong>: 表示被构造的复杂对象</li>
+</ul>
+</li>
+</ol>
+<h2 id="工厂方法--factory-method">工厂方法(Factory Method)</h2>
+<ol>
+<li>意图: 定义一个接口, 让子类决定实例化的类</li>
+<li>别名: 虚构造器(Virtual Constructor)</li>
+<li>动机: 用抽象类定义和管理对象间的关系</li>
+<li>适用性
+<ul>
+<li>当一个类不知道它所必须创建的对象的类的时候</li>
+<li>当一个类希望由它的子类来指定所应创建的对象的时候</li>
+</ul>
+</li>
+<li>实现
+<ul>
+<li>定义一个创建接口, 可以是纯虚函数, 实现由子类完成. 或者提供一个默认实现</li>
+<li>定义参数化工厂, 根据参数构建对象</li>
+</ul>
+</li>
+</ol>
+<h2 id="原型模式--prototype">原型模式 (Prototype)</h2>
+<ol>
+<li>意图: 通过原型的实例来指定创建对象种类, 并通过拷贝这个原型来创建新的对象</li>
+<li>动机
+<ol>
+<li>动行时刻增加和删除产品</li>
+<li>改变值以指定新对象</li>
+<li>减少工厂类的编写</li>
+</ol>
+</li>
+<li>适用性
+<ol>
+<li>当一个系统独立于它的产品创建构成和表示时</li>
+<li>当要实例化的类是运行时指定的</li>
+<li>为了避免创建一个与产品类层次平行的工厂类层次时</li>
+</ol>
+</li>
+<li>实现
+<ol>
+<li>原型管理器, 当原型的数目和类型不固定时, 维据一个原型注册表, 客户可以向注册表中添加和检索原型</li>
+<li>实现克隆操用</li>
+</ol>
+</li>
+</ol>
+<h2 id="单件模式--singleton">单件模式(singleton)</h2>
+<ol>
+<li>意图: 保证一个类仅有一个实例</li>
+<li>动机: 有些类只需要一个对象, 如前面所说的工厂对象. 有些类只能有一个对象, 如系统中只应有一个文件系统和一个窗口管理器.</li>
+<li>适用性: 当类应有唯一实例且客户可访问时, 当唯一实例可通过子类扩展时</li>
+<li>参与者: <strong>Singleton</strong>: 定义一个类方法(C++中的静态公有成员函数) Instance 来允许客户访问他的唯一实例</li>
+<li>效果:
+<ul>
+<li>对唯一实例的受控访问</li>
+<li>缩小名空间: 与全局变量不同, 避免了存储唯一实例的全局就是污染名空间</li>
+<li>允许对操作和表示的精化: Singleton 允许扩展子类</li>
+<li>可以控制实例的个数</li>
+</ul>
+</li>
+<li>实现
+<ul>
+<li>
+<p>保证唯一一个实例: 可以将类的创建操作隐藏在一个类的静态成员中, 并且可以访问保存了唯一实例的变量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">class</span> <span class="nc">Singleton</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">static</span> <span class="n">Singleton</span><span class="o">&amp;</span> <span class="n">Instance</span><span class="p">();</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="n">Singleton</span><span class="p">();</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">static</span> <span class="n">Singleton</span><span class="o">*</span> <span class="n">_instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Singleton</span><span class="o">*</span> <span class="n">Singleton</span><span class="o">::</span><span class="n">_instance</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+
+<span class="n">Singleton</span><span class="o">&amp;</span> <span class="n">Singleton</span><span class="o">::</span><span class="n">Instance</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_instance</span><span class="p">)</span> <span class="n">_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Singleton</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="n">_instance</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>创建 <strong>Singleton</strong> 的子类: 建立子类的关键是如何生成唯一的实例并访问它
+<ul>
+<li>最简单的方法是在 Instance 方法中使用条件语名选择实例化的类</li>
+<li>另一个方法是将生成实例的实现放入子类中: 只能在链接时选择, 无法在运行时选择, 上一种方法更灵活, 但是限制了 Singleton 类的集合</li>
+<li>更灵活的方式, 单件注册表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Singleton</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">static</span> <span class="kt">void</span> <span class="n">Register</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="n">Singleton</span><span class="o">*</span><span class="p">);</span>
+    <span class="k">static</span> <span class="n">Singleton</span><span class="o">&amp;</span> <span class="n">Instance</span><span class="p">();</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="n">Singleton</span><span class="p">();</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">static</span> <span class="n">Singleton</span><span class="o">*</span> <span class="n">_instance</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">list</span><span class="o">&lt;</span><span class="n">NameSingletonPair</span><span class="o">&gt;*</span> <span class="n">_register</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Singleton</span><span class="o">*</span> <span class="n">Singleton</span><span class="o">::</span><span class="n">_instance</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+
+<span class="n">Singleton</span><span class="o">&amp;</span> <span class="n">Singleton</span><span class="o">::</span><span class="n">Instance</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">_instance</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">singletonName</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">&#34;SINGLETON&#34;</span><span class="p">);</span>
+        <span class="n">_instance</span>                 <span class="o">=</span> <span class="n">Lookup</span><span class="p">(</span><span class="n">singletonName</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="n">_instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 一个子类注册的例子
+</span><span class="c1"></span>
+<span class="k">class</span> <span class="nc">MySingleton</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Singleton</span> <span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="n">MySingleton</span><span class="p">()</span>
+    <span class="p">{</span>  <span class="c1">//...
+</span><span class="c1"></span>        <span class="n">Singleton</span><span class="o">::</span><span class="n">Register</span><span class="p">(</span><span class="s">&#34;MySingleton&#34;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>访方法还需要定义一个静态实例</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-22
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/creator/">Creator</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/net_dhcp/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">DHCP</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/net_dns/">
+            <span class="next-text nav-default">DNS 服务</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-22 23:23:00 \u002b0800 CST',
+        title: '创建型模型',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

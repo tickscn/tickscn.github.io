@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>神经网络误差计算 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="常见的误差函数有均方差, 交叉熵, KL 散射, Hinge Loss 函数 均方差 均方差(Mean Square Error, MSE) \[\mathrm{MSE}(\boldsymbol{\widetilde{y},y}) = \frac{1}{N}\sum_i (\widetilde{y}_i-y_i)^2\] 可以使用计算函数 loss = keras.losses.MSE(y_onehot, o), loss=tf.reduce_mean(loss) 也可以使用层的方法 1 2 criteon = keras.losses.MeanSquareError() loss" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/neural_network_loss/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="神经网络误差计算" />
+<meta property="og:description" content="常见的误差函数有均方差, 交叉熵, KL 散射, Hinge Loss 函数 均方差 均方差(Mean Square Error, MSE) \[\mathrm{MSE}(\boldsymbol{\widetilde{y},y}) = \frac{1}{N}\sum_i (\widetilde{y}_i-y_i)^2\] 可以使用计算函数 loss = keras.losses.MSE(y_onehot, o), loss=tf.reduce_mean(loss) 也可以使用层的方法 1 2 criteon = keras.losses.MeanSquareError() loss" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/neural_network_loss/" />
+<meta property="article:published_time" content="2020-12-13T19:18:00+08:00" />
+<meta property="article:modified_time" content="2020-12-13T19:18:00+08:00" />
+<meta itemprop="name" content="神经网络误差计算">
+<meta itemprop="description" content="常见的误差函数有均方差, 交叉熵, KL 散射, Hinge Loss 函数 均方差 均方差(Mean Square Error, MSE) \[\mathrm{MSE}(\boldsymbol{\widetilde{y},y}) = \frac{1}{N}\sum_i (\widetilde{y}_i-y_i)^2\] 可以使用计算函数 loss = keras.losses.MSE(y_onehot, o), loss=tf.reduce_mean(loss) 也可以使用层的方法 1 2 criteon = keras.losses.MeanSquareError() loss">
+<meta itemprop="datePublished" content="2020-12-13T19:18:00+08:00" />
+<meta itemprop="dateModified" content="2020-12-13T19:18:00+08:00" />
+<meta itemprop="wordCount" content="494">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="神经网络误差计算"/>
+<meta name="twitter:description" content="常见的误差函数有均方差, 交叉熵, KL 散射, Hinge Loss 函数 均方差 均方差(Mean Square Error, MSE) \[\mathrm{MSE}(\boldsymbol{\widetilde{y},y}) = \frac{1}{N}\sum_i (\widetilde{y}_i-y_i)^2\] 可以使用计算函数 loss = keras.losses.MSE(y_onehot, o), loss=tf.reduce_mean(loss) 也可以使用层的方法 1 2 criteon = keras.losses.MeanSquareError() loss"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">神经网络误差计算</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-13 </span>
+        <div class="post-category">
+            <a href="/categories/neural-network/"> Neural-NetWork </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#均方差">均方差</a></li>
+        <li><a href="#交叉熵">交叉熵</a>
+          <ul>
+            <li><a href="#信息熵">信息熵</a></li>
+            <li><a href="#交叉熵">交叉熵</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>常见的误差函数有均方差, 交叉熵, KL 散射, Hinge Loss 函数</p>
+<h2 id="均方差">均方差</h2>
+<p>均方差(Mean Square Error, MSE)
+\[\mathrm{MSE}(\boldsymbol{\widetilde{y},y}) = \frac{1}{N}\sum_i (\widetilde{y}_i-y_i)^2\]
+可以使用计算函数 <code>loss = keras.losses.MSE(y_onehot, o), loss=tf.reduce_mean(loss)</code></p>
+<p>也可以使用层的方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">criteon</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquareError</span><span class="p">()</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">criteon</span><span class="p">(</span><span class="n">y_onehot</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="交叉熵">交叉熵</h2>
+<h3 id="信息熵">信息熵</h3>
+<p>在信息学中, 信息的不确定度越大(概率越小), 信息量就该越高(信息熵越大). 应该定义一个衡量信息量的函数 h(p), 它应是发生概率 p 的函数. 且</p>
+<ol>
+<li>应是递减的连续函数</li>
+<li>信息量不应为负: \(h(p) \geqslant 0\)</li>
+<li>两个不相关事件同时发生提供的信息应与单独发生提供的信息相同 \(h(p(xy)) = h(p(x)p(y))= h(p(x)) + h(p(y))\). 非常熟悉的对数函数就有这个特性</li>
+</ol>
+<p>根据条件 3, 很容易想到对数函数, 为了保证非负应添加负号(概率的取值为[0,1])
+\[h(p) = -\log p\]
+为了方便比较, 需要统一底数. 如果底数为 2, 那么信息量的单位为 <strong>比特(bit)</strong>. 底数为自然常数 e 时, 单位为 <strong>奈特(nat)</strong>, 底数为 10 时, 单位为 <strong>哈特(hart)</strong>. 信息量是事 件发生后统计得到的.
+信息熵是对事件发生前信息量的期望
+\[H(X)=-\sum_ip_i\log p_i\]</p>
+<h3 id="交叉熵">交叉熵</h3>
+<p>\[H(p\Arrowvert q) = -\sum_i p_i\log_2 q_i = -\sum_ip_i\log_2 p_i(\frac{q_i}{p_i}) = -\sum_ip_i\log_2p_i -\sum_ip_i\log_2\frac{q_i}{p_i}= H(p)+D_{KL}(p\Arrowvert q)\]
+交叉熵可以很好的衡量两个分布之间的 &ldquo;距离&rdquo;, 当 p==q 时 \[D_{KL}(p\Arrowvert q)=0\]. 当分类问题中的真实分布 p 采用 one-hot 编码时, H(p)=0, 交叉熵变为预测值与直实值的 KL 散度.
+所以分类问题中交叉熵的计算只需要计算标签为 1 对应的输出值的对数的相反数</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-13
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/tf_module_build_train_test/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">tensorflow 模型装配, 训练与测试</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/neural_network_output_layer/">
+            <span class="next-text nav-default">神经网络输出层设计</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-12-13 19:18:00 \u002b0800 CST',
+        title: '神经网络误差计算',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>多线程 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="线程是CPU使用的基本单元 线程ID 程序计数器 寄存器组 堆栈 与进程不同的是线程共用数据和代码 多线程的优点 响应性: 部分阻塞时仍能运行 资源共享: 与进" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="多线程" />
+<meta property="og:description" content="线程是CPU使用的基本单元 线程ID 程序计数器 寄存器组 堆栈 与进程不同的是线程共用数据和代码 多线程的优点 响应性: 部分阻塞时仍能运行 资源共享: 与进" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" />
+<meta property="article:published_time" content="2019-12-04T14:43:49+00:00" />
+<meta property="article:modified_time" content="2019-12-04T14:43:49+00:00" />
+<meta itemprop="name" content="多线程">
+<meta itemprop="description" content="线程是CPU使用的基本单元 线程ID 程序计数器 寄存器组 堆栈 与进程不同的是线程共用数据和代码 多线程的优点 响应性: 部分阻塞时仍能运行 资源共享: 与进">
+<meta itemprop="datePublished" content="2019-12-04T14:43:49+00:00" />
+<meta itemprop="dateModified" content="2019-12-04T14:43:49+00:00" />
+<meta itemprop="wordCount" content="953">
+
+
+
+<meta itemprop="keywords" content="操作系统,OSC,CS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="多线程"/>
+<meta name="twitter:description" content="线程是CPU使用的基本单元 线程ID 程序计数器 寄存器组 堆栈 与进程不同的是线程共用数据和代码 多线程的优点 响应性: 部分阻塞时仍能运行 资源共享: 与进"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">多线程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-04 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"> 操作系统 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#线程库thread-library">线程库(thread library)</a>
+      <ul>
+        <li><a href="#pthreads">Pthreads</a></li>
+        <li><a href="#windows">Windows</a></li>
+      </ul>
+    </li>
+    <li><a href="#隐式多线程">隐式多线程</a>
+      <ul>
+        <li><a href="#线程池thread-pool">线程池(thread pool)</a></li>
+        <li><a href="#openmp">OpenMP</a></li>
+        <li><a href="#大中央调度grand-central-dispatch-gcd">大中央调度(Grand Central Dispatch, GCD)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>线程是CPU使用的基本单元</p>
+<ul>
+<li>线程ID</li>
+<li>程序计数器</li>
+<li>寄存器组</li>
+<li>堆栈</li>
+</ul>
+<p>与进程不同的是线程共用数据和代码</p>
+<p><strong>多线程的优点</strong></p>
+<ul>
+<li>响应性: 部分阻塞时仍能运行</li>
+<li>资源共享: 与进程不同的是线程默认共享所属内存和资源</li>
+<li>经济: 不需要重新进行内存和资源的分配</li>
+<li>多核的利用</li>
+</ul>
+<blockquote>
+<p>Amdahl 定律
+$$speedup\leqslant \dfrac{1}{S+\frac{1-S}{N}}$$
+其中S是串行部分, N是核数</p>
+</blockquote>
+<p><strong>挑战</strong></p>
+<ul>
+<li>分析任务: 查找能够独立的并发执行的任务</li>
+<li>平衡: 各任务应执行同等价值的工作</li>
+<li>数据分割</li>
+<li>数据依赖(同步问题)</li>
+<li>测试与调试</li>
+</ul>
+<p><strong>并行类型</strong></p>
+<ul>
+<li>数据并行: 数据分布于多个核心, 每个核执行相同的任务</li>
+<li>任务并行: 每个线程执行不同的操作</li>
+</ul>
+<h1 id="线程库thread-library">线程库(thread library)</h1>
+<p>线程库是提供创建和管量线程的API. 三种主要线程库</p>
+<ul>
+<li>POSIX Pthreads</li>
+<li>Windows</li>
+<li>JAVA</li>
+</ul>
+<p>例子, 求和
+$$sum = \sun_{i=0}^{N}i$$</p>
+<h2 id="pthreads">Pthreads</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
+</span><span class="cm"> * A pthread program illustrating how to
+</span><span class="cm"> * create a simple thread and some of the pthread API
+</span><span class="cm"> * This program implements the summation function where
+</span><span class="cm"> * the summation operation is run as a separate thread.
+</span><span class="cm"> *
+</span><span class="cm"> * Figure 4.9
+</span><span class="cm"> *
+</span><span class="cm"> * @author Gagne, Galvin, Silberschatz
+</span><span class="cm"> * Operating System Concepts  - Ninth Edition
+</span><span class="cm"> * Copyright John Wiley &amp; Sons - 2013
+</span><span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="n">sum</span><span class="p">;</span> <span class="cm">/* this data is shared by the thread(s) */</span>
+         <span class="cm">/* 全局变量被线程共享 */</span>
+
+<span class="kt">void</span> <span class="o">*</span><span class="nf">runner</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">param</span><span class="p">);</span> <span class="cm">/* the thread */</span>
+                           <span class="cm">/* 求和的线程 */</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="n">pthread_t</span> <span class="n">tid</span><span class="p">;</span> <span class="cm">/* the thread identifier */</span>
+<span class="n">pthread_attr_t</span> <span class="n">attr</span><span class="p">;</span> <span class="cm">/* set of attributes for the thread */</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">&#34;usage: a.out &lt;integer value&gt;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+	<span class="cm">/*exit(1);*/</span>
+	<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">&#34;Argument %d must be non-negative</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+	<span class="cm">/*exit(1);*/</span>
+	<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* get the default attributes */</span>
+<span class="n">pthread_attr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+
+<span class="cm">/* create the thread */</span>
+<span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid</span><span class="p">,</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span><span class="n">runner</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="cm">/* now wait for the thread to exit */</span>
+<span class="n">pthread_join</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">&#34;sum = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">sum</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+</span><span class="cm"> * The thread will begin control in this function
+</span><span class="cm"> */</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">runner</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">param</span><span class="p">)</span> 
+<span class="p">{</span>
+<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+<span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">upper</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="n">pthread_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>所有的Pthread 程序都要包括头文件 <code>pthread.h</code></p>
+<p>线程标识符 <code>pthread_t tid</code>. 线程属性<code>pthread_attr_t attr</code>包括堆栈属性, 调度信息等.
+<code>pthread_attr_init(&amp;attr)</code>初始化线程属性. 创建线程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="n">pthread_t</span> <span class="o">*</span><span class="kr">thread</span><span class="p">,</span> <span class="k">const</span> <span class="n">pthread_attr_t</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">start_routine</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">),</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>pthread_join</code> 等待线程完成. 存 runner 中 <code>pthread_exit()</code> 终止线程.</p>
+<h2 id="windows">Windows</h2>
+<p>线程标识符 DWORD ThreadID</p>
+<p>创建线程 <code>CreateThread</code></p>
+<p>等待线程完成 <code>WaitForSingleObject()</code> or <code>WaitForMultipleObject()</code></p>
+<h1 id="隐式多线程">隐式多线程</h1>
+<p>将多线程的创建和管理交给编译器和运行时库来解决</p>
+<h2 id="线程池thread-pool">线程池(thread pool)</h2>
+<h2 id="openmp">OpenMP</h2>
+<p>OpenMP 为一组编译指令和API, 用于编写C, C++, Fortran等语言的程序. OpenMP识别并行区域(parallel region), 即可并行的运行代码块</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;omp.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">c</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="cp">#pragma omp parallel for
+</span><span class="cp"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%d &#34;</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="大中央调度grand-central-dispatch-gcd">大中央调度(Grand Central Dispatch, GCD)</h2>
+<p>GCD 是 Apple Mac OS X 和 IOS操作系统的一种计术</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-04
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+          <a href="/tags/osc/">OSC</a>
+          <a href="/tags/cs/">CS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/rust-1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">rust(1)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/move-data/">
+            <span class="next-text nav-default">move-data</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-12-04 14:43:49 \u002b0000 UTC',
+        title: '多线程',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

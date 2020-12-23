@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>socket-introduction on ticks blog</title>
+    <link>https://tickscn.github.io/tags/socket-introduction/</link>
+    <description>Recent content in socket-introduction on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 03 Aug 2020 11:16:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/socket-introduction/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>套接字编程简介</title>
+      <link>https://tickscn.github.io/post/unp_socket_introduction/</link>
+      <pubDate>Mon, 03 Aug 2020 11:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_socket_introduction/</guid>
+      <description>套接字地址结构 IPv4 套接字地址结构 通常也通为网际套接字地址结构, 它以 sockaddr_in 命名, 定义在头文件 &amp;lt;netinet/in.h&amp;gt;. 它的 POSIX 定义 1 2 3 4 5 6 7 8 9 10 11 struct in_addr { in_addr_t s_addr; /* 32 bits IPv4 地址</description>
+    </item>
+    
+  </channel>
+</rss>

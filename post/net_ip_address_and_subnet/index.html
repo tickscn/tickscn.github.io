@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>IP 地址和子网 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="IPv4 地址 基本格式 IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/net_ip_address_and_subnet/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="IP 地址和子网" />
+<meta property="og:description" content="IPv4 地址 基本格式 IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/net_ip_address_and_subnet/" />
+<meta property="article:published_time" content="2020-07-16T15:46:00+08:00" />
+<meta property="article:modified_time" content="2020-07-16T15:46:00+08:00" />
+<meta itemprop="name" content="IP 地址和子网">
+<meta itemprop="description" content="IPv4 地址 基本格式 IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局">
+<meta itemprop="datePublished" content="2020-07-16T15:46:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-16T15:46:00+08:00" />
+<meta itemprop="wordCount" content="3014">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="IP 地址和子网"/>
+<meta name="twitter:description" content="IPv4 地址 基本格式 IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">IP 地址和子网</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-16 </span>
+        <div class="post-category">
+            <a href="/categories/network/"> network </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#ipv4-地址">IPv4 地址</a>
+          <ul>
+            <li><a href="#基本格式">基本格式</a></li>
+            <li><a href="#子网掩码">子网掩码</a></li>
+            <li><a href="#ipv4-地址分类">IPv4 地址分类</a></li>
+            <li><a href="#有类-无类-ipv4-网络">有类/无类 IPv4 网络</a></li>
+            <li><a href="#网络地址-主机地址和广播地址">网络地址, 主机地址和广播地址</a></li>
+            <li><a href="#ipv4-前缀表达式">IPv4 前缀表达式</a></li>
+            <li><a href="#几种特殊的-ipv4-地址">几种特殊的 IPv4 地址</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv4-子网划分与聚合">IPv4 子网划分与聚合</a>
+          <ul>
+            <li><a href="#vlsm-子网划分的基本思想">VLSM 子网划分的基本思想</a></li>
+            <li><a href="#vlsm-子网划分方法">VLSM 子网划分方法</a></li>
+            <li><a href="#子网聚合方法">子网聚合方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv4-nat-技术">IPv4 NAT 技术</a>
+          <ul>
+            <li><a href="#nat-主要应用">NAT 主要应用</a></li>
+            <li><a href="#pat">PAT</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv6-地址基数">IPv6 地址基数</a>
+          <ul>
+            <li><a href="#地址表示型式">地址表示型式</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv6-地址类型">IPv6 地址类型</a>
+          <ul>
+            <li><a href="#单播地址">单播地址</a></li>
+            <li><a href="#组播地址">组播地址</a></li>
+            <li><a href="#任播地址">任播地址</a></li>
+            <li><a href="#ipv6-主机和路由地址">IPv6 主机和路由地址</a></li>
+          </ul>
+        </li>
+        <li><a href="#ipv6-地址自动配置">IPv6 地址自动配置</a>
+          <ul>
+            <li><a href="#自动配置类型">自动配置类型</a></li>
+            <li><a href="#自动配置过程">自动配置过程</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="ipv4-地址">IPv4 地址</h2>
+<h3 id="基本格式">基本格式</h3>
+<p>IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局域网专用地址(约 1800 万个)和组播地址(约 2700 万个). 为了人类阅读方便, 32 位的 IPv4 地址被分为 4 段, 每段有 8 位. 写时将 8 位二进制转为 10 进制并用 <strong>'.'</strong> 分隔不同的段</p>
+<h3 id="子网掩码">子网掩码</h3>
+<p>因为互联网是分层次的, 所以为了寻址方便, 每个地址都分为网络 ID 和主机 ID. 为了识别网络 ID 和主机 ID, 可以使用子网掩码.</p>
+<p>与二进制 IPv4 地址相同, 子网掩码也由 32 位二进制数组成, 子网掩码的网络 ID 部分全为 1, 主机部分全为 0, 使用与运算可以得到网络 ID. 使用点分 10 进制表示, 子网掩码有</p>
+<ul>
+<li>0.0.0.0</li>
+<li>255.0.0.0      A 类地址的默认且固定的子网掩码</li>
+<li>255.255.0.0    B 类地址的默认且固定的子网掩码</li>
+<li>255.255.255.0  C 类地址的默认子网掩码</li>
+<li>255.255.255.255 单一主机网络</li>
+</ul>
+<p>五种</p>
+<h3 id="ipv4-地址分类">IPv4 地址分类</h3>
+<h4 id="a-类-ipv4-地址">A 类 IPv4 地址</h4>
+<p>最高的 1 个字节是网络 ID, 且规定最高位为 0, 其中全 0 和 01111111(127)是保留地址, 无法分配给节点, 所以 A 类网络一共只有 126 个.
+主机 ID 有 24 位, 可用主机数有 166777216(\(2^{24}\))个, 而全 0 是网络地址, 全 1 是广播地址都不能分配给主机使有, 所以一共有 \(2^{24}-2\) 个主机地址, 网络少但是主机多, 适用于大型企业和运营商</p>
+<h4 id="b-类-ipv4-地址">B 类 IPv4 地址</h4>
+<p>网络 ID 占用前 2 个字节, 最高两位固定为 1, 0, B 类网络可以有 16384 个, B 类网络中主机数为 65536-2 个</p>
+<h4 id="c-类-ipv4-地址">C 类 IPv4 地址</h4>
+<p>网络 ID 占用前 3 个字节, 最高 3 位固定为 1, 1, 0. 网络数有 \(2^{21}=2097152\) 个, 每个 C 类网络的主机数可以有 256-2 = 254 个</p>
+<h4 id="d-类-ipv4-地址">D 类 IPv4 地址</h4>
+<p>D 类 IPv4 地址是组播地址. 最高 4 位是 1,1,1,0. 1110000(224) 到 1110111(239). 所以组播地址范围是 224.0.0.0 到 239.255.255.255</p>
+<!--list-separator-->
+<ul>
+<li>
+<p>预留组播地址</p>
+<p>不分配给特定用户, 而是作为路由协议分配使用的 IP 地址, 范围是 224.0.0.0~ 224.0.0.255, 使用这些地址的协议有 IGMP(Internet 组管理协议), CGMP(Cisco 组管理协议), IGMP Snopping(IGMP 侦听)和 PIM(协议无关组播)</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>分用组播地址</p>
+<p>直接在全球互联网上使用的组播地址 224.0.1.0~224.0.1.255, 需要付费申请</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>临时组播地址</p>
+<p>企业在本地局域网中使用组播地址, 范围 239.0.0.0~239.255.255.255</p>
+</li>
+</ul>
+<h4 id="e-类-ip-地址">E 类 IP 地址</h4>
+<p>IANA 保留地址, 地址范围 240.0.0.0~247.255.255.255 最高 5 位是 1,1,1,1,0</p>
+<h3 id="有类-无类-ipv4-网络">有类/无类 IPv4 网络</h3>
+<p>之前子网掩码是以字节为单位的整数, 一共将网络分为 5 类, 上面的 5 类地址称为有类网络或标准网络. 而使用可变长子网掩码(Variable Length Subnet Masking, VLSM)技术, 及子网掩码长度不在以字节为单位时, 称为无类网络</p>
+<h3 id="网络地址-主机地址和广播地址">网络地址, 主机地址和广播地址</h3>
+<ul>
+<li>网络地址, 网络段第一个地址, 即主机地址全 0.</li>
+<li>广播地址, 网络段最后一个地址, 即主机地址全 1</li>
+<li>主机地址, 剩下的地址</li>
+</ul>
+<h4 id="广播地址类型">广播地址类型</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>网络广播地址</p>
+<p>传统意义上的广播地址, 可以转发到本地有类网络的所有节点上.</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>子网广播地址</p>
+<p>将数据包发送到相应的子网的所有节点上</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>全子网定向广播</p>
+<p>将数据包发送到相应的标准子网的下的多个子网</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>有限广播</p>
+<p>255.2555.255.255</p>
+</li>
+</ul>
+<h3 id="ipv4-前缀表达式">IPv4 前缀表达式</h3>
+<p>X.Y.A.B/l   l 是网络 ID 长度</p>
+<h3 id="几种特殊的-ipv4-地址">几种特殊的 IPv4 地址</h3>
+<h4 id="私网-ip-地址--局域网地址-专用网络地址">私网 IP 地址(局域网地址, 专用网络地址)</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>10.0.0.0/8</p>
+<p>局域网址区域 10.0.0.1 ~ 10.255.255.254</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>172.16.0.0/12</p>
+<p>局域网址区域 172.16.0.1 ~ 172.31.255.254</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>192.168.0.0/16</p>
+<p>局域网址区域 192.168.0.1 ~ 192.168.255.254</p>
+</li>
+</ul>
+<h4 id="169-开头的-ipv4-地址">169 开头的 IPv4 地址</h4>
+<p>169.254.0.0/16 是 Windows Server 和 Windows XP 的自动专用 IP 地址</p>
+<h4 id="127-dot-0-dot-0-dot-1">127.0.0.1</h4>
+<p>环回地址, 无论什么程序, 使用环回地址发送数据, 协议软件立即返回, 不进行任何网络传输</p>
+<h4 id="0-dot-0-dot-0-dot-0">0.0.0.0</h4>
+<ul>
+<li>Unknow</li>
+<li>所有主机</li>
+</ul>
+<h2 id="ipv4-子网划分与聚合">IPv4 子网划分与聚合</h2>
+<h3 id="vlsm-子网划分的基本思想">VLSM 子网划分的基本思想</h3>
+<p>因为标准网络相互独立, 互不包含, 所以不需要子网的概念. 子网是 VLSM 技术之后才有的概念. VLSM 划分子网的办法就是向原来标准网络中的主机 ID 部分借 n 位并成为网络 ID 的一部分(子网 ID), 可以有 \(2^n\) 种子网</p>
+<h3 id="vlsm-子网划分方法">VLSM 子网划分方法</h3>
+<ul>
+<li>己知子网数和最大地址数, 求子网掩码, 子网地址范围, 网络地址和广播地址</li>
+<li>己知子网掩码求地址范围和网络地址和广播地址</li>
+</ul>
+<h3 id="子网聚合方法">子网聚合方法</h3>
+<p>连续子网聚合为更大的网</p>
+<h2 id="ipv4-nat-技术">IPv4 NAT 技术</h2>
+<p>网络地址转换(Network Address Translation, NAT)主要是用来解决网络地址不足的问题. 可以把组织内部非全局不可路由的 IP 地址转为全局可路由 IP 地址</p>
+<h3 id="nat-主要应用">NAT 主要应用</h3>
+<h4 id="无足够公网-ip-地址可用时">无足够公网 IP 地址可用时</h4>
+<p>连接内部和外部的路由器上配置 NAT, 在内部网络中多用户把数据包发送到外部网络之前把源 IP 地址换为全局地址</p>
+<h4 id="重构网络-ip-地址部署">重构网络 IP 地址部署</h4>
+<p>需要一个新的网段, 可以把新网段的所有设备共享原网段的一个 IP</p>
+<h4 id="实现简单的-tcp-负载均衡">实现简单的 TCP 负载均衡</h4>
+<p>想要部署简单的负载均衡可以把多个相同的服务器的私有 IP 地址映射为同一个公网 IP</p>
+<h3 id="pat">PAT</h3>
+<p>端口地址转换(Port Address Translation, PAT)</p>
+<h2 id="ipv6-地址基数">IPv6 地址基数</h2>
+<p>IPv6 地址位数为 128 位, 与 IPv4 常用点分 10 进制不同, IPv6 常用冒号 <strong>&quot;:&quot;</strong> 分隔开的 8 段 16 进制数表示. 地址空间共有 \(2^128\approx 3.4*10^{38}\)</p>
+<h3 id="地址表示型式">地址表示型式</h3>
+<h4 id="冒分-16-进制">冒分 16 进制</h4>
+<p>基本的表示方法</p>
+<h4 id="前导-0-省略">前导 0 省略</h4>
+<p>每个地址块的高位 0 可以省略, 如果是 0000 可以简写为 0</p>
+<h4 id="压缩-0-表示">压缩 0 表示</h4>
+<p>双冒号替换连续为 0 的地址块, 每个地址只能使用一次</p>
+<h2 id="ipv6-地址类型">IPv6 地址类型</h2>
+<ul>
+<li>单播地址(Unicast Address): 用来唯一标识一个接口</li>
+<li>多播地址(Multicast Address): 用来标识一组接口</li>
+<li>任播地址(Anycast Address): 用来标识一组接口, 分组只转发给该组接口中距离源结点最近的一个接口</li>
+</ul>
+<h3 id="单播地址">单播地址</h3>
+<h4 id="全局单播地址">全局单播地址</h4>
+<p>类似于 IPv4 的公网地址, 可全局路由和访问
+001 + 45 位全局路由前缀 + 16 位子网 ID + 64 位接口 ID</p>
+<!--list-separator-->
+<ul>
+<li>
+<p>001</p>
+<p>当前可分配地址前缀, 可表示为 2000::/3</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>45 位路由前缀</p>
+<p>指示特定组织的站点的全局路由前缀, 与前面 3 位一起组成 48 位的站点前缀.</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>16 位的子网 ID</p>
+<p>用户可建立 65536 个子网或多个级别的寻址结构以及有效的路由基础结构</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>接口 ID</p>
+<p>指示站点内特定子网上的接口, 占 64 位, 对应各结口的 64 位 IPv6 MAC 地址, 由接口自动分配. 当然也可不用 NAC 地址来指定接口 ID, 而是人为编制.</p>
+</li>
+</ul>
+<h4 id="本地单播地址">本地单播地址</h4>
+<p>本地使用的地址, 也就是局域网地址</p>
+<!--list-separator-->
+<ul>
+<li>
+<p>链路本地地址</p>
+<p>每个接口至少有一个链路本地地址, 仅用于单个链路(相当于 IPv4 中的子网), 不能在不同链路中路由, 结点使用链路本地地址与同一个链路上的相邻结点进行通信. 该地址始终自动配置.
+FE80::接口 ID(64 位). FE80::/64</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>站点本地地址</p>
+<p>相当于局域网地址. FEC0::/48</p>
+</li>
+</ul>
+<h4 id="内嵌-ipv4-地址的-ipv6-单播地址">内嵌 IPv4 地址的 IPv6 单播地址</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>IPv4 兼容地址</p>
+<p>::/96, 后面 32 位为全球唯一的全局公网 IPv4 地址</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>IPv4 映射 IPv6 地址</p>
+<p>::FFFF/96, 后面 32 位为 IPv4 结点地址</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>6to4 地址</p>
+<p>组合前缀 2002::/16 和该结点的公网 32 位 IPv4  地址构成 48 位前缀, 如 IPv4 地址 202.114.78.122 可转为 2002:CA72:4E&amp;A::/48</p>
+</li>
+</ul>
+<h4 id="两种特殊的的单播地址">两种特殊的的单播地址</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>未指定单播地址</p>
+<p>(0:0:0:0:0:0:0:0 或 ::)仅用于表示某个地址不存在</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>环回地址</p>
+<p>::1 用于标识环回接口, 允许节点将数据发送给自己</p>
+</li>
+</ul>
+<h3 id="组播地址">组播地址</h3>
+<p>用于标识多个接口(通常分属多个不同节点), 发送到该地址的数据包会该地址标识的所有节点. 任意 IPv6 节点可以侦听任意 IPv6 组播地址的组播通信, 以 FF 开头, 再别上 4 位标志位, 4 位作用域, 112 位组 ID 构成了完整的 IPv6 组播地址</p>
+<h4 id="标志--4-位-只用末位">标志(4 位, 只用末位)</h4>
+<p>标志为 0 时表示该组播地址是由 IANA 永久指派的, 公认的组播地址. 标志为 1 时, 表示是临时组播地址. 其它值不允许</p>
+<h4 id="作用域--4-位">作用域(4 位)</h4>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>保留</th>
+<th></th>
+<th>1</th>
+<th>接口本地域</th>
+<th></th>
+<th>2</th>
+<th>链路本地域</th>
+<th></th>
+<th>3</th>
+<th>保留</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>管理本地域</td>
+<td></td>
+<td>5</td>
+<td>站点本地域</td>
+<td></td>
+<td>6 ,7</td>
+<td>未分配</td>
+<td></td>
+<td>8</td>
+<td>组织本地域</td>
+</tr>
+<tr>
+<td>9~D</td>
+<td>未分配</td>
+<td></td>
+<td>E</td>
+<td>全局域</td>
+<td></td>
+<td>F</td>
+<td>保留</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="组-id--112-位">组 ID(112 位)</h4>
+<p>标识传播组, 本域中唯一节点组播地址 ID&ndash;1</p>
+<ul>
+<li>FE01::1</li>
+<li>FE02::1</li>
+</ul>
+<p>路由组播地址 ID&ndash;2</p>
+<ul>
+<li>FE01::2</li>
+<li>FE02::2</li>
+<li>FE05::2</li>
+</ul>
+<h3 id="任播地址">任播地址</h3>
+<h3 id="ipv6-主机和路由地址">IPv6 主机和路由地址</h3>
+<p>IPv6 主机在逻辑上是多主机的, 有多个节点, 如接收本地链路通信的地址, 站点或全局通信的地址. 站点本地地址与全局单播地址不能同时配置</p>
+<h2 id="ipv6-地址自动配置">IPv6 地址自动配置</h2>
+<p>即使不使有动态主机配置协议 DHCPv6, IPv6 地址也可以自动配置</p>
+<h3 id="自动配置类型">自动配置类型</h3>
+<h4 id="无状态自动配置">无状态自动配置</h4>
+<p>基于路由器地址前缀的公告, 管理性差</p>
+<h4 id="监控状态的自动配置">监控状态的自动配置</h4>
+<p>基于全状态地址配置协议(如 DHCPv6)来获取地址和其它选项的</p>
+<p>在使用 DHCPv6 协议时, DHCPv6 服务器会提供完整的 IPv6 地址并且也会提供 DNS 服务器地址和域名等其它配置信息</p>
+<h4 id="两者兼备">两者兼备</h4>
+<p>根据路由器公告的回执进行配置</p>
+<h3 id="自动配置过程">自动配置过程</h3>
+<h4 id="链路本地地址">链路本地地址</h4>
+<ol>
+<li>基于 FE80::/64 前缀和 64 位接口标识组合成暂定的链路本地地址</li>
+<li>执行重复检测, 保证暂定地址是唯一的</li>
+<li>如果重复了, 必须手动配置</li>
+<li>如果没重复, 则该暂定地址是唯一且有效的, 为该节点初始化链路本地地址</li>
+</ol>
+<h4 id="主机地址">主机地址</h4>
+<p>完成节点的自动配置后</p>
+<ol>
+<li>主机发送路由器请求</li>
+<li>如果没有收到路由器公告消息, 使用全状态地址配置协议</li>
+<li>如果收到路由器公告消息, 将在主机设置消息中包括配置消息</li>
+<li>无状态地址需要检测唯一性</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-16
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/net_transport/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">传输层概述</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/network_net/">
+            <span class="next-text nav-default">网络层</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-16 15:46:00 \u002b0800 CST',
+        title: 'IP 地址和子网',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

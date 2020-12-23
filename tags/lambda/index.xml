@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lambda on ticks blog</title>
+    <link>https://tickscn.github.io/tags/lambda/</link>
+    <description>Recent content in lambda on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 26 Mar 2020 23:09:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/lambda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>接口, lambda, 内部类</title>
+      <link>https://tickscn.github.io/post/java_interface_lambda/</link>
+      <pubDate>Thu, 26 Mar 2020 23:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_interface_lambda/</guid>
+      <description>接口(interface) 带有接口的类必须实现接口中的方法 1 2 3 4 public interface Comparable { int compareTo(Object other); } 类实现一个接口 声明类的时候使用关键字 implements 对接口中的方法进行定</description>
+    </item>
+    
+  </channel>
+</rss>

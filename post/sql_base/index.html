@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SQL 基础 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="SQL 语法 注释: 以两个连字符开始 &amp;ndash;, 持续到行尾 SQL 语句: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点 子句: SQL 语句片断 关键字" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/sql_base/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SQL 基础" />
+<meta property="og:description" content="SQL 语法 注释: 以两个连字符开始 &ndash;, 持续到行尾 SQL 语句: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点 子句: SQL 语句片断 关键字" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/sql_base/" />
+<meta property="article:published_time" content="2020-06-11T19:56:00+08:00" />
+<meta property="article:modified_time" content="2020-06-11T19:56:00+08:00" />
+<meta itemprop="name" content="SQL 基础">
+<meta itemprop="description" content="SQL 语法 注释: 以两个连字符开始 &ndash;, 持续到行尾 SQL 语句: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点 子句: SQL 语句片断 关键字">
+<meta itemprop="datePublished" content="2020-06-11T19:56:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-11T19:56:00+08:00" />
+<meta itemprop="wordCount" content="1118">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SQL 基础"/>
+<meta name="twitter:description" content="SQL 语法 注释: 以两个连字符开始 &ndash;, 持续到行尾 SQL 语句: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点 子句: SQL 语句片断 关键字"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SQL 基础</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-11 </span>
+        <div class="post-category">
+            <a href="/categories/sql/"> SQL </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#sql-语法">SQL 语法</a></li>
+        <li><a href="#sql-标准和一致性">SQL 标准和一致性</a></li>
+        <li><a href="#标识符">标识符</a></li>
+        <li><a href="#数据类型">数据类型</a></li>
+        <li><a href="#字符串类型">字符串类型</a></li>
+        <li><a href="#二进制大型对象类型">二进制大型对象类型</a></li>
+        <li><a href="#精确数字类型">精确数字类型</a></li>
+        <li><a href="#近似数字类型">近似数字类型</a></li>
+        <li><a href="#布尔类型">布尔类型</a></li>
+        <li><a href="#日期和时间">日期和时间</a></li>
+        <li><a href="#时间间格类型">时间间格类型</a></li>
+        <li><a href="#唯一标识符">唯一标识符</a></li>
+        <li><a href="#其它数据类型">其它数据类型</a></li>
+        <li><a href="#空值">空值</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="sql-语法">SQL 语法</h2>
+<ul>
+<li><strong>注释</strong>: 以两个连字符开始 &ndash;, 持续到行尾</li>
+<li><strong>SQL 语句</strong>: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点</li>
+<li><strong>子句</strong>: SQL 语句片断</li>
+<li><strong>关键字</strong>: SQL 保留字</li>
+<li><strong>标识符</strong>: 用于数据库对象命名的词</li>
+<li><strong>分号</strong>: 语句以分号 &lsquo;;&rsquo; 结尾</li>
+</ul>
+<p>SQL 是形式自由的语言, 它的语句</p>
+<ul>
+<li>可以是大写或小写字母</li>
+<li>只要不把单词, 标记, 或引号字符串分为两部分, 可以在下一行继续</li>
+<li>和其它语句同一行</li>
+<li>从任一列开始</li>
+</ul>
+<p>不过建议采用一致的风格, 使用大写关键字和小写标识符</p>
+<h2 id="sql-标准和一致性">SQL 标准和一致性</h2>
+<p>SQL 标准复杂, 不同的 DBMS 支持 SQL 不同版本的不同级别. 号称符合标准 SQL 需要遵循 Core SQL 的标准子集</p>
+<h2 id="标识符">标识符</h2>
+<p>用来引用一个对象的名称, 在它的作用域内需是唯一的. 标准 SQL 命名规则</p>
+<ul>
+<li>128 个字符以内</li>
+<li>以字母开头</li>
+<li>可以包含字母, 数字, 下划线(_)</li>
+<li>不可以包含特殊字符(如 # $ @ &amp; % 和标点符号)</li>
+<li>不可以是保留关键字(带引号的标识符可以绕过一些限制, 不过不建议)</li>
+</ul>
+<h2 id="数据类型">数据类型</h2>
+<ul>
+<li>表中每一列有单一的数据类型</li>
+<li>种类</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>种类</th>
+<th>存储数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Character string</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>Binary large object</td>
+<td>大型二进制数据</td>
+</tr>
+<tr>
+<td>Exact numeric</td>
+<td>精确数字</td>
+</tr>
+<tr>
+<td>Approximate numeric</td>
+<td>近似数字</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>布尔值</td>
+</tr>
+<tr>
+<td>Datatime</td>
+<td>日期和时间</td>
+</tr>
+<tr>
+<td>Interval</td>
+<td>时间间隔</td>
+</tr>
+</tbody>
+</table>
+<h2 id="字符串类型">字符串类型</h2>
+<ul>
+<li>0 或多个字符的有序序列</li>
+<li>长度可以是固定或可变</li>
+<li>区分大小写</li>
+<li>被 <strong>单引号</strong> 环绕</li>
+<li>可以是</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHARACTER/CHAR</td>
+<td>CHARACTER(n) 最大长度是 n 的字符串, n &gt;= 1. 最大长度依赖 DBMS</td>
+</tr>
+<tr>
+<td>CHARACTER VARYING/ CHAR VARYING/ VARCHAR</td>
+<td>VARCHAR(n) 最大长度是 n 的字符串, 当长度小于 n 时不以空格填充, 而是只存该字字符串</td>
+</tr>
+<tr>
+<td>NATIONAL CHARACTER/NCHAR/NATIONAL CHAR</td>
+<td>保存标准多字节符或 unicode</td>
+</tr>
+<tr>
+<td>NATIONAL CHARACTER VARYING</td>
+<td></td>
+</tr>
+<tr>
+<td>CLOB</td>
+<td>大型字符对象, 无法用索引, 支持较少的操作符和函数. CHARACTER LARGE OBJECT 同义词</td>
+</tr>
+<tr>
+<td>NCLOB</td>
+<td>NATIONAL CHARACTER LARGE OBJECT</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二进制大型对象类型">二进制大型对象类型</h2>
+<p>Binary large object, BLOB 类型</p>
+<ul>
+<li>类型名: BLOB 或 BINARY LARGE OBJECT</li>
+<li>存储长的字节序列</li>
+<li>存储大数据量的二进制数据(图形, 照片, 音频, 视频等)</li>
+<li>不能用作关键字或索引</li>
+</ul>
+<h2 id="精确数字类型">精确数字类型</h2>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NUMERIC</td>
+<td>NUMERIC(precision[,scale]), precision 精度, scale 小于精度的小数位数</td>
+</tr>
+<tr>
+<td>DECIMAL/DEC</td>
+<td>类似于 BUMERIC, 有些 DBMS 中两者等价. 主要是精度是最小精度</td>
+</tr>
+<tr>
+<td>INTEGER/INT</td>
+<td>一个整数</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td></td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>例 123.89</p>
+<table>
+<thead>
+<tr>
+<th>NUMERIC(5)</th>
+<th>124</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NUMBERIC(5,0)</td>
+<td>124</td>
+</tr>
+<tr>
+<td>NUMBERIC(5,1)</td>
+<td>123.9</td>
+</tr>
+<tr>
+<td>NUMBERIC(5,2)</td>
+<td>123.89</td>
+</tr>
+<tr>
+<td>NUMBERIC(4,0)</td>
+<td>124</td>
+</tr>
+<tr>
+<td>NUMBERIC(4,1)</td>
+<td>123.9</td>
+</tr>
+<tr>
+<td>NUMBERIC(4,2)</td>
+<td>超出精度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="近似数字类型">近似数字类型</h2>
+<table>
+<thead>
+<tr>
+<th>FLOAT</th>
+<th>参数表示精度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REAL</td>
+<td></td>
+</tr>
+<tr>
+<td>DOUBLE PRECISION</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="布尔类型">布尔类型</h2>
+<ul>
+<li>类型名 BOOLEAN</li>
+<li>字面量 TRUE, FALSE, UNKNOWN</li>
+<li>NULL 等价于 UNKNOWN, 通常被用来替代 UNKNOWN</li>
+</ul>
+<h2 id="日期和时间">日期和时间</h2>
+<ul>
+<li>依据世界协调时(UTC)来定义的, SQL 标准要求每个 SQL 会话有一个默认时区</li>
+<li>公历(格里历, gregorian calender)</li>
+<li>时间采用 24 小时制</li>
+<li>连字符(-)连接日期, 冒号(:)连接时间. 空格连接日期和时间</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATA</td>
+<td>由三个整数段(YEAR, MONTH, DAY)组成, 格式化 yyyy-mm-dd, 如 2020-06-11</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>由三个整数段(HOUR, MINUTE, SECOND)组成, 格式化 hh:mm:ss , 如 19:33:44</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>以空格分隔的 DATA 和 TIME. 如(2020-06-11 19:33:44)</td>
+</tr>
+<tr>
+<td>TIME WITH TIMEZONE</td>
+<td>由 TIME 添加一个表示时区的段</td>
+</tr>
+<tr>
+<td>TIMESTAMP WITH TIMEZONE</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>有效值</p>
+<table>
+<thead>
+<tr>
+<th>YEAR</th>
+<th>0001-9999</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MONTH</td>
+<td>01~12</td>
+</tr>
+<tr>
+<td>DAY</td>
+<td>01~31</td>
+</tr>
+<tr>
+<td>HOUR</td>
+<td>00~23</td>
+</tr>
+<tr>
+<td>MINUTE</td>
+<td>00~59</td>
+</tr>
+<tr>
+<td>SECOND</td>
+<td>00~61.999&hellip;</td>
+</tr>
+<tr>
+<td>TIME_ZONE_OFFSET</td>
+<td>-12:59 ~ +13:00</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>为了插入闰秒, 秒的取值范围可以到 61.999&hellip;</li>
+<li>字面量 DATA' yyyy-mm-dd', TIME' hh:mm:ss', TIMESTAMP' yyyy-mm-dd hh:mm:ss'</li>
+<li>标准 SQL 不处理公元前</li>
+</ul>
+<h2 id="时间间格类型">时间间格类型</h2>
+<ul>
+<li>存储两个时间戳的差</li>
+<li>可以用来增加或减少日期和时间</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>YEAR-MONTH</th>
+<th>INTERVAL &lsquo;15-3&rsquo;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DAY-TIME</td>
+<td>INTERVAL &lsquo;20:05:33&rsquo;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="唯一标识符">唯一标识符</h2>
+<p>用于产生主键. 如 mysql 的 auto_increment attribute</p>
+<h2 id="其它数据类型">其它数据类型</h2>
+<ul>
+<li>网址</li>
+<li>存储在数据库外的文件的链接</li>
+<li>货币金额</li>
+<li>坐标</li>
+<li>数组和其它集合</li>
+<li>XML</li>
+<li>全文检索</li>
+<li>枚举</li>
+</ul>
+<h2 id="空值">空值</h2>
+<ul>
+<li>SQL 中关键字 NULL 表示空</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-11
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/sql_select/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">从表中检索数据</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/sql_relational/">
+            <span class="next-text nav-default">关系模型</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-11 19:56:00 \u002b0800 CST',
+        title: 'SQL 基础',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

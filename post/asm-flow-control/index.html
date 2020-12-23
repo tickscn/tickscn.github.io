@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>汇编控制执行顺序 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="程序不总是按顺序从头到尾执行, 有时需要分支或者循环. 指令指针(The Instruction Pointer) 指令指针决定下一个要执行的指令. 此时 EIP(x86_64 是 RIP)不断增加 不能在程序中" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/asm-flow-control/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="汇编控制执行顺序" />
+<meta property="og:description" content="程序不总是按顺序从头到尾执行, 有时需要分支或者循环. 指令指针(The Instruction Pointer) 指令指针决定下一个要执行的指令. 此时 EIP(x86_64 是 RIP)不断增加 不能在程序中" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/asm-flow-control/" />
+<meta property="article:published_time" content="2019-12-08T18:00:00+08:00" />
+<meta property="article:modified_time" content="2019-12-08T18:00:00+08:00" />
+<meta itemprop="name" content="汇编控制执行顺序">
+<meta itemprop="description" content="程序不总是按顺序从头到尾执行, 有时需要分支或者循环. 指令指针(The Instruction Pointer) 指令指针决定下一个要执行的指令. 此时 EIP(x86_64 是 RIP)不断增加 不能在程序中">
+<meta itemprop="datePublished" content="2019-12-08T18:00:00+08:00" />
+<meta itemprop="dateModified" content="2019-12-08T18:00:00+08:00" />
+<meta itemprop="wordCount" content="1685">
+
+
+
+<meta itemprop="keywords" content="汇编,assembly,CS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="汇编控制执行顺序"/>
+<meta name="twitter:description" content="程序不总是按顺序从头到尾执行, 有时需要分支或者循环. 指令指针(The Instruction Pointer) 指令指针决定下一个要执行的指令. 此时 EIP(x86_64 是 RIP)不断增加 不能在程序中"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">汇编控制执行顺序</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-08 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"> 汇编语言 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#指令指针--the-instruction-pointer">指令指针(The Instruction Pointer)</a></li>
+        <li><a href="#无条件转移">无条件转移</a>
+          <ul>
+            <li><a href="#跳转">跳转</a></li>
+            <li><a href="#调用--call">调用(call)</a></li>
+            <li><a href="#中断">中断</a></li>
+          </ul>
+        </li>
+        <li><a href="#条件分支">条件分支</a>
+          <ul>
+            <li><a href="#条件跳转">条件跳转</a></li>
+          </ul>
+        </li>
+        <li><a href="#循环">循环</a>
+          <ul>
+            <li><a href="#循环指令">循环指令</a></li>
+            <li><a href="#例子">例子</a></li>
+            <li><a href="#问题">问题</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>程序不总是按顺序从头到尾执行, 有时需要分支或者循环.</p>
+<h2 id="指令指针--the-instruction-pointer">指令指针(The Instruction Pointer)</h2>
+<p>指令指针决定下一个要执行的指令. 此时 EIP(x86_64 是 RIP)不断增加</p>
+<p>不能在程序中直接使用 MOV 改变 EIP 的值, 可以使用分支指令</p>
+<p>分支指令包含无条件指令和条件指令</p>
+<h2 id="无条件转移">无条件转移</h2>
+<ul>
+<li>跳转(jump)</li>
+<li>调用(call)</li>
+<li>中断(interrupt)</li>
+</ul>
+<h3 id="跳转">跳转</h3>
+<p>类似于 C 中的 goto. 虽然在高级语言中 goto 被认为是不好的, 在汇编中跳转是必要的. 不过好的管理也是必要的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">jmp location
+</code></pre></td></tr></table>
+</div>
+</div><p>location 是将要跳转的内存地址, 汇编中使用 label 来标记跳转位置. 跳转指令分为以下三类</p>
+<ol>
+<li>短跳(short jump)</li>
+<li>近跳(near jump)</li>
+<li>远跳(Far jump)</li>
+</ol>
+<p>跳转类型取决于现地址与目标地址之间的距离, 根距跳转的 bytes 数, 使用对应的跳转类型. 小于 128 bytes 使用短跳. 需要跨内存段时使用远跳.
+其它情况使用近跳</p>
+<p>使用助记符时不需要关心跳转的类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="c"># jumptest.s
+</span><span class="c"></span>  <span class="na">.section</span> <span class="no">.text</span>
+  <span class="na">.globl</span> <span class="no">_start</span>
+<span class="nl">_start:</span>
+  <span class="nf">nop</span>
+  <span class="nf">movl</span> <span class="no">$1</span><span class="p">,</span> <span class="nv">%eax</span>
+  <span class="nf">jmp</span> <span class="no">overhere</span>
+  <span class="nf">movl</span> <span class="no">$10</span><span class="p">,</span> <span class="nv">%ebx</span>
+  <span class="nf">int</span> <span class="no">$0x80</span>
+<span class="nl">overhere:</span>
+  <span class="nf">movl</span> <span class="no">$20</span><span class="p">,</span> <span class="nv">%ebx</span>
+
+  <span class="nf">int</span> <span class="no">$0x80</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">$ as -o jumptest.o jumptest.s
+$ ld -o jumptest jumptest.o
+$ ./jumptest
+$ echo $?
+20
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到返回值是 20</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">$ objdump -d jumptest
+
+jumptest：     文件格式 elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000401000 &lt;_start&gt;:
+  401000:	90                   	nop
+  401001:	b8 01 00 00 00       	mov    $0x1,%eax
+  401006:	eb 07                	jmp    40100f &lt;overhere&gt;
+  401008:	bb 0a 00 00 00       	mov    $0xa,%ebx
+  40100d:	cd 80                	int    $0x80
+
+000000000040100f &lt;overhere&gt;:
+  40100f:	bb 14 00 00 00       	mov    $0x14,%ebx
+  401014:	cd 80                	int    $0x80
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="调用--call">调用(call)</h3>
+<p>调用有两个部分, 第一个是调用部分</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">call address
+</code></pre></td></tr></table>
+</div>
+</div><p>调用与跳转很像, 不同的是调用记录了跳转的起点, 如果需要不可以返回. 比如说函数调用</p>
+<p>第二个是返回部分</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">ret
+</code></pre></td></tr></table>
+</div>
+</div><p>当 call 指令被执行, 将 EIP 保存到栈中, 更改 EIP 指向目标函数地址. 函数结束时, 从栈中恢复 EIP 的值, 返回原程序.</p>
+<p>函数的返回可能是汇编语言函数使用中最令人感到困惑的. 不仅仅是使用 ret 指令这么简单. 取决于传递给函数的信息和函数处理信息和方式. 通常使用栈来进行. 函数执行首先应保存 ESP 的值, 一般保存到 EBP.</p>
+<p>一个简单函数的模板</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nl">function_label:</span>
+  <span class="nf">pushq</span> <span class="nv">%rbp</span>
+  <span class="nf">movq</span> <span class="nv">%rsp</span><span class="p">,</span> <span class="nv">%rbp</span>
+  <span class="na">...</span>
+  <span class="nf">movq</span> <span class="nv">%rbp</span><span class="p">,</span> <span class="nv">%rsp</span>
+  <span class="nf">popq</span> <span class="nv">%rbp</span>
+  <span class="nf">ret</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="中断">中断</h3>
+<p>中断分为两种</p>
+<ul>
+<li>软件中断</li>
+<li>硬件中断</li>
+</ul>
+<p>硬件设备产生硬件中断, 用来表明生生在硬件上的事件. 软件程序产生软件中断, 用来改变执行的代码</p>
+<p>当程序使用中断, 调用方的执行被中断. 被调用方接管执行. 指令指针转向被调用的程序. 当被调用方完成时, 可以将程序的控制要权返还给调用方.</p>
+<p>操作系统通过软件中断允许应用程序使用系统函数, 有时甚至是基本的 BIOS 系统. 在 Linux 中, 0x80 中断被用来提供内核函数</p>
+<p>例: Linux 调用内核 write() 函数输出 &ldquo;Hello, World!&rdquo;</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="c"># hello world
+</span><span class="c"></span><span class="na">.section</span> <span class="no">.data</span>
+<span class="nl">hello:</span>
+  <span class="na">.ascii</span> <span class="s">&#34;Hello, World!\n&#34;</span>
+<span class="nf">len</span> <span class="err">=</span> <span class="no">.-hello</span>
+<span class="na">.section</span> <span class="no">.text</span>
+<span class="na">.globl</span> <span class="no">_start</span>
+<span class="nl">_start:</span>
+  <span class="nf">movq</span> <span class="no">$4</span><span class="p">,</span> <span class="nv">%rax</span>
+  <span class="nf">movq</span> <span class="no">$1</span><span class="p">,</span> <span class="nv">%rbx</span>
+  <span class="nf">movq</span> <span class="no">$hello</span><span class="p">,</span> <span class="nv">%rcx</span>
+  <span class="nf">movq</span> <span class="no">$len</span><span class="p">,</span>   <span class="nv">%rdx</span>
+  <span class="nf">int</span> <span class="no">$0x80</span>
+
+  <span class="nf">movq</span> <span class="no">$1</span><span class="p">,</span> <span class="nv">%rax</span>
+  <span class="nf">movq</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%rbx</span>
+  <span class="nf">int</span> <span class="no">$0x80</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">$ as -o hello.o hello.s
+$ ld -o hello hello.o
+$ ./hello
+Hello, World!
+$
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="条件分支">条件分支</h2>
+<p>根据 EFLAGS(RFLAGS)寄存器中的某个标志位来决定是否跳转</p>
+<ul>
+<li>进位标志位(CF)</li>
+<li>溢出标志位(OF)</li>
+<li>奇偶校验位(PF)</li>
+<li>符号标志位(SF)</li>
+<li>零标志位(ZF)</li>
+</ul>
+<h3 id="条件跳转">条件跳转</h3>
+<p>条件跳转(conditional jump)的指令格式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">jxx address
+</code></pre></td></tr></table>
+</div>
+</div><p>判断大小</p>
+<ul>
+<li>a above 大于(无符号)</li>
+<li>g greater 大于(有符号)</li>
+<li>b below 小于(无符号)</li>
+<li>l less 小于(有符号)</li>
+<li>e equal 等于</li>
+<li>n not</li>
+</ul>
+<p>类似于之前提到的条件赋值 {{ <ref move-data.md> }}
+条件跳转不支持段内存之间的跳转(long jump), 只可以是</p>
+<ul>
+<li>short jump</li>
+<li>near jump</li>
+</ul>
+<h4 id="比较指令">比较指令</h4>
+<p>该指令比较两个值并设置 FLAGS 寄存器. 格式为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">cmp operand1, operand2
+</code></pre></td></tr></table>
+</div>
+</div><p>该指令将第二个操作数与第一个比较, 实际上类似于执行了一个减法 operand2 - operand1. 根据结果设置 FLAGS</p>
+<h4 id="例子">例子</h4>
+<ul>
+<li>使用 ZF</li>
+</ul>
+<pre><code>```asm
+movl $30, %eax
+subl $30, %eax
+jz overthere
+```
+</code></pre>
+<ul>
+<li>使用 OF</li>
+</ul>
+<pre><code>```asm
+  .section .text
+  .globl _start
+_start:
+  movl $1, %eax
+  movb $127, %bl
+  addb $10, %bl
+  jo overhere
+  int $0x80
+overhere:
+  movl $0, %ebx
+  int $0x80
+```
+</code></pre>
+<ul>
+<li>使用 PF(是否有偶数个 1)</li>
+</ul>
+<pre><code>```asm
+  movl $1, %eax
+  movl $4, %ebx
+  subl $1, %ebx
+  jp overhere
+  int $0x80
+overhere:
+  movl $100, %ebx
+  int $0x80
+```
+</code></pre>
+<ul>
+<li>使用 SF</li>
+</ul>
+<pre><code>```asm
+  # signjmp.s
+.section .rodata
+output:
+  .asciz &quot;values[%d]=%d\n&quot;
+values:
+  .int 21,32,43,54,12,34,23,89,45,55
+num = (.-values)/4-1
+
+.section .text
+.globl _start
+_start:
+   movl $num, %ebx
+loop:
+  movl $output, %edi
+  movl %ebx, %esi
+  movl values(, %ebx, 4), %edx
+  call printf
+  dec %ebx
+  jns loop
+
+  movl $0, %edi
+  call exit
+```
+</code></pre>
+<ul>
+<li>使用 CF</li>
+</ul>
+<pre><code>注意 INC 和 DEC 不会设置 CF
+
+```asm
+movl $0xffffffff, %eax
+inc %eax
+jc overhere
+```
+
+上面的代码片断不会跳转, 不过下面的代码片断可以
+
+```asm
+movl $0xffffffff, %eax
+addl $1, %eax
+jc overhere
+```
+
+CF 有专门的指令进行设置
+
+| 指令 | 作用   |
+|----|------|
+| CLC | CF 置 0 |
+| CMC | CF 取反 |
+| STC | CF 置 1 |
+</code></pre>
+<h2 id="循环">循环</h2>
+<h3 id="循环指令">循环指令</h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOOP</td>
+<td>循环直到 ECX 是 0</td>
+</tr>
+<tr>
+<td>LOOPE/LOOPZ</td>
+<td>循环直到 ECX 是 0 或 ZF 置 0</td>
+</tr>
+<tr>
+<td>LOOPNE/LOOPNZ</td>
+<td>循环直到 ECX 是 0 或 ZF 置 1</td>
+</tr>
+</tbody>
+</table>
+<p>调用函数很有可能改变 ECX 的值, 使用时要小心</p>
+<h3 id="例子">例子</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="c"># loop.s
+</span><span class="c"></span><span class="na">.section</span> <span class="no">.data</span>
+<span class="nl">output:</span>
+  <span class="na">.asciz</span> <span class="s">&#34;sum=%lld\n&#34;</span>
+
+<span class="na">.section</span> <span class="no">.text</span>
+<span class="na">.globl</span> <span class="no">_start</span>
+<span class="nl">_start:</span>
+   <span class="nf">movl</span> <span class="no">$10</span><span class="p">,</span> <span class="nv">%ecx</span>
+   <span class="nf">movl</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%eax</span>
+<span class="nl">loop1:</span>
+  <span class="nf">addl</span> <span class="nv">%ecx</span><span class="p">,</span> <span class="nv">%eax</span>
+  <span class="nf">loop</span> <span class="no">loop1</span>
+
+  <span class="nf">movq</span> <span class="no">$output</span><span class="p">,</span> <span class="nv">%rdi</span>
+  <span class="nf">movl</span> <span class="nv">%eax</span><span class="p">,</span> <span class="nv">%esi</span>
+  <span class="nf">call</span> <span class="no">printf</span>
+
+  <span class="nf">movl</span> <span class="no">$0</span><span class="p">,</span> <span class="nv">%edi</span>
+  <span class="nf">call</span> <span class="no">exit</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="问题">问题</h3>
+<p>当 ECX 的初始值是 0 时, 循环出了问题, 因为 loop 指令是先将 ECX 减 1, 再判断 ECX 是不为 0. 当 ECX 已经是 0 时.ECX - 1 出了问题.</p>
+<p><strong>如何修复?</strong></p>
+<p>使用 JECXZ, 当 ECX 是 0 时跳过跳环</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-08
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+          <a href="/tags/assembly/">assembly</a>
+          <a href="/tags/cs/">CS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/number/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">数字内存保存格式</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/rust-2-data-type/">
+            <span class="next-text nav-default">rust(2)-data-type</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-12-08 18:00:00 \u002b0800 CST',
+        title: '汇编控制执行顺序',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

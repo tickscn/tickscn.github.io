@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>围棋入门 on ticks blog</title>
+    <link>https://tickscn.github.io/categories/%E5%9B%B4%E6%A3%8B%E5%85%A5%E9%97%A8/</link>
+    <description>Recent content in 围棋入门 on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 02 Dec 2020 18:37:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/%E5%9B%B4%E6%A3%8B%E5%85%A5%E9%97%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>气</title>
+      <link>https://tickscn.github.io/post/qi/</link>
+      <pubDate>Wed, 02 Dec 2020 18:37:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/qi/</guid>
+      <description>一个棋子其上下左右的地方叫气. 如果气被对方的子占据就会死去, 被拿开. 打吃 指如果对方不应对, 下一次就可以吃掉对方的子. 禁入点: 放入后自己没气.</description>
+    </item>
+    
+    <item>
+      <title>棋盘, 行棋次序</title>
+      <link>https://tickscn.github.io/post/checkerboard/</link>
+      <pubDate>Wed, 02 Dec 2020 18:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/checkerboard/</guid>
+      <description>棋盘大小 现 19x19 为主流. 19 横与 19 纵. 围棋落子在格点上, 不是格中. 有 19x19=361 个格点 中间的位置为 天元 次序 黑棋先行, 白棋后行. 交替下棋. 一次一颗</description>
+    </item>
+    
+  </channel>
+</rss>

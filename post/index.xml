@@ -1,0 +1,1748 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on ticks blog</title>
+    <link>https://tickscn.github.io/post/</link>
+    <description>Recent content in Posts on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 23 Dec 2020 15:52:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>池化层和 BatchNorm 层</title>
+      <link>https://tickscn.github.io/post/tf_pooling_layer/</link>
+      <pubDate>Wed, 23 Dec 2020 15:52:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_pooling_layer/</guid>
+      <description>池化层 在卷积的时候可以通过设置步长来将输入等效缩小, 实际上有一种专门的网络层可以用来实现尺寸缩小, 即 池化层(Pooling Layer). 常用的有 最大池化</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 实现卷积层</title>
+      <link>https://tickscn.github.io/post/tensorflow_layers_convolution/</link>
+      <pubDate>Wed, 23 Dec 2020 15:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_layers_convolution/</guid>
+      <description>自定义权值 在 tensorflow 中通过 tf.nn.conv2d 函数可以实现 2 维卷积. 需要设置输入, 卷积和, 步长, 边缘填充 卷积层类 layers.Conv2D</description>
+    </item>
+    
+    <item>
+      <title>卷积神经网络</title>
+      <link>https://tickscn.github.io/post/convolution_neural_net/</link>
+      <pubDate>Tue, 22 Dec 2020 16:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/convolution_neural_net/</guid>
+      <description>多通道输入和单卷积核 单通道输入只需要将卷积核平移. 卷积核的通道数与输入相同, 每个通道单独运算之后结果相加. 多通道多卷积核 多个卷积核卷积之后结</description>
+    </item>
+    
+    <item>
+      <title>全连接网络的问题</title>
+      <link>https://tickscn.github.io/post/nn_all_problems/</link>
+      <pubDate>Tue, 22 Dec 2020 15:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/nn_all_problems/</guid>
+      <description>参数过多, 假设网络参数为 float32, 一个参数占用内存 4B. 网络参数有 \(b((n_1n_2 + n_2*n_3+\cdots)+\sum n_i\) 当输入为 28*28 的图片, 批数为 2. 网络层数为 4. 输出长度为 256, 256, 64, 32, 10 需要的内存为 (2*(784*256+256*256+256*64+64*32+32*10)+256+256+64+32+10)/1024/1024 MiB=0.544MiB 当在</description>
+    </item>
+    
+    <item>
+      <title>Dropout 与数据增强</title>
+      <link>https://tickscn.github.io/post/ml_gropout/</link>
+      <pubDate>Mon, 21 Dec 2020 16:33:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ml_gropout/</guid>
+      <description>dropout 随机的断开网络中的某些连接, 也可以缩小结果空间, 减小过拟合 可以使用 tf.nn.dropout(x, rate=) 将连接以 rate 的概率断开 也可以将其作为一个网络层 network.add(layers.Dropout(rate=)) 数据增强 增加数据集规模</description>
+    </item>
+    
+    <item>
+      <title>正则化</title>
+      <link>https://tickscn.github.io/post/ml_regular/</link>
+      <pubDate>Sat, 19 Dec 2020 16:27:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ml_regular/</guid>
+      <description>对于多项式约束来说, 当参数稀疏化后, 表达能力可以将低, 为了减小过拟合, 对目标函数进行修改. 不仅要求损失函数尽量小, 还要求参数尽量稀疏. \[\mathtt{min} \mathcal{L}(f_{\theta},y)+\lambda\Omega(\theta), (\bf{x},</description>
+    </item>
+    
+    <item>
+      <title>数据集划分</title>
+      <link>https://tickscn.github.io/post/ml_pdata_split/</link>
+      <pubDate>Sat, 19 Dec 2020 16:01:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ml_pdata_split/</guid>
+      <description>数据集一般都有训练集与测试集, 为了选择超参数和检测过拟合现象, 一般又将训练集再分为普通的训练集和验证集. 验证集 为了在训练中, 测试网络的超参数</description>
+    </item>
+    
+    <item>
+      <title>机器学习模型的容量</title>
+      <link>https://tickscn.github.io/post/ml_model_space/</link>
+      <pubDate>Sat, 19 Dec 2020 15:42:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ml_model_space/</guid>
+      <description>机器学习是为了用网络来逼近真实模型, 这样才可以去预测实际中的输入. 这需要学习用的样品和实际用例是独立同分布的. 而且为了更好的拟和需要对网络的</description>
+    </item>
+    
+    <item>
+      <title>可视化</title>
+      <link>https://tickscn.github.io/post/tf_viewable/</link>
+      <pubDate>Fri, 18 Dec 2020 20:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_viewable/</guid>
+      <description>tensorflow 提供了一个远程监控网络训练进度的库 TensorBoard 模型端 在网络模型端需要建立一个数据监控类 1 summary_writer = tf.summary.create_file_write(log_dir) 标量数据可以通过 tf.summary.scalar(&#39;label&#39;, float(v), step=s) 以间隔 s 将数据 v 写入集合 label 中. TensorBoard</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 提供的网络</title>
+      <link>https://tickscn.github.io/post/tensorflow_applications/</link>
+      <pubDate>Fri, 18 Dec 2020 19:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_applications/</guid>
+      <description>对于常用网络, 如 ResNet 或 VGG 等, 不需要手动创建网络, 只需要从 keras.applications 子模块中通过一行代码即可创建并使用这些经典模型, 也可以通过设置权重 weights 参数加载预训练的</description>
+    </item>
+    
+    <item>
+      <title>自定义网络层</title>
+      <link>https://tickscn.github.io/post/tf_define_layers/</link>
+      <pubDate>Fri, 18 Dec 2020 16:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_define_layers/</guid>
+      <description>虽然 tensorflow 已经提供了很多的网络层类, 但是对于深度学习来说还不够. 对于需要自定义逻辑的网络层, 可以通过自定义类来实现, 网络层需要继承 layers.Layer. 网络需要继承</description>
+    </item>
+    
+    <item>
+      <title>模型保存与加载</title>
+      <link>https://tickscn.github.io/post/tf_module_save_load/</link>
+      <pubDate>Fri, 18 Dec 2020 16:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_module_save_load/</guid>
+      <description>模型的训练与加载非常重要, 可以用来保存训练的网络, 也可以保存训练中间的快照, 方便重启运算 张量的方式 网络的状态包括网络结构和网络中张量数据, 当</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 模型装配, 训练与测试</title>
+      <link>https://tickscn.github.io/post/tf_module_build_train_test/</link>
+      <pubDate>Fri, 18 Dec 2020 16:06:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_module_build_train_test/</guid>
+      <description>模型装配 Keras 中有两个特殊的类, keras.Module 和 keras.layers.Layer. 前者定义了网络的母类, 具有保存模型, 加载模型, 训练与测试 生面网络参数网络训练时需要前向计算和误差计算, 反传</description>
+    </item>
+    
+    <item>
+      <title>神经网络误差计算</title>
+      <link>https://tickscn.github.io/post/neural_network_loss/</link>
+      <pubDate>Sun, 13 Dec 2020 19:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/neural_network_loss/</guid>
+      <description>常见的误差函数有均方差, 交叉熵, KL 散射, Hinge Loss 函数 均方差 均方差(Mean Square Error, MSE) \[\mathrm{MSE}(\boldsymbol{\widetilde{y},y}) = \frac{1}{N}\sum_i (\widetilde{y}_i-y_i)^2\] 可以使用计算函数 loss = keras.losses.MSE(y_onehot, o), loss=tf.reduce_mean(loss) 也可以使用层的方法 1 2 criteon = keras.losses.MeanSquareError() loss</description>
+    </item>
+    
+    <item>
+      <title>神经网络输出层设计</title>
+      <link>https://tickscn.github.io/post/neural_network_output_layer/</link>
+      <pubDate>Sun, 13 Dec 2020 18:24:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/neural_network_output_layer/</guid>
+      <description>常见的输出类型 实数空间. [0,1]区间 \(y_{i}\in [0,1], \sum_{i}y_{i}=1\) [-1,1] 区间输出层的设计应该与实际的应用相结合 普通的实数空间 输出层不使用激活函数, 直接将输出 \(\tilde{y}\) 与真实值</description>
+    </item>
+    
+    <item>
+      <title>神经网络激活函数</title>
+      <link>https://tickscn.github.io/post/tf_activation/</link>
+      <pubDate>Sat, 12 Dec 2020 16:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_activation/</guid>
+      <description>Sigmoid \[\mathrm{Sigmoid}(x)=\frac{1}{1+\mathrm{e}^{-x}}\] 可以将输入压缩到 (0,1). 是递增函数且连续可导. 但是在输入值较大或较小时梯度变化较小, 被称为梯度弥散. 使训练不收敛或停滞不动 ReLU \[\mathrm{relu}(x) = \begin{cases}0, &amp;amp;x\leqslant 0\\x,&amp;amp;x&amp;gt;0\end{cases}\] LeakyReLU 当 x&amp;lt;0 时</description>
+    </item>
+    
+    <item>
+      <title>机器学习-网络</title>
+      <link>https://tickscn.github.io/post/tf_perceptron/</link>
+      <pubDate>Sat, 12 Dec 2020 16:13:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_perceptron/</guid>
+      <description>感知机 \[a=\sigma(z)=\sigma(\boldsymbol{w^Tx}+b)\] 其中 \(\bf{w}\) 为权值, b 为偏置. \(\sigma\) 是激活函数. 激活函数可以是阶感知机模型无法解决异或等线性不可分问题, 需要嵌套多层神经网络 全连接层 感知机模型</description>
+    </item>
+    
+    <item>
+      <title>Tensorflow 复杂一些的功能函数</title>
+      <link>https://tickscn.github.io/post/tensorflow_complex_func/</link>
+      <pubDate>Fri, 11 Dec 2020 20:01:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_complex_func/</guid>
+      <description>tf.gather() 收集用的函数. 如想要收集图片集合 x [1000, 32, 32, 3] 中的某几张, 可以使用 tf.gather(x, [1,3,4,...], axis=0). 如果收集的序号是相临的多个, 使用切片也许更好 tf.gather_nd 通过指定采样点的多维坐标</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 张量限制</title>
+      <link>https://tickscn.github.io/post/tensorflow_fill_copy/</link>
+      <pubDate>Fri, 11 Dec 2020 19:24:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_fill_copy/</guid>
+      <description>填充 因为输入数据的原始值可能有各不相同的长度, 为了方便并行计算, 将不同的长度扩展为相同的长度. 之前可以通过 tf.tile 复制数据, 但这会破坏原有的数据结</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 张量比较</title>
+      <link>https://tickscn.github.io/post/tensorflow_tensorcomp/</link>
+      <pubDate>Fri, 11 Dec 2020 16:38:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_tensorcomp/</guid>
+      <description>可以使用 tf.equal(a,b) 比较两个张量, 返回值是表示各元素是否相等的布尔张量. 将其转为 int 型并求和可以得出相等的元素个数. 在最后统计准确率时很好用测试一下随机</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 数据统计</title>
+      <link>https://tickscn.github.io/post/tensorflow_statistic/</link>
+      <pubDate>Wed, 09 Dec 2020 17:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_statistic/</guid>
+      <description>常见的统计信息, 如最值和最值的位置, 均值, 范数等信息 向量范数 L1 范数所有元素的绝对值之和 \[\Vert \boldsymbol{x}\Vert_1 = \sum_i \vert x_{i}\vert\] L2 范数所有元素平方和, 再开平方根 \[\Vert \boldsymbol{x}\Vert_2 = \sqrt{\sum_i x_i^2}\]</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 张量合并与分割</title>
+      <link>https://tickscn.github.io/post/tensorflow_concat_split/</link>
+      <pubDate>Wed, 09 Dec 2020 15:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_concat_split/</guid>
+      <description>合并 将多个张量在茉个维度上合并为一个张量. 如有不同来源的集合 A [1000, 28, 28] 和 B [2000, 28, 28]. 可能希望将 A,B 合并为一个张量 C [3000,28,28]. 合并可以使用拼接(concate</description>
+    </item>
+    
+    <item>
+      <title>tensotflow 数学运算</title>
+      <link>https://tickscn.github.io/post/tensorflow_math_op/</link>
+      <pubDate>Tue, 08 Dec 2020 16:41:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_math_op/</guid>
+      <description>加减乘除 tf 中的函数为 tf.add, tf.subtract, tf.multiply, tf.divide. 不过 tensorflow 已重载了 +,-,*,/ 运算符. 可以直接使用运算符. 同时也重载了整除 //和求模%运算符 乘方(冪) 函数为 tf.pow() 或使用重载的运算</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 维度变换</title>
+      <link>https://tickscn.github.io/post/tensorflow_dims_trans/</link>
+      <pubDate>Tue, 08 Dec 2020 16:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_dims_trans/</guid>
+      <description>改这视图 reshape 操作用来改变张量的视图. 将相同的存储使用不同的解读方法. 所以合法的视图转换操作要求可以不改变存储形式来实现 例: 初始张量 \(\bf{A}\) 按初始视图</description>
+    </item>
+    
+    <item>
+      <title>tensorflow 数据类型</title>
+      <link>https://tickscn.github.io/post/tensorflow_base_type/</link>
+      <pubDate>Tue, 08 Dec 2020 15:41:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tensorflow_base_type/</guid>
+      <description>数值类型 标量(Scalar): 单个的实数, 维度为 0. shape 为[] 向量(Vector): n 个实数的有序集合. shape 为[n] 矩阵(Matrix): n 行 m 列</description>
+    </item>
+    
+    <item>
+      <title>分类问题</title>
+      <link>https://tickscn.github.io/post/%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Fri, 04 Dec 2020 18:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/</guid>
+      <description>预测值是离散的, 这种问题被称为分类问题. 比如之前举出的判断给出点的象限的问题 模型构建 单输入, 单输出 \(y = wx+b\) 多输入, 单输出 \(y = \boldsymbol{w}^T\boldsymbol{x}+b\) 多输入, 多输出 \(\boldsymbol{y</description>
+    </item>
+    
+    <item>
+      <title>回归问题</title>
+      <link>https://tickscn.github.io/post/%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Thu, 03 Dec 2020 20:37:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/</guid>
+      <description>一个线性问题 \(y = wx+b\). 如果有两个点, 可以直接求出解析解. 如果是很多个点, 求一个 误差 最小的直线需要怎么作? 首先定义误差为直线采样点与样本点之间的差</description>
+    </item>
+    
+    <item>
+      <title>神经网络简要介绍</title>
+      <link>https://tickscn.github.io/post/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Thu, 03 Dec 2020 16:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E5%85%A5%E9%97%A8/</guid>
+      <description>机器学习 机器学习可以分为监督学习(Supervised Learning), 无监督学习(Unsupervised Learning), 强化学习(Reinforcement Learning, RL) 有监督</description>
+    </item>
+    
+    <item>
+      <title>气</title>
+      <link>https://tickscn.github.io/post/qi/</link>
+      <pubDate>Wed, 02 Dec 2020 18:37:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/qi/</guid>
+      <description>一个棋子其上下左右的地方叫气. 如果气被对方的子占据就会死去, 被拿开. 打吃 指如果对方不应对, 下一次就可以吃掉对方的子. 禁入点: 放入后自己没气.</description>
+    </item>
+    
+    <item>
+      <title>棋盘, 行棋次序</title>
+      <link>https://tickscn.github.io/post/checkerboard/</link>
+      <pubDate>Wed, 02 Dec 2020 18:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/checkerboard/</guid>
+      <description>棋盘大小 现 19x19 为主流. 19 横与 19 纵. 围棋落子在格点上, 不是格中. 有 19x19=361 个格点 中间的位置为 天元 次序 黑棋先行, 白棋后行. 交替下棋. 一次一颗</description>
+    </item>
+    
+    <item>
+      <title>实现一个简单的网络</title>
+      <link>https://tickscn.github.io/post/dualnet_example/</link>
+      <pubDate>Wed, 02 Dec 2020 16:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/dualnet_example/</guid>
+      <description>代码 将之前的介绍用 python 实现 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58</description>
+    </item>
+    
+    <item>
+      <title>反向传播介绍</title>
+      <link>https://tickscn.github.io/post/neural_backpropagation/</link>
+      <pubDate>Tue, 01 Dec 2020 20:54:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/neural_backpropagation/</guid>
+      <description>链式法则 当某个复合函数满足 外部函数有连续偏导数 内部函数可偏导 则该复合函数的导数可以用构成复合函数的各个函数的导数的乘积表示。 反向传播 加法结点</description>
+    </item>
+    
+    <item>
+      <title>入门示例</title>
+      <link>https://tickscn.github.io/post/neural_introduction/</link>
+      <pubDate>Tue, 01 Dec 2020 16:54:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/neural_introduction/</guid>
+      <description>一个简单的分类任务。已知四个数据点 \((1,1),(-1,1),(-1,-1),(1,-1)\), 分别属于 I \(\sim\) IV 象限. 如果给一个新的点， 如何让机器知道它应该属于哪个象限呢？因为特征简单，传统方法，使用两</description>
+    </item>
+    
+    <item>
+      <title>四平方定理</title>
+      <link>https://tickscn.github.io/post/sipingfang/</link>
+      <pubDate>Tue, 24 Nov 2020 18:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sipingfang/</guid>
+      <description>任意一个正整数 n 可以分为不超过 4 个的完全平方数之和, 且当它可以分为 4 个完全平方数之和时, n 可以表示为 \(4^{k_1}(8k_2+7)\)</description>
+    </item>
+    
+    <item>
+      <title>分离与支撑超平面</title>
+      <link>https://tickscn.github.io/post/separating_hyperplane/</link>
+      <pubDate>Sun, 22 Nov 2020 20:13:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/separating_hyperplane/</guid>
+      <description>分离超平面 两个不相交的凸集可以用一个超平面或仿射函数分离开来假设凸集 \(C\) 和 \(D\) 且 \(C\cap D=\emptyset\), 那么存在 \(\boldsymbol{a\neq 0}, b\) 使得 \(\forall\boldysmbol{x}\in C, \boldsymbol{a^Tx}\leqslant b. \forall\boldsymbol{x}\in D, \boldsymbol{a^Tx}\geqslant b\). 超平面 \(\{\boldsymbol{x\arrowvert a^Tx}=b\}\) 被称为集合 C,D 的分</description>
+    </item>
+    
+    <item>
+      <title>广义不等式</title>
+      <link>https://tickscn.github.io/post/generalized_inequality/</link>
+      <pubDate>Fri, 20 Nov 2020 20:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/generalized_inequality/</guid>
+      <description>正常锥与广义不等式 满足以下条件的锥 \(K\) 是 正常锥 \(K\) 是凸的 \(K\) 是闭的 \(K\) 是实的, 即其内部是非空的 \(K\) 是尖的, 即\(x\in K, -x \in K\Rightarrow x=0\) 其可以用来定义广义不</description>
+    </item>
+    
+    <item>
+      <title>保凸运算</title>
+      <link>https://tickscn.github.io/post/convex_keep/</link>
+      <pubDate>Fri, 20 Nov 2020 20:29:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/convex_keep/</guid>
+      <description>交集 如果 \(S_1, S_2\) 是凸的, 那么 \(S_1\cap S_2\) 也是凸的 仿射函数 一个函数可以表示为线性函数和常数的和, 称该函数为仿射的. 如果集合 \(S\) 是凸的, 函数 \(f\) 是仿射的, \(S\) 在 \(f\)</description>
+    </item>
+    
+    <item>
+      <title>凸集重要的例子</title>
+      <link>https://tickscn.github.io/post/convex_set_example/</link>
+      <pubDate>Fri, 20 Nov 2020 20:28:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/convex_set_example/</guid>
+      <description>一些重要的凸集的例子 空集 \(\emptyset\), 单点集, 全空间都是全空间的仿射子集, 都是凸集 任意直线是仿射的. 通过零点直线同时也是锥. 长度非 0 的线段是凸的但不是仿</description>
+    </item>
+    
+    <item>
+      <title>仿射集合和凸集</title>
+      <link>https://tickscn.github.io/post/convex_set/</link>
+      <pubDate>Fri, 20 Nov 2020 20:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/convex_set/</guid>
+      <description>直线与线段 在 \(\bf{R}^n\) 空间中的两个点 \(\boldsymbol{x_1, x_2}\), 那所有潢足以下形式的所有点 \[\boldsymbol{y} = \theta\boldsymbol{x_1} + (1-\theta)\boldsymbol{x_2}\] 组成一条穿越 \(\boldsymbol{x_1, x_2}\) 的直线, 当 $0\leqslant θ \leqslant 1$时构成了一条以 \(\boldsymbol{x_1, x_2}\) 为端点的的闭线段 仿</description>
+    </item>
+    
+    <item>
+      <title>凸优化引言</title>
+      <link>https://tickscn.github.io/post/convex_optimization_instruction/</link>
+      <pubDate>Sat, 14 Nov 2020 16:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/convex_optimization_instruction/</guid>
+      <description>数学优化 数学优化问题可以写成如下形式 \begin{equation} \begin{split} &amp;amp;minimize\quad &amp;amp; f_0(\boldsymbol{x}) \\\ &amp;amp;subject\ to\ &amp;amp;f_i(\boldsymbol{x}) \leqslant \boldsymbol{b_i} \end{split} \end{equation} \(f_0\) 是指目标函数, 是优化变量 $\boldsymbol{x}$的函数, 下面的称为约</description>
+    </item>
+    
+    <item>
+      <title>接口(interfaces)和反射(reflection)</title>
+      <link>https://tickscn.github.io/post/go_interfaces_reflection/</link>
+      <pubDate>Mon, 09 Nov 2020 19:21:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_interfaces_reflection/</guid>
+      <description>接口介绍 Go 不是传统的面向对象的语言, 但是可以实现很多面向对象的特性. 其中接口是一种强大工具. 接口是一个方法定义的集合, 它不提供方法的实现代码</description>
+    </item>
+    
+    <item>
+      <title>结构(struct)与方法(method)</title>
+      <link>https://tickscn.github.io/post/go_struct_method/</link>
+      <pubDate>Sun, 08 Nov 2020 20:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_struct_method/</guid>
+      <description>以经知道可以使用 struct 来定义自定义的类型, 在 C 中也是有的 使用工厂方法创建结构体实例 结构体工厂 按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例</description>
+    </item>
+    
+    <item>
+      <title>包</title>
+      <link>https://tickscn.github.io/post/go_package/</link>
+      <pubDate>Sat, 07 Nov 2020 20:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_package/</guid>
+      <description>标准库 内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途 unsafe: 一般用于 C/C++ 程序的调用中, 打破了 Go 的类型安全 syscall,os, os/exec: syscall: 提供操作系统低层调用的基本接</description>
+    </item>
+    
+    <item>
+      <title>函数</title>
+      <link>https://tickscn.github.io/post/go_func/</link>
+      <pubDate>Sat, 07 Nov 2020 00:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_func/</guid>
+      <description>Go 语言中有三种类型的函数, 具有名字的普通函数, 匿名函数或 lambda 函数, 方法. 除了 main 和 init 函数外其它函数都可以有参数和返回值. Go 中强制要求左大括号不换</description>
+    </item>
+    
+    <item>
+      <title>分支循环</title>
+      <link>https://tickscn.github.io/post/go_branch_loop/</link>
+      <pubDate>Fri, 06 Nov 2020 02:19:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_branch_loop/</guid>
+      <description>条件语句 if 单分支 1 2 3 if condition { /*condition 为 true 时执行*/ } 双分支 1 2 3 4 5 if condition { /*condition 为 true 时执行*/ } else { /*condition 为 false 时执行*/ } 多分支 1 2 3 4 5 6 7 if condition1 { } else if</description>
+    </item>
+    
+    <item>
+      <title>Go 基础数据类型</title>
+      <link>https://tickscn.github.io/post/go_basetype/</link>
+      <pubDate>Wed, 28 Oct 2020 15:21:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_basetype/</guid>
+      <description>Go 语言将数据类型分为四类: 基础类型 复合类型 引用类型 接口类型 整型 Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可</description>
+    </item>
+    
+    <item>
+      <title>系统安全</title>
+      <link>https://tickscn.github.io/post/osc_security/</link>
+      <pubDate>Tue, 27 Oct 2020 18:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_security/</guid>
+      <description>安全问题 一些安全违归 违反机密: 涉及未经授权的数据读取 违反诚信: 涉及未经授权的数据修改 违反可用: 涉及未经授权的数据破坏 盗窃服务: 涉及未经授权的</description>
+    </item>
+    
+    <item>
+      <title>Go 程序结构</title>
+      <link>https://tickscn.github.io/post/go_program_struct/</link>
+      <pubDate>Tue, 27 Oct 2020 18:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_program_struct/</guid>
+      <description>命名 函数, 变量, 常量, 类型, 语名标号, 包名都以 Unicode 字母或下划线开头, 后面可以有任意数量的数字, 字母, 下划线. 命名区分大小写 一个名字在函数内部定</description>
+    </item>
+    
+    <item>
+      <title>事件</title>
+      <link>https://tickscn.github.io/post/redis_event/</link>
+      <pubDate>Tue, 01 Sep 2020 21:12:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/redis_event/</guid>
+      <description>Redis 服务器是一个事件驱动的程序, 主要处理两类事件 文件事件. 是客户端通过套接字进行的通信事件 时间事件: 定时操作的抽象 文件事件 基于 Reactor 模式(非阻塞 IO</description>
+    </item>
+    
+    <item>
+      <title>单机数据库的实现</title>
+      <link>https://tickscn.github.io/post/redis_single_imp/</link>
+      <pubDate>Tue, 01 Sep 2020 20:47:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/redis_single_imp/</guid>
+      <description>数据库 redisDB 中有一个 dict 指针, 其指向数据库保存的键值对 redisServer.db 保存数据库数组, redisServer.dbnum 保存数据库数量 数据库主要由 dict 和 expire 两个字典组成, dict 保存键值对, expire 保存过期时</description>
+    </item>
+    
+    <item>
+      <title>数据结构与对象</title>
+      <link>https://tickscn.github.io/post/redis_struct_and_object/</link>
+      <pubDate>Tue, 01 Sep 2020 16:53:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/redis_struct_and_object/</guid>
+      <description>Redis 不是一个单纯的 键-值 存储, 可以使用不同类型的值 二进制安全的字符串(Binary-safe String) 链表(Lists): 按插入顺序排序的字符串列表 集</description>
+    </item>
+    
+    <item>
+      <title>扩展欧几里得算法</title>
+      <link>https://tickscn.github.io/post/exgcb/</link>
+      <pubDate>Sun, 30 Aug 2020 17:10:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/exgcb/</guid>
+      <description>欧几里得算法 一个用来计算两个整数 a, b 的最大公约数, 我更喜欢辗转相除法这个名字, 意思更明确且我上学时就是这个名字. 用 gcd(a, b) 表示 a, b 的最大公约数.</description>
+    </item>
+    
+    <item>
+      <title>Unicode</title>
+      <link>https://tickscn.github.io/post/unicode/</link>
+      <pubDate>Tue, 25 Aug 2020 16:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unicode/</guid>
+      <description>为了制定一个适应多语言的统一编码系统, 多个机构成立了 Unicode 联盟. 2019 年 5 月发布的 Unicode 12.1 包含 137994 个字符, 共 150 种语言 统一字符集(Universal Coded Character Set, UCS)</description>
+    </item>
+    
+    <item>
+      <title>线程同步</title>
+      <link>https://tickscn.github.io/post/linux_cpp_sync/</link>
+      <pubDate>Mon, 17 Aug 2020 17:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/linux_cpp_sync/</guid>
+      <description>并发编程有两种基本模型 消息传递(message passing) 共享内存(shared memory) 分布式系统中, 只有消息传递模型是实用的. 线程同步四项原则 尽量低限度的</description>
+    </item>
+    
+    <item>
+      <title>线程安全的对象生命期管理</title>
+      <link>https://tickscn.github.io/post/linux_cpp_multithread/</link>
+      <pubDate>Sun, 16 Aug 2020 16:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/linux_cpp_multithread/</guid>
+      <description>多线程与析构函数 当一个对象可以被多个线程访问, 如何确认何时销毁对象, 常见的竞态条件有 在即将析构一个对象时, 如何确认是否有其它线程正在使用该对</description>
+    </item>
+    
+    <item>
+      <title>套接字选项</title>
+      <link>https://tickscn.github.io/post/socket_options/</link>
+      <pubDate>Thu, 13 Aug 2020 16:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/socket_options/</guid>
+      <description>有很多方法来获取和设置套接字的选项 getsockopt 的 setsockopt fcntl ioctl getsockopt 和 setsockopt 这两个函数仅用于套接字 1 2 3 4 #include &amp;lt;sys/socket.h&amp;gt;int getsockopt(int sockfd, int level, int option_name, void* restrict option_value, socklen_t* restrict option_len); int setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len); 第一个参</description>
+    </item>
+    
+    <item>
+      <title>IO 复用: select 和 poll 函数</title>
+      <link>https://tickscn.github.io/post/unp_io_multiplexing/</link>
+      <pubDate>Tue, 11 Aug 2020 10:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_io_multiplexing/</guid>
+      <description>客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果.</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;14</title>
+      <link>https://tickscn.github.io/post/c&#43;&#43;14/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/c&#43;&#43;14/</guid>
+      <description>二进制字面量 1 char a = 0b1111&amp;#39;1111; 以 0b 或 0B 开头, 可以用&amp;rsquo;在分隔 扩展 8 进制 以 0 开头 10 进制 默认, 无特殊前缀 18 进制 0x 或 0X 泛型 lambda 表达式 lambda 表达式参数列</description>
+    </item>
+    
+    <item>
+      <title>系统保护</title>
+      <link>https://tickscn.github.io/post/osc_system_protected/</link>
+      <pubDate>Fri, 07 Aug 2020 14:23:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_system_protected/</guid>
+      <description>保护目标 最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源</description>
+    </item>
+    
+    <item>
+      <title>锁</title>
+      <link>https://tickscn.github.io/post/innodb_lock/</link>
+      <pubDate>Thu, 06 Aug 2020 17:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/innodb_lock/</guid>
+      <description>锁是用来管理对共享资源的并发访问. InnoDB 会在行的级别对表上锁, 不过除了表, 引擎还会在数据库的其它共享对象中使用锁, 如缓冲池中的 LRU 列表. lock 与 latch latch 一</description>
+    </item>
+    
+    <item>
+      <title>索引与算法</title>
+      <link>https://tickscn.github.io/post/mysql_index/</link>
+      <pubDate>Thu, 06 Aug 2020 14:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_index/</guid>
+      <description>InnoDB 索引概述 B+ 树索引 全文索引 哈希索引 哈希索引是自适应的, 不能控制是否生成. B+树就是数据库中最常用和最有效的索引 基础数据结构回顾 二叉搜索树与平</description>
+    </item>
+    
+    <item>
+      <title>InnoDB 存储引擎</title>
+      <link>https://tickscn.github.io/post/mysql_innodb/</link>
+      <pubDate>Wed, 05 Aug 2020 17:03:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_innodb/</guid>
+      <description>InnoDB 体系架构 后台线程 InnoDB 是多线程模型, 因此后台有多个不同的后台线程, 负责处理不同的任务 主线程(Master Thread) 是核心的后台线程, 负责将缓冲池中的数</description>
+    </item>
+    
+    <item>
+      <title>MySQL 体系结构和存储引擎</title>
+      <link>https://tickscn.github.io/post/mysql_engines/</link>
+      <pubDate>Wed, 05 Aug 2020 15:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_engines/</guid>
+      <description>MySQL 体系结构 MySQL 由以下几个部分组成 连接池组件 管理服务和工具组件 SQL 接口组件 查询分析器组件 优化器组件 缓冲组件 插件式存储引擎 物理文件 MySQL 存储引擎 对于开发</description>
+    </item>
+    
+    <item>
+      <title>使用触发器</title>
+      <link>https://tickscn.github.io/post/mysql_trigger/</link>
+      <pubDate>Tue, 04 Aug 2020 20:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_trigger/</guid>
+      <description>触发器 想要某些语句在事件发生时自动执行. 触发器可以响应以下语句 DELETE INSERT UPDATE 创建触发器 需要以下四条信息 唯一触发器名字 触发器关联的表 触发器应响应的语句</description>
+    </item>
+    
+    <item>
+      <title>数据库管理</title>
+      <link>https://tickscn.github.io/post/mysql_manager/</link>
+      <pubDate>Tue, 04 Aug 2020 20:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_manager/</guid>
+      <description>访问控制 GRANT 授予权限 REVOKE 撤销权限 备份数据 因为 MySQL 是基于磁盘的文件, 所以普通的文件备份系统就可以备份 MySQL 数据库. 不过考虑到数据库的文件总是被打开和使用</description>
+    </item>
+    
+    <item>
+      <title>使用游标</title>
+      <link>https://tickscn.github.io/post/mysql_cursor/</link>
+      <pubDate>Tue, 04 Aug 2020 13:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_cursor/</guid>
+      <description>有时, 需要在检索出来的结果行中前进或后退一行或多行. 这就是游标的用处 MySQL 游标只能用于存储过程(函数) 使用游标 首先需要声明它, 定义要使用的 SELECT 语句</description>
+    </item>
+    
+    <item>
+      <title>全文本搜索</title>
+      <link>https://tickscn.github.io/post/mysql_fulltext_serch/</link>
+      <pubDate>Mon, 03 Aug 2020 18:46:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_fulltext_serch/</guid>
+      <description>常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM 使用全文本搜索 启用全文本搜索 创建 table 时使用 FULLTEXT 子语句 1 2 3 4 5 6 7 CREATE TABLE productnotes( note_id int NOT NULL AUTO_INCREMET, ... note_text text NULL, PRIMARY KEY(note_id), FULLTEXT(note_text)</description>
+    </item>
+    
+    <item>
+      <title>基本 TCP 套接字编程</title>
+      <link>https://tickscn.github.io/post/unp_tcp_base/</link>
+      <pubDate>Mon, 03 Aug 2020 11:46:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_tcp_base/</guid>
+      <description>socket 函数 调用 socket 函数指定通信协议类型 1 2 #include &amp;lt;sys/socket.h&amp;gt;int socket(int domain, int type, int protocol); 协议簇 domain 说明 AF_INET IPv4 协议 AF_INET6 IPv6 协议 AF_LOCAL Unix 域协议 AF_ROUTE 路由套接字 AF_KEY 密钥套接字 类型 type 说明 SOCK_STREAM 字节流套接字 SOCK_DGRAM</description>
+    </item>
+    
+    <item>
+      <title>套接字编程简介</title>
+      <link>https://tickscn.github.io/post/unp_socket_introduction/</link>
+      <pubDate>Mon, 03 Aug 2020 11:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_socket_introduction/</guid>
+      <description>套接字地址结构 IPv4 套接字地址结构 通常也通为网际套接字地址结构, 它以 sockaddr_in 命名, 定义在头文件 &amp;lt;netinet/in.h&amp;gt;. 它的 POSIX 定义 1 2 3 4 5 6 7 8 9 10 11 struct in_addr { in_addr_t s_addr; /* 32 bits IPv4 地址</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;17</title>
+      <link>https://tickscn.github.io/post/c&#43;&#43;17/</link>
+      <pubDate>Sun, 02 Aug 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/c&#43;&#43;17/</guid>
+      <description>类模版参数推导 1 2 3 4 5 6 7 8 9 template &amp;lt;typename T = float&amp;gt; struct Foo { T val; Foo() : val() {} Foo(T _val) : val(_val) {} }; Foo f1(1); // OK Foo&amp;lt;int&amp;gt; Foo f2; // OK Foo&amp;lt;float&amp;gt; 折叠表达式 1 2 3 4 5 template &amp;lt;typename... T&amp;gt; auto sumxxx(T... args) { return (0 + ... + args); }</description>
+    </item>
+    
+    <item>
+      <title>I/O 系统</title>
+      <link>https://tickscn.github.io/post/osc_io_system/</link>
+      <pubDate>Wed, 29 Jul 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_io_system/</guid>
+      <description>概述 因为 I/O 设备的功能和速度差异很大, 所以需要不同听方式不控制设备. 这些方法构成了内核的 I/O 子系统. 设备驱动程序为 I/O 子系统提供了统一的访问接口.</description>
+    </item>
+    
+    <item>
+      <title>大容量存储结构</title>
+      <link>https://tickscn.github.io/post/osc_storage_structure/</link>
+      <pubDate>Tue, 28 Jul 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_storage_structure/</guid>
+      <description>概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t</description>
+    </item>
+    
+    <item>
+      <title>文件系统实现</title>
+      <link>https://tickscn.github.io/post/osc_file_system_imp/</link>
+      <pubDate>Tue, 28 Jul 2020 15:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_file_system_imp/</guid>
+      <description>文件系统结构 为了提高 I/O 效率, 内存和磁盘之间以块(block)为单位传输. 每个块有一个或多个扇区. 根据驱动不同, 扇区大小从 32B 到 4096B 不等, 一个磁盘</description>
+    </item>
+    
+    <item>
+      <title>文件系统</title>
+      <link>https://tickscn.github.io/post/osc_file_system/</link>
+      <pubDate>Tue, 28 Jul 2020 12:31:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_file_system/</guid>
+      <description>文件概念 计算机可以在各种存储介质上存储信息, 为了方便使用, 操作系统提供了信息存储的统一视图, 对存储设备的物理属性加以抽象, 从而定义逻辑存储单</description>
+    </item>
+    
+    <item>
+      <title>行为模式</title>
+      <link>https://tickscn.github.io/post/design_behavior/</link>
+      <pubDate>Mon, 27 Jul 2020 14:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_behavior/</guid>
+      <description>责任链模式(Chain of Responsibility) 意图: 使多个对象都有机会处理请求, 从而避免了请求的发送者和接收者之间的耦合关系. 将这些对象连成一条链, 并沿链传递请</description>
+    </item>
+    
+    <item>
+      <title>结构型模型</title>
+      <link>https://tickscn.github.io/post/design_construction/</link>
+      <pubDate>Sat, 25 Jul 2020 16:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_construction/</guid>
+      <description>结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的</description>
+    </item>
+    
+    <item>
+      <title>TCP, UDP, SFTP</title>
+      <link>https://tickscn.github.io/post/unp_chapter2/</link>
+      <pubDate>Fri, 24 Jul 2020 20:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_chapter2/</guid>
+      <description>TCP 端口号与并发服务器 监听套接字(* : 21, * : *) 接收本地接口的 21 端口等待连接当一个客户(206.168.122.219)选择临时端口 1500, 与服务器连</description>
+    </item>
+    
+    <item>
+      <title>简介</title>
+      <link>https://tickscn.github.io/post/unp_jianjie/</link>
+      <pubDate>Fri, 24 Jul 2020 19:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_jianjie/</guid>
+      <description>一个时间获取程序 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 #include &amp;#34;unp.h&amp;#34; int main(int argc, char* argv[]) { int sockfd, n; char recvline[MAXLENGTH + 1]; struct sockaddr_in servaddr; if (argc != 2) err_quit(&amp;#34;Usage:a.out &amp;lt;IPAddress&amp;gt;&amp;#34;); if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) &amp;lt; 0) err_sys(&amp;#34;socket error&amp;#34;); bzero(&amp;amp;servaddr, sizeof(servaddr)); // 置0;</description>
+    </item>
+    
+    <item>
+      <title>电子邮件服务</title>
+      <link>https://tickscn.github.io/post/net_email/</link>
+      <pubDate>Thu, 23 Jul 2020 15:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_email/</guid>
+      <description>电子邮件是需要中间服务器暂存和转发邮件的, 目前使用电子邮件发送协议有 SMTP(Simple Mail Transfer Protocol, 简单邮件传输协议), 发送邮件的 POP3(Post Office Protocal 3, 简单邮局协议 3), IMAP(Internet Message Access Protocol, 互联</description>
+    </item>
+    
+    <item>
+      <title>DHCP</title>
+      <link>https://tickscn.github.io/post/net_dhcp/</link>
+      <pubDate>Thu, 23 Jul 2020 15:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_dhcp/</guid>
+      <description>动态主机配置协议(DHCP)一种用来简化 IP 配置的管理的服务. 可以为安装了 DHCP 客户端的主机自动配置动态 IP DHCP 服务维户一个 IP 地址池, 其中保存着可用的</description>
+    </item>
+    
+    <item>
+      <title>创建型模型</title>
+      <link>https://tickscn.github.io/post/design_creator/</link>
+      <pubDate>Wed, 22 Jul 2020 23:23:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_creator/</guid>
+      <description>抽象工厂模式(Abstract Factory) 意图: 创建一系列相关或相互依赖对象的接口, 而无需指定具体的类 别名: Kit 动机: 有很多个类, 它们相互关联. 因为不同</description>
+    </item>
+    
+    <item>
+      <title>DNS 服务</title>
+      <link>https://tickscn.github.io/post/net_dns/</link>
+      <pubDate>Wed, 22 Jul 2020 19:53:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_dns/</guid>
+      <description>DNS(Domain Name System), 在 *unix 中一般被称为 BIND(Berkeley Internet Name Domain Service), 用来将主机名翻译为 IP 地址 引入原因 IP 地址标识的不足 不便记忆 不方便地址变更 不安全 host 文件名称解析方案 可以使用一个文</description>
+    </item>
+    
+    <item>
+      <title>应用层</title>
+      <link>https://tickscn.github.io/post/net_application_layer/</link>
+      <pubDate>Wed, 22 Jul 2020 19:52:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_application_layer/</guid>
+      <description>一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相</description>
+    </item>
+    
+    <item>
+      <title>一个所见即所得(WYSIWYG)的编辑器</title>
+      <link>https://tickscn.github.io/post/design_wysiwyg/</link>
+      <pubDate>Mon, 20 Jul 2020 20:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_wysiwyg/</guid>
+      <description>设计问题 设计中的 7 个主要问题 文档结构: 对文档内部的表示 格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何</description>
+    </item>
+    
+    <item>
+      <title>UDP</title>
+      <link>https://tickscn.github.io/post/net_udp/</link>
+      <pubDate>Mon, 20 Jul 2020 16:43:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_udp/</guid>
+      <description>当丢失一部分数据, 影响不大, 反而传输的连续性要求更高时, 可以使用用户数据报协议(User Datagram Protocol, UDP) UDP 基础概念 无连接性 不可靠性 以报文为边界 无流量控</description>
+    </item>
+    
+    <item>
+      <title>TCP 概述</title>
+      <link>https://tickscn.github.io/post/net_tcp/</link>
+      <pubDate>Mon, 20 Jul 2020 16:20:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_tcp/</guid>
+      <description>TCP 主要特性 面向连接的协议 仅支持单播传输: 不支持多播和广播. 只支持两个套接字的连接(Socket 由 IP 地址和端口号组成) 提供可靠的交付服务 传输单</description>
+    </item>
+    
+    <item>
+      <title>设计模式引言</title>
+      <link>https://tickscn.github.io/post/design_introduction/</link>
+      <pubDate>Sun, 19 Jul 2020 19:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_introduction/</guid>
+      <description>设计可复用的面向对象程序, 必须找到相关的对象, 以适当的粒度将他们归类, 再定义类的接口和继承层次, 建立对象之间的基本关系. 每一个设计模式系统的</description>
+    </item>
+    
+    <item>
+      <title>传输层概述</title>
+      <link>https://tickscn.github.io/post/net_transport/</link>
+      <pubDate>Sun, 19 Jul 2020 17:14:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_transport/</guid>
+      <description>传输层概述 传输层是承上启下的一层, 与下面的层共同构成通信部分, 同时又是面向用户和最低层. 虽然网络层以经可以将数据由一个主机传输到另一个主机,</description>
+    </item>
+    
+    <item>
+      <title>IP 地址和子网</title>
+      <link>https://tickscn.github.io/post/net_ip_address_and_subnet/</link>
+      <pubDate>Thu, 16 Jul 2020 15:46:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_ip_address_and_subnet/</guid>
+      <description>IPv4 地址 基本格式 IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局</description>
+    </item>
+    
+    <item>
+      <title>网络层</title>
+      <link>https://tickscn.github.io/post/network_net/</link>
+      <pubDate>Tue, 14 Jul 2020 20:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/network_net/</guid>
+      <description>概述 网络层主要作用 屏蔽网络差异, 提供透明传输 为网络间通信提供路由选择 数据包封装和解封装 拥塞控制 网络层数据交换与相关控制 线路交换 线路交换(Ci</description>
+    </item>
+    
+    <item>
+      <title>字典序</title>
+      <link>https://tickscn.github.io/post/dict_order/</link>
+      <pubDate>Sat, 11 Jul 2020 19:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/dict_order/</guid>
+      <description>给定一个排列, 字典序下一个 从右到左找到第一个小于右邻的位置 i 从右到左找到第一个大于 nums[i] 的位置 j 交换 nums[i], nums[j] 将 nums[i] 后面从小到大排序 原理有几点 固定的几个</description>
+    </item>
+    
+    <item>
+      <title>数字存储</title>
+      <link>https://tickscn.github.io/post/numberic_storage/</link>
+      <pubDate>Sat, 11 Jul 2020 19:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/numberic_storage/</guid>
+      <description>整数类型 无符号数 非负数. 二进制保存 有符号数 最高位为符号位. 负数按二补码保存(相反数反码加 1) IEEE 754 浮点数标准 精度 符号位 S 指数位 E 移码 尾数位 M 总位</description>
+    </item>
+    
+    <item>
+      <title>虚拟内存管理</title>
+      <link>https://tickscn.github.io/post/osc_virtual_memory/</link>
+      <pubDate>Thu, 09 Jul 2020 15:54:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_virtual_memory/</guid>
+      <description>请求调页 仅在需要时再加载程序页到内存 基本概念 调页程序猜测下次换出之前会用到的页. 调页程序不是调入整个程序, 而是调入需要使用的页. 这种方案需要</description>
+    </item>
+    
+    <item>
+      <title>内存管理策略</title>
+      <link>https://tickscn.github.io/post/osc_memory_management/</link>
+      <pubDate>Sun, 05 Jul 2020 15:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_memory_management/</guid>
+      <description>基本介绍 硬件 CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下 确保每个进程有一个单独的内存空间</description>
+    </item>
+    
+    <item>
+      <title>死锁</title>
+      <link>https://tickscn.github.io/post/osc_deadlock/</link>
+      <pubDate>Thu, 02 Jul 2020 15:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_deadlock/</guid>
+      <description>系统模型 使用资源的顺序 申请 使用 释放 加锁可以避免竞争条件, 开发人员应小心可能的死锁 死锁特征 必要条件 互斥: 一个资源不是共享的 占有并等待: 一个占有</description>
+    </item>
+    
+    <item>
+      <title>模板编程</title>
+      <link>https://tickscn.github.io/post/cpp_templates/</link>
+      <pubDate>Thu, 02 Jul 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_templates/</guid>
+      <description>定义一个模板 函数模板 函数模板是生成特定类型函数的蓝图. 由关键字 template 后跟模板参数列表(template parameter list), 参数至少有一个 1 2 3 4 5 6 7 template &amp;lt;typename T&amp;gt; int compare(const</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; Primer chapter7 复习</title>
+      <link>https://tickscn.github.io/post/cppprime7note/</link>
+      <pubDate>Thu, 02 Jul 2020 09:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cppprime7note/</guid>
+      <description>构造函数 一般来说, 当程序员提供了自己的构造函数时, 编译器将不再徥供默认构造函数. 如果需要可以使用 = default 1 2 3 4 5 6 7 8 9 10 11 class ObjectM { private: int a; int b; std::string</description>
+    </item>
+    
+    <item>
+      <title>技巧</title>
+      <link>https://tickscn.github.io/post/sql_statistics/</link>
+      <pubDate>Thu, 02 Jul 2020 08:50:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_statistics/</guid>
+      <description>动态统计 使用不断增多的值, 一行接一行的计算, 开始是对一个值, 最后是对所有值. 动态合计(running sum) 和 动态平均(running averag</description>
+    </item>
+    
+    <item>
+      <title>字符串匹配算法</title>
+      <link>https://tickscn.github.io/post/string_match/</link>
+      <pubDate>Wed, 01 Jul 2020 19:43:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/string_match/</guid>
+      <description>一种字符串匹配算法. 假设有文本串 S, 模式串 P 平凡的暴力匹配算法 1 2 3 4 5 6 7 8 9 10 11 12 13 14 int ViolentFind(const string&amp;amp; S, const string&amp;amp; P) { int sLen = S.length(); int pLen = P.length(); for (int i = 0; i &amp;lt; sLen - pLen;</description>
+    </item>
+    
+    <item>
+      <title>同步</title>
+      <link>https://tickscn.github.io/post/osc_synchronism/</link>
+      <pubDate>Sun, 28 Jun 2020 16:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_synchronism/</guid>
+      <description>多个进程并发的操作同一个变量并且结果与执行顺序有关, 被称为竞争条件. 会导致结果不确定. 为了有正确的结果, 需要进程造成的改变不相互干扰 临界区问</description>
+    </item>
+    
+    <item>
+      <title>专门工具和技巧</title>
+      <link>https://tickscn.github.io/post/cpp_extra_trick/</link>
+      <pubDate>Wed, 24 Jun 2020 22:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_trick/</guid>
+      <description>介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器</description>
+    </item>
+    
+    <item>
+      <title>进程调度</title>
+      <link>https://tickscn.github.io/post/osc_scheduling/</link>
+      <pubDate>Sun, 21 Jun 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_scheduling/</guid>
+      <description>程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执</description>
+    </item>
+    
+    <item>
+      <title>介质访问控制子层(Media Access Control, MAC)</title>
+      <link>https://tickscn.github.io/post/net_mac/</link>
+      <pubDate>Fri, 19 Jun 2020 16:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_mac/</guid>
+      <description>用来对址和解决介质争用 CSMA 监听信道直到信道空闲才发送数据. 隔段时间监听, 一直监听, 一直监听但概率发送 CSMA/CD 可以检测到冲突和组织冲突 检测原理 保证发送</description>
+    </item>
+    
+    <item>
+      <title>数据链路层</title>
+      <link>https://tickscn.github.io/post/net_data_link/</link>
+      <pubDate>Fri, 19 Jun 2020 15:31:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_data_link/</guid>
+      <description>在局域网中数据链路层可分为逻辑链路层(LLC), 介质访问控制(MAC) 功能以级实现 数据链路管理 封装成帧 透明传输 差错控制 数据链路管理 服务类型 有</description>
+    </item>
+    
+    <item>
+      <title>事务</title>
+      <link>https://tickscn.github.io/post/sql_event/</link>
+      <pubDate>Tue, 16 Jun 2020 17:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_event/</guid>
+      <description>事务保证多条语句同时执行或不执行 术语 提交(committing): 固化修改 回滚(rolling back): 撤销 事务日志 创建事务 显式开始一个事务 BEGIN TRANSACTION; or START</description>
+    </item>
+    
+    <item>
+      <title>视图</title>
+      <link>https://tickscn.github.io/post/sql_view/</link>
+      <pubDate>Tue, 16 Jun 2020 17:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_view/</guid>
+      <description>视图的基础表可以是基本表, 临时表, 其它视图 视图是虚拟表 视图只存了 SELECT 语句, 没有存数据 视图的作用 简化数据访问 重用 SQL 语句 自动更新 增强安全性 逻辑上的</description>
+    </item>
+    
+    <item>
+      <title>索引</title>
+      <link>https://tickscn.github.io/post/sql_index/</link>
+      <pubDate>Tue, 16 Jun 2020 16:50:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_index/</guid>
+      <description>创建索引 CREATE INDEX. 创建索引也有代价, 对必要的列创建, 即经常 查询 WHERE 排序 ORDER BY 分组 GROUP BY 联结 JOIN 计算统计顺序 : MIN(), MAX() 或中位数 有些列不应创建索引 只接受很少的值.</description>
+    </item>
+    
+    <item>
+      <title>创建, 更改, 删除表</title>
+      <link>https://tickscn.github.io/post/sql_update_table/</link>
+      <pubDate>Tue, 16 Jun 2020 16:36:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_update_table/</guid>
+      <description>创建表 表名 列名 列的数据类型 列的默认值 约束 约束 说明 NOT NULL 不允许空值 PRIMARY KEY 主键 FOREIGN KEY 外键 UNIQUE 不允许重复 CHECK 使用 boolean 限制插入的值 CREATE TABLE 1 2 3 4 5 6 7 8 9 10 11 12 CREATE</description>
+    </item>
+    
+    <item>
+      <title>插入, 更新, 删除行</title>
+      <link>https://tickscn.github.io/post/sql_update_row/</link>
+      <pubDate>Mon, 15 Jun 2020 19:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_update_row/</guid>
+      <description>INSERT 插入行 UPDATE 更新值 DELETE 删除行 显示表结构 列的顺序 列的名称 列的数据类型 列是否为主键 列中的值是否必须唯一 列中的值是否允许为空 列的默认值 表和列的约束 Mysql 使</description>
+    </item>
+    
+    <item>
+      <title>集合操作</title>
+      <link>https://tickscn.github.io/post/sql_colluction/</link>
+      <pubDate>Mon, 15 Jun 2020 19:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_colluction/</guid>
+      <description>并集 UNION \(A\cup B\) 交集 INTERSECT \(A\cap B\) 差集 EXCEPT \(A - B\) 优先级: SQL 标准中 INTERSECT &amp;gt; UNION, 不过不同的 DBMS 可能有不同的实现, 使有括号可以使执行顺序更清晰 UNION UNION 去掉重复行, UNION ALL 不去重复</description>
+    </item>
+    
+    <item>
+      <title>子查询</title>
+      <link>https://tickscn.github.io/post/sql_subquery/</link>
+      <pubDate>Sun, 14 Jun 2020 18:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_subquery/</guid>
+      <description>嵌套在另一 SQL 语句中的 SELECT 语句 1 2 3 4 5 6 7 8 9 10 -- 列出传记的出版社 SELECT DISTINCT pub_name FROM publishers p JOIN titles t ON t.pub_id = p.pub_id WHERE t.type=&amp;#39;biography&amp;#39;; -- 另一种方法 SELECT p.pub_name FROM publishers p WHERE p.pub_id IN (SELECT t.pub_id FROM titles t WHERE t.type=&amp;#39;biogrphay&amp;#39;); 子查</description>
+    </item>
+    
+    <item>
+      <title>联结</title>
+      <link>https://tickscn.github.io/post/sql_join/</link>
+      <pubDate>Sun, 14 Jun 2020 16:38:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_join/</guid>
+      <description>使用联结可以同时在多个表中检索行. 限定列名 列名在不同表中是可以相同的, 为了唯一标识一个列, 可以使用限定命名 table.column 完整的限定列名 server.database.user.table 使用 AS 创建表的别</description>
+    </item>
+    
+    <item>
+      <title>汇总和分组数据</title>
+      <link>https://tickscn.github.io/post/sql_group/</link>
+      <pubDate>Sun, 14 Jun 2020 13:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_group/</guid>
+      <description>使用聚合函数 function return 备注 MIN(exprs) minimum MAX(exprs) maximum SUM(exprs) summation 空行返回空, 不是 0 AVG(exprs) average COUNT(exprs) nonNULL count COUNT(*) rows 创建聚合表达式 聚合表达式不能出现在 WHERE 子句中 WHERE price = MAX(price) 不合法 SELECT 子句中不能混用非聚</description>
+    </item>
+    
+    <item>
+      <title>操作符和函数</title>
+      <link>https://tickscn.github.io/post/sql_operator_function/</link>
+      <pubDate>Sat, 13 Jun 2020 16:50:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_operator_function/</guid>
+      <description>算术运算 字符串运算 日期和时间运算 系统运算 创建派生列 操作符和函数的结果列, 不会成为表中的永久列 执行算术运算 operator 描述 -expr 取反 +expr 不变 expr1+expr2 求和 expr1-expr2 求差 expr1*expr2 求积</description>
+    </item>
+    
+    <item>
+      <title>chapter III 计算机网络体系结构(Computer Network Architecture)</title>
+      <link>https://tickscn.github.io/post/net_architecture/</link>
+      <pubDate>Fri, 12 Jun 2020 23:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_architecture/</guid>
+      <description>典型计算机网络体系结构 OSI/RM 开放系统互连参考模型(Open System Interconnection Reference Model, OSI/RM) 是第一个标准化的计算机网络体系结构, 分为 7 层 应用层(Application Layer)</description>
+    </item>
+    
+    <item>
+      <title>从表中检索数据</title>
+      <link>https://tickscn.github.io/post/sql_select/</link>
+      <pubDate>Fri, 12 Jun 2020 16:28:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_select/</guid>
+      <description>介绍 SQL 重点 SELECT 语句 1 2 3 4 5 6 7 SELECT columns FROM tables [JOIN join] [WHERE search_condition] [GROUP BY grouping_columns] [HAVING search_condition] [ORDER BY sort_column] 方框中是可选语句 使用 SELECT 和 FROM 检索 可以使用 SELECT 检索一列, 多列或全部的列, FROM 指定检索的</description>
+    </item>
+    
+    <item>
+      <title>SQL 基础</title>
+      <link>https://tickscn.github.io/post/sql_base/</link>
+      <pubDate>Thu, 11 Jun 2020 19:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_base/</guid>
+      <description>SQL 语法 注释: 以两个连字符开始 &amp;ndash;, 持续到行尾 SQL 语句: 关键字引入的标记的的有效组合, 包括关键字, 标识符, 操作符, 字面量和标点 子句: SQL 语句片断 关键字</description>
+    </item>
+    
+    <item>
+      <title>关系模型</title>
+      <link>https://tickscn.github.io/post/sql_relational/</link>
+      <pubDate>Thu, 11 Jun 2020 19:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/sql_relational/</guid>
+      <description>关系模型的基础是集合论. 让人已数据集合而不是已孤立的数据来思考. 该模型描述了如何在数据库表(table)上运行集合运算. 表(table) 类似</description>
+    </item>
+    
+    <item>
+      <title>chapter II</title>
+      <link>https://tickscn.github.io/post/net_base/</link>
+      <pubDate>Sun, 07 Jun 2020 22:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_base/</guid>
+      <description>计算机网络概述 计算机网络发展历史 第一代面向终端的计算机网络 开始时, 网络结构是位于计算中心的计算机主机为中心, 一台或多台终端位于各处. 主机负则</description>
+    </item>
+    
+    <item>
+      <title>大型程序工具</title>
+      <link>https://tickscn.github.io/post/cpp_extra_tool/</link>
+      <pubDate>Sun, 07 Jun 2020 15:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_tool/</guid>
+      <description>异常捕获 抛出异常 C++ 中异常通过抛出一个表达式来产生. 表达式类型和调用链一起决定处理器. 处理器是调用链中与抛出对象类型匹配的最近的那一个, 对象的</description>
+    </item>
+    
+    <item>
+      <title>专门的库特性</title>
+      <link>https://tickscn.github.io/post/cpp_libiary_future/</link>
+      <pubDate>Thu, 04 Jun 2020 18:07:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_libiary_future/</guid>
+      <description>元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&amp;lt;T1, T2, &amp;hellip;, Tn&amp;gt; t; t 是一个有着 n 个类型分别为 T1, T2</description>
+    </item>
+    
+    <item>
+      <title>面像对象编程</title>
+      <link>https://tickscn.github.io/post/oop/</link>
+      <pubDate>Sat, 30 May 2020 13:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/oop/</guid>
+      <description>Objet_Oriented Program, OOP 数据抽象 (分离接口和实现) 继承 动态绑定 继承 类之间通过层级结构继承相关联. 层级结构的根是基类. 其它类直接或间接的继承于它. 继承的类被称为</description>
+    </item>
+    
+    <item>
+      <title>拷贝控制</title>
+      <link>https://tickscn.github.io/post/cpp_copy_control/</link>
+      <pubDate>Wed, 27 May 2020 17:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_copy_control/</guid>
+      <description>5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构</description>
+    </item>
+    
+    <item>
+      <title>动态内存</title>
+      <link>https://tickscn.github.io/post/cpp_dynamic_memory/</link>
+      <pubDate>Mon, 25 May 2020 21:14:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_dynamic_memory/</guid>
+      <description>动态内存和智能指针 动态内存使用一对运算符: new, delete. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存</description>
+    </item>
+    
+    <item>
+      <title>联合容器</title>
+      <link>https://tickscn.github.io/post/map_and_set/</link>
+      <pubDate>Sat, 23 May 2020 17:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/map_and_set/</guid>
+      <description>联合容器中的元素存储和取回按照关键字. 主要有 map. set. map 中元素为 键-值对. set 元素只是关键字 排序容器 map set multimap multiset 无序 unordered_map unordered_set unordered_multimap unordered_multiset pair pair 定义在头文件 utility, 成员变量为</description>
+    </item>
+    
+    <item>
+      <title>算法</title>
+      <link>https://tickscn.github.io/post/cpp_algorithms/</link>
+      <pubDate>Sat, 23 May 2020 16:10:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_algorithms/</guid>
+      <description>概论 大部分算法定义在头文件 algorithm 中, numeric 中定义了常用数学算法 通常算法不是直接作用在容器上, 而是作用在两个迭代器之间的容器. 1 2 3 4 5 6 7 8 9 10 11 12</description>
+    </item>
+    
+    <item>
+      <title>IO Library</title>
+      <link>https://tickscn.github.io/post/cpp_io/</link>
+      <pubDate>Tue, 19 May 2020 14:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_io/</guid>
+      <description>IO Classes header Type iostream istream, wistream, ostream, wostream, iostream, wiostream fstream ifstream, wifstream, ofstream, wofstream, fstream, wfstream sstream istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream 为了支持使用宽字符的语言, 库提供了 wchar_t, 操作宽字符的版本一般以 w 开头, 如 wcin, wcout, wcerr 相当于 cin, cout, cerr 不要</description>
+    </item>
+    
+    <item>
+      <title>顺序容器</title>
+      <link>https://tickscn.github.io/post/cpp_seq_container/</link>
+      <pubDate>Fri, 08 May 2020 15:27:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_seq_container/</guid>
+      <description>顺序表中元素的存储顺序与添加顺序相同. STL 还提供了一些联合容器, 存储顺序根据与元素关联的 key. 容器共享了一个普遍的接口, 并用各自的方法实现. 概论 容</description>
+    </item>
+    
+    <item>
+      <title>日期和时间 API</title>
+      <link>https://tickscn.github.io/post/java_date_and_time/</link>
+      <pubDate>Sun, 03 May 2020 16:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_date_and_time/</guid>
+      <description>时间线 JAVA 的 Date 和 Time API 规范使用时间尺度为 86400s/d 每天正午与官方时间精确匹配 其它时间点, 精确的方式与官方时间接近匹配 Instant 表示时间线上的某一点, 原点为 UTC 1970 年</description>
+    </item>
+    
+    <item>
+      <title>数据库编程</title>
+      <link>https://tickscn.github.io/post/java_database/</link>
+      <pubDate>Sat, 02 May 2020 16:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_database/</guid>
+      <description>Java 数据库连接(JDBC) API 用来使编程人员连接数据库. 并使用结构化查询语言(Structured Query Language, SQL)完成对数据的查询与更新. JDBC 的设计 Java</description>
+    </item>
+    
+    <item>
+      <title>运算符重载和转换</title>
+      <link>https://tickscn.github.io/post/operator_overload/</link>
+      <pubDate>Sat, 02 May 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/operator_overload/</guid>
+      <description>基础概念 重载运处符是特殊的函数: 定义 operator symbol(). 一元运算符有一个参数, 二元运算符有两. 二元运算符的左操作数是第一个参数, 右操作数是第二个参数. 如果运</description>
+    </item>
+    
+    <item>
+      <title>网络</title>
+      <link>https://tickscn.github.io/post/java_network/</link>
+      <pubDate>Tue, 28 Apr 2020 15:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_network/</guid>
+      <description>连接到服务器 使用 telnet 1 2 3 4 5 6 7 $ telnet time-a.nist.gov 13 Trying 129.6.15.28... Connected to time-a.nist.gov. Escape character is &amp;#39;^]&amp;#39;. 58965 20-04-26 11:43:02 50 0 0 484.9 UTC(NIST) * Connection closed by foreign host. 使用 Java 连接到服务器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18</description>
+    </item>
+    
+    <item>
+      <title>可扩展标记语言(Extensible Markup Language, XML)</title>
+      <link>https://tickscn.github.io/post/java_xml/</link>
+      <pubDate>Sat, 25 Apr 2020 09:40:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_xml/</guid>
+      <description>XML 概述 XML 与 HTML 都继承于标准通用标记语言(Standard Generalized Markup Language, SGML), 两者有很大的相似性. XML 文档结构 文档头 1 2 &amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt; &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; 文档类型定义 在文档头后通常是</description>
+    </item>
+    
+    <item>
+      <title>输入与输出</title>
+      <link>https://tickscn.github.io/post/java_io/</link>
+      <pubDate>Tue, 21 Apr 2020 18:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_io/</guid>
+      <description>输入输出流 输入流: 可以读入一个字节序列的对象 输出流: 可以写入一个字节序列的对象 来源和目的地可以是文件, 网络链接或者是内存块 抽象类 InputStream/OutputStream 处理 Unicode 可以</description>
+    </item>
+    
+    <item>
+      <title>流库</title>
+      <link>https://tickscn.github.io/post/java_stream/</link>
+      <pubDate>Sat, 18 Apr 2020 21:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_stream/</guid>
+      <description>通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String</description>
+    </item>
+    
+    <item>
+      <title>并发</title>
+      <link>https://tickscn.github.io/post/java_concurrency/</link>
+      <pubDate>Wed, 15 Apr 2020 21:41:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_concurrency/</guid>
+      <description>将任务移到实现了 Runable 接口类的 run 方法中 由 Runable 创建一个 Thread 对象 启动线程 线程 一个程序同时执行多个任务, 每个任务叫一个线程. #begin_example 一般来说, 进程(proces</description>
+    </item>
+    
+    <item>
+      <title>部署 Java 应用程序</title>
+      <link>https://tickscn.github.io/post/java_release/</link>
+      <pubDate>Sat, 11 Apr 2020 17:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_release/</guid>
+      <description>JAR 文件 Java 归档文件, 包含类文件, 资源文件等 创建 JAR 文件 1 jar cvf JARFilename file1 file2 ... 清单文件 每个 JAR 还包含一个描述归档特征的清单文件, 位于 JAR 特殊目录 MATE-INF 中的 MANIFEST.MF 简单的</description>
+    </item>
+    
+    <item>
+      <title>Swing 用户组件</title>
+      <link>https://tickscn.github.io/post/java_swing/</link>
+      <pubDate>Fri, 10 Apr 2020 21:51:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_swing/</guid>
+      <description>模式 组件三要素 内容 外观 行为 模型-视图-控制器(MVC) 模型: 存储内容 视图: 显示内容 控制器: 处理输入 布局管理 面板默认是流布局(flow layout manager). 居中</description>
+    </item>
+    
+    <item>
+      <title>事件处理</title>
+      <link>https://tickscn.github.io/post/java_event/</link>
+      <pubDate>Fri, 10 Apr 2020 20:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_event/</guid>
+      <description>事件处理基础 监听器 事件源, 可以注删监听器 事件发生, 事件源将事件发送给所有注删的监听器 监听器对象响应事件 简单的例子 1 2 3 4 5 6 7 8 9 10 11 12 13 14</description>
+    </item>
+    
+    <item>
+      <title>图形程序设计</title>
+      <link>https://tickscn.github.io/post/java_gui/</link>
+      <pubDate>Wed, 08 Apr 2020 22:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_gui/</guid>
+      <description>Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4</description>
+    </item>
+    
+    <item>
+      <title>集合</title>
+      <link>https://tickscn.github.io/post/java_collection/</link>
+      <pubDate>Wed, 08 Apr 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_collection/</guid>
+      <description>Java 集合框架 将集合的接口与实现分离 Java 将常用数据结构类库的接口与实现分离. 如队列(queue). 尾部插入 头部删除 查找元素个数 1 2 3 4 5 6 public interface Queue&amp;lt;E&amp;gt; {</description>
+    </item>
+    
+    <item>
+      <title>泛型程序设计</title>
+      <link>https://tickscn.github.io/post/java_generic/</link>
+      <pubDate>Sat, 04 Apr 2020 21:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_generic/</guid>
+      <description>定义简单泛型类 1 2 3 4 5 6 7 8 9 10 public class Pair&amp;lt;T&amp;gt; { private T first; private T second; public Pair() {first = null; second = null;} public Pair(T fitst, T second) {this.first = first; this.second = second;} public T getFirst(){return first;} public T getSecond(){return second;} public void setFirst(T newValue){first = newValue;} public void setSecond(T newValue){second = newValue;} } 定义泛</description>
+    </item>
+    
+    <item>
+      <title>异常、断言、日志</title>
+      <link>https://tickscn.github.io/post/java_exception/</link>
+      <pubDate>Sat, 04 Apr 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_exception/</guid>
+      <description>异常 异常分类 Java 中异常对象都派生于 Throwable 类的一个实例.分为两个分支 Error Exception Error 类表示系统内部错误和资源耗尽错误. 只能通告用户并尽力使程序安全退出 Exception RuntimeException 程序</description>
+    </item>
+    
+    <item>
+      <title>接口, lambda, 内部类</title>
+      <link>https://tickscn.github.io/post/java_interface_lambda/</link>
+      <pubDate>Thu, 26 Mar 2020 23:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_interface_lambda/</guid>
+      <description>接口(interface) 带有接口的类必须实现接口中的方法 1 2 3 4 public interface Comparable { int compareTo(Object other); } 类实现一个接口 声明类的时候使用关键字 implements 对接口中的方法进行定</description>
+    </item>
+    
+    <item>
+      <title>继承</title>
+      <link>https://tickscn.github.io/post/java_inherit/</link>
+      <pubDate>Sun, 08 Mar 2020 21:29:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_inherit/</guid>
+      <description>类, 超类, 子类 定义子类 Java 使用 关键字 extends 来继承. Java 只有公有继承. 没有私有和保护继承 覆盖方法 子类的方法不能访问超类的私有域 super 可以告诉编译器调用超类</description>
+    </item>
+    
+    <item>
+      <title>对象与类</title>
+      <link>https://tickscn.github.io/post/java_object_and_class/</link>
+      <pubDate>Sat, 07 Mar 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_object_and_class/</guid>
+      <description>OOP 面向对象程序设计 类 类是构建对象的蓝图 对象 对象的主要特征 行为. 允许的操作, 类提供的方法 状态. 标识 用户自定义类 构造器 同 C++ 类似, 不过总是伴随 new 操</description>
+    </item>
+    
+    <item>
+      <title>java 开始</title>
+      <link>https://tickscn.github.io/post/java_beging/</link>
+      <pubDate>Sat, 07 Mar 2020 21:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_beging/</guid>
+      <description>Hello, World! 非常传统的开局 1 2 3 4 5 6 7 public class Hello { public static void main(String[] args){ String out = &amp;#34;Hello, World!&amp;#34;; System.out.println(out); } }; 在终端输入 1 2 3 4 $ javac Hello.java $ java Hello Hello, World! $ javac 将 Hello.java 编译成 Hello.class. 用 java 执行 class 中的字节码</description>
+    </item>
+    
+    <item>
+      <title>Java 的基本程序设计结构</title>
+      <link>https://tickscn.github.io/post/java_program_construction/</link>
+      <pubDate>Sat, 07 Mar 2020 21:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_program_construction/</guid>
+      <description>1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &amp;#34;Hello, World!&amp;#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访</description>
+    </item>
+    
+    <item>
+      <title>第四章编程项目</title>
+      <link>https://tickscn.github.io/post/osc_chapter4_project/</link>
+      <pubDate>Sat, 04 Jan 2020 19:49:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_chapter4_project/</guid>
+      <description>项目 1: 数独解决方案验证器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; Primer chapter7 复习</title>
+      <link>https://tickscn.github.io/post/cppprimer7note/</link>
+      <pubDate>Sat, 04 Jan 2020 16:21:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cppprimer7note/</guid>
+      <description>函数 函数定义(function definition)包括返回类型, 函数名, 包含 0 或多个的变量列表, 函数体 使用前必须声明: 函数定义中的函数体被</description>
+    </item>
+    
+    <item>
+      <title>多线程问题习题</title>
+      <link>https://tickscn.github.io/post/osc_chapter4_answer/</link>
+      <pubDate>Wed, 25 Dec 2019 15:47:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_chapter4_answer/</guid>
+      <description>4.15 创建多线程程序验证 3.13 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; Primer chapter5 复习</title>
+      <link>https://tickscn.github.io/post/cppprimer5note/</link>
+      <pubDate>Mon, 23 Dec 2019 17:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cppprimer5note/</guid>
+      <description>try 和 exception handling throw 表达式 判断并抛出一个异常 1 2 if(St.empty()) throw runtime_error(&amp;#34;栈空&amp;#34;); try 1 2 3 4 5 6 7 try { program-statements } catch (exception-declaration) { handler-statements } catch (another-exception-declaration){ handler-statements }</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; Primer chapter2 复习</title>
+      <link>https://tickscn.github.io/post/cppprimer2note/</link>
+      <pubDate>Wed, 18 Dec 2019 16:25:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cppprimer2note/</guid>
+      <description>constexpr 常量表达式. constexpr 内含 const. 不过需要常量表达式来初始化</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; Primer chapter1 部分答案</title>
+      <link>https://tickscn.github.io/post/cppprimer1/</link>
+      <pubDate>Wed, 18 Dec 2019 14:28:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cppprimer1/</guid>
+      <description>1.3 Write a program to print Hello, World on the standard output. 1 2 3 4 5 6 7 #include &amp;lt;iostream&amp;gt; int main() { std::cout &amp;lt;&amp;lt; &amp;#34;Hello, World&amp;#34; &amp;lt;&amp;lt; std::endl; return 0; } 1.4 Our program used the addition operator, +, to add two numbers. Write a program that uses the multiplication operator, *, to print the product instead. 1 2 3 4 5 6 7 8 9 10 #include</description>
+    </item>
+    
+    <item>
+      <title>汇编基本运算</title>
+      <link>https://tickscn.github.io/post/asm-num-arithmetic/</link>
+      <pubDate>Sat, 14 Dec 2019 20:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/asm-num-arithmetic/</guid>
+      <description>整型运算 加 (addition) add 指令 add 指令用来加两个整型 1 add source, destination source 可以是寄存器, 内存, 立即数 destination 可以是寄存器, 内存 但是 source 和 destination 不可以同时是内存 add 后面应该加上后缀来</description>
+    </item>
+    
+    <item>
+      <title>多线程问题</title>
+      <link>https://tickscn.github.io/post/multhread-issues/</link>
+      <pubDate>Mon, 09 Dec 2019 20:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/multhread-issues/</guid>
+      <description>fork() and exec() 某个线程调用 fork(), 新进程复制所有线程还是单一线程? 有的 UNIX 系统有两种形式的 fork() exec() 指定的程序会取代所有线程 信号处理 UNIX 信号(signal) 用于通知</description>
+    </item>
+    
+    <item>
+      <title>汇编数字</title>
+      <link>https://tickscn.github.io/post/asm-number/</link>
+      <pubDate>Mon, 09 Dec 2019 19:55:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/asm-number/</guid>
+      <description>数字类型(numeric data type) 基本数字类型 无符号整型(unsigned integer) 有符号整型(signed integer) BCD 压缩 BCD 单精度浮点数 双精度浮点数 扩展精度浮点</description>
+    </item>
+    
+    <item>
+      <title>数字内存保存格式</title>
+      <link>https://tickscn.github.io/post/number/</link>
+      <pubDate>Sun, 08 Dec 2019 20:06:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/number/</guid>
+      <description>IEEE 754 浮点数标准 精度 符号位 S 指数位 E 移码 尾数位 M 总位数 单精度 1 8 127 23 32 双精度 1 11 1023 52 64 扩展精度 1 15 16383 64 80 32-bit 浮点数 符号位是 1 表示负数, 0 表明正数</description>
+    </item>
+    
+    <item>
+      <title>汇编控制执行顺序</title>
+      <link>https://tickscn.github.io/post/asm-flow-control/</link>
+      <pubDate>Sun, 08 Dec 2019 18:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/asm-flow-control/</guid>
+      <description>程序不总是按顺序从头到尾执行, 有时需要分支或者循环. 指令指针(The Instruction Pointer) 指令指针决定下一个要执行的指令. 此时 EIP(x86_64 是 RIP)不断增加 不能在程序中</description>
+    </item>
+    
+    <item>
+      <title>rust(2)-data-type</title>
+      <link>https://tickscn.github.io/post/rust-2-data-type/</link>
+      <pubDate>Thu, 05 Dec 2019 18:25:53 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/rust-2-data-type/</guid>
+      <description>数据类型 数据类型有两个子集. 标量(scalar) 混合(compound) rust 是静态类型语言, 编译期时就需要知道数据类型. 当有多种可能时, rus</description>
+    </item>
+    
+    <item>
+      <title>stack</title>
+      <link>https://tickscn.github.io/post/stack/</link>
+      <pubDate>Wed, 04 Dec 2019 18:28:03 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/stack/</guid>
+      <description>堆栈(The Stack) 堆栈的工作方式 堆栈是一段特殊的内存空间. 它特殊在数据的插入和删除数据的方式. 普通的数据段(data section)数据顺序存储</description>
+    </item>
+    
+    <item>
+      <title>rust(1)</title>
+      <link>https://tickscn.github.io/post/rust-1/</link>
+      <pubDate>Wed, 04 Dec 2019 16:21:59 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/rust-1/</guid>
+      <description>一般概念 需要了解 变量 基本类型 函数 注释 关键字: rust 像其它语言一样有着保留的关键字, 关键字不能用作变量名和函数名等其它地方 变量(Variables</description>
+    </item>
+    
+    <item>
+      <title>多线程</title>
+      <link>https://tickscn.github.io/post/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Wed, 04 Dec 2019 14:43:49 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <description>线程是CPU使用的基本单元 线程ID 程序计数器 寄存器组 堆栈 与进程不同的是线程共用数据和代码 多线程的优点 响应性: 部分阻塞时仍能运行 资源共享: 与进</description>
+    </item>
+    
+    <item>
+      <title>move-data</title>
+      <link>https://tickscn.github.io/post/move-data/</link>
+      <pubDate>Sun, 01 Dec 2019 16:18:37 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/move-data/</guid>
+      <description>数据定义 data section 数据段(data section)是最通常的定义数据的地方. 定义了数据内存中的存储位置, 可以在指令中引用, 修改 由 .data 伪指令声明. 该 section</description>
+    </item>
+    
+    <item>
+      <title>simple-assembly-program</title>
+      <link>https://tickscn.github.io/post/simple-assembly-program/</link>
+      <pubDate>Fri, 29 Nov 2019 19:43:09 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/simple-assembly-program/</guid>
+      <description>一个汇编语言的模板 1 2 3 4 5 6 7 8 .section .data &amp;lt; initialized data &amp;gt; .section .bss &amp;lt; uninitialized data &amp;gt; .section .text .globl _start _start: &amp;lt; instruction code &amp;gt; 一个简单的汇编程序 CPUID 指令 根据EAX寄存器的值, CPUID 指令将信息存入 EBX,</description>
+    </item>
+    
+    <item>
+      <title>汇编学习工具</title>
+      <link>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%AD%A6%E4%B9%A0%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Fri, 29 Nov 2019 18:49:18 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%AD%A6%E4%B9%A0%E5%B7%A5%E5%85%B7/</guid>
+      <description>汇编器(assembler) MASM NASM GAS: 使用AT&amp;amp;T 语法 等 链接器(linker) 链接 objfile 生成可执行文件 调试器(debugger) GNU assembler gas 是 GNU b</description>
+    </item>
+    
+    <item>
+      <title>指令管理</title>
+      <link>https://tickscn.github.io/post/%E6%8C%87%E4%BB%A4%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Thu, 28 Nov 2019 20:37:58 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%8C%87%E4%BB%A4%E7%AE%A1%E7%90%86/</guid>
+      <description>CPU从内存读取指令(instruction)和数据(data). 为了区分指令和数腒, 分别使用指令指针(instruction pointer), 数据指针(d</description>
+    </item>
+    
+    <item>
+      <title>simple_unix_shell</title>
+      <link>https://tickscn.github.io/post/simple-unix-shell/</link>
+      <pubDate>Wed, 27 Nov 2019 16:18:40 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/simple-unix-shell/</guid>
+      <description>UNIX Shell 提供命令提示符. 如 ticks&amp;gt; 1 ticks&amp;gt; cat a.txt 读取命令, 创建子进程 命令最后加 &amp;ldquo;&amp;amp;&amp;rdquo; 符号, shell 与 子程序并发执行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26</description>
+    </item>
+    
+    <item>
+      <title>单源最短路径</title>
+      <link>https://tickscn.github.io/post/%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</link>
+      <pubDate>Wed, 27 Nov 2019 14:59:46 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</guid>
+      <description>带权有向图 V = (G, E)权重函数了$\omega: E\rightarrow \mathbf{R}$. 图中路径的权重是组成路径的边权重之和. 最短路径问题是求权重最小路径的问题 最短路径的变体 单源</description>
+    </item>
+    
+    <item>
+      <title>汇编基础</title>
+      <link>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Tue, 26 Nov 2019 18:42:59 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/</guid>
+      <description>语法元素 整数常量(Integers) Intel [{+ | -}] digits [radix] radix 进制 h 16 d 10(默认) q/o 8 b 二进制 r 编码实数 t 10(备用) y 2(备用) AT&amp;amp;T prefix 进制 0b/0B 2 0 8 0x/0X 16</description>
+    </item>
+    
+    <item>
+      <title>OSC3 习题</title>
+      <link>https://tickscn.github.io/post/osc3-%E4%B9%A0%E9%A2%98/</link>
+      <pubDate>Tue, 26 Nov 2019 15:19:39 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc3-%E4%B9%A0%E9%A2%98/</guid>
+      <description>习题 以下程序创建了多少进程 1 2 3 4 5 6 7 8 9 10 11 12 #include &amp;lt;stdio.h&amp;gt;#include &amp;lt;unistd.h&amp;gt; int main() { int i; for (i = 0; i &amp;lt; 4; i++) fork(); return 0; } $2^4 = 16$ 假设父进程pid 2600, 子进程pid 2603, 下程序输出 1</description>
+    </item>
+    
+    <item>
+      <title>最小生成树</title>
+      <link>https://tickscn.github.io/post/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</link>
+      <pubDate>Tue, 26 Nov 2019 13:52:34 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</guid>
+      <description>一个边通无向图 G = (V, E), 为每一条边(u, v)$\in$ E, 赋予权重 w(u, v), 那么 G 的一个无环子集 , 使得 T 连通所有结点且权重最小. 该子集 T 被称作 最小生成树. 求取 T 的</description>
+    </item>
+    
+    <item>
+      <title>I/O系统</title>
+      <link>https://tickscn.github.io/post/i-o%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Mon, 25 Nov 2019 19:24:57 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/i-o%E7%B3%BB%E7%BB%9F/</guid>
+      <description>I/O 访问层次 高级语言函数: 可移值 操作系统: 使用API BIOS 例: 写入字符到显示器 程序调用库函数, 写入标准输出 库函数调用系统函数, 传入字符串指针 操作系</description>
+    </item>
+    
+    <item>
+      <title>计算机组件</title>
+      <link>https://tickscn.github.io/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Mon, 25 Nov 2019 19:06:29 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E4%BB%B6/</guid>
+      <description>主板(motherboard) 主板有不同的组件. 但是一般都有基础组件 CPU 插座 存储器插槽(SIMM 或 DIMM) BIOS CMOS RAM, 电池供电 大容量设备(硬盘, CD) 接口 外设</description>
+    </item>
+    
+    <item>
+      <title>client/server communication</title>
+      <link>https://tickscn.github.io/post/client-server-communication/</link>
+      <pubDate>Mon, 25 Nov 2019 15:57:28 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/client-server-communication/</guid>
+      <description>客户机/服务器通信 套接字(socket) 套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个 套接字由一个IP地址和一个端口号</description>
+    </item>
+    
+    <item>
+      <title>强连通分量</title>
+      <link>https://tickscn.github.io/post/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/</link>
+      <pubDate>Mon, 25 Nov 2019 15:38:47 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/</guid>
+      <description>强连通分量 有向图 G = (V, E) 的强连通分量是指一个最大点集C$subseteq$U, $\forall u,v \in C$, u,v 可互相到达 1 2 3 4 5 STRONGLY-CONNECTED-COMPONENTS(G) call DFS(G) to compute u.f compute G&amp;#39;s transpose GT call DFS(GT), each loop of DFS,</description>
+    </item>
+    
+    <item>
+      <title>拓扑排序</title>
+      <link>https://tickscn.github.io/post/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Sat, 23 Nov 2019 18:38:02 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</guid>
+      <description>对有向无环图G = (V, E)来说, 拓扑排序是G的一种线性排序. 该排序满足, 存在弧(u, v), u在v前. 1 2 3 4 5 6 TOPOLOGICAL-SORT(G) { 用 DFS 计算结束时间v.f 当 v结束时</description>
+    </item>
+    
+    <item>
+      <title>IPC例子</title>
+      <link>https://tickscn.github.io/post/ipc%E4%BE%8B%E5%AD%90/</link>
+      <pubDate>Sat, 23 Nov 2019 17:57:08 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ipc%E4%BE%8B%E5%AD%90/</guid>
+      <description>POSIX 共享内存 系统调用shm_open 1 2 3 4 5 6 7 8 9 10 11 12 13 14 NAME shm_open, shm_unlink - create/open or unlink POSIX shared memory ob‐ jects SYNOPSIS #include &amp;lt;sys/mman.h&amp;gt; #include &amp;lt;sys/stat.h&amp;gt; /* For mode constants */ #include &amp;lt;fcntl.h&amp;gt; /* For O_* constants */ int shm_open(const char *name, int oflag, mode_t mode);</description>
+    </item>
+    
+    <item>
+      <title>64位 x86_64</title>
+      <link>https://tickscn.github.io/post/64-bit-x86/</link>
+      <pubDate>Sat, 23 Nov 2019 14:52:38 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/64-bit-x86/</guid>
+      <description>x86_64 指令集是x86指令集的64位扩展 向后兼容x86指令集 地址长度为64位, 虚拟地址空间为 16EiB ($2^64$). 根据芯片实现, 只使用低48位(256TiB) 可以使</description>
+    </item>
+    
+    <item>
+      <title>32位 x86</title>
+      <link>https://tickscn.github.io/post/32%E4%BD%8Dx86/</link>
+      <pubDate>Fri, 22 Nov 2019 15:48:30 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/32%E4%BD%8Dx86/</guid>
+      <description>操作模式 保护模式(Protected Mode): 原生状状, 所有的指令和特性都是可用的. 程序会被分配独立内存(段). 处理器禁止程序使用自身段外的内存 虚拟</description>
+    </item>
+    
+    <item>
+      <title>x86微机设计</title>
+      <link>https://tickscn.github.io/post/x86%E5%BE%AE%E6%9C%BA%E8%AE%BE%E8%AE%A1/</link>
+      <pubDate>Thu, 21 Nov 2019 20:03:10 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/x86%E5%BE%AE%E6%9C%BA%E8%AE%BE%E8%AE%A1/</guid>
+      <description>基本微机设计 CPU 是进行算术和逻辑操作的部件, 包含了有限数量的存储位置——寄存器(register), 高频时钟, 控制单元和逻辑单元 时钟(cloc</description>
+    </item>
+    
+    <item>
+      <title>汇编语言1.7.2</title>
+      <link>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%801-7-2/</link>
+      <pubDate>Thu, 21 Nov 2019 16:25:22 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%801-7-2/</guid>
+      <description>算法基础 编写一个函数来接收一个16位二进制整数字符串. 函数返回为该字符串的整数值 编写一个函数来接收一个32位二进制整数字符串. 函数返回为该字</description>
+    </item>
+    
+    <item>
+      <title>breadth-first-search and depth-first-search</title>
+      <link>https://tickscn.github.io/post/breadth-first-search/</link>
+      <pubDate>Thu, 21 Nov 2019 14:00:25 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/breadth-first-search/</guid>
+      <description>广度优先搜索 给定图 G=(V,E) 的一个可以识别的源结点 s, 计算从s可到达的结点的距离, 同时生成一个广度优先搜索树 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 BFS(G,</description>
+    </item>
+    
+    <item>
+      <title>process</title>
+      <link>https://tickscn.github.io/post/process/</link>
+      <pubDate>Wed, 20 Nov 2019 16:36:38 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/process/</guid>
+      <description>进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状</description>
+    </item>
+    
+    <item>
+      <title>图的表示</title>
+      <link>https://tickscn.github.io/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/</link>
+      <pubDate>Wed, 20 Nov 2019 13:56:10 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/</guid>
+      <description>对于图 G = (V, E) , V是顶点(Vertex)的集合, E是边(Edge) 的集合 邻接链表 稀疏图($|E| &amp;laquo; |V|^2$) 邻接距阵 多用在稠密图($|E| \approx |V|^2$), 或需要</description>
+    </item>
+    
+    <item>
+      <title>Linux 内核模块</title>
+      <link>https://tickscn.github.io/post/linux-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/</link>
+      <pubDate>Tue, 19 Nov 2019 16:47:29 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/linux-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/</guid>
+      <description>操作系统概念第二章编程项目&amp;ndash;Linux 内核模块 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 #include &amp;lt;linux/init.h&amp;gt;#include &amp;lt;linux/module.h&amp;gt;#include &amp;lt;linux/kernel.h&amp;gt; /* This function is called when the module is loaded. */ int</description>
+    </item>
+    
+    <item>
+      <title>可合并堆操作</title>
+      <link>https://tickscn.github.io/post/algo19-2/</link>
+      <pubDate>Tue, 19 Nov 2019 14:22:42 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/algo19-2/</guid>
+      <description>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 struct FbHeapNode{ int key; FbHeapNode *left; FbHeapNode *right; FbHeapNode *parent; FbHeapNode *child; size_t degree; //&amp;lt; 孩子链表结点数目 bool mark; //&amp;lt; 成为孩子结点后是否失去过</description>
+    </item>
+    
+    <item>
+      <title>操作系统的实现</title>
+      <link>https://tickscn.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Mon, 18 Nov 2019 16:34:04 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84/</guid>
+      <description>设计与实现 设计目标分为两个基本大类 用户目标(user goal) 系统目标(system goal) 机制与策略 策略(policy) 做什么 机制(mechanism)</description>
+    </item>
+    
+    <item>
+      <title>系统调用</title>
+      <link>https://tickscn.github.io/post/systemcall/</link>
+      <pubDate>Sun, 17 Nov 2019 18:40:06 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/systemcall/</guid>
+      <description>系统调用(system call) 提供操作系统服务接口。应用程序开发人员根据应用编程接口(Application Programming Interface, API) 来设计程序。有三组常用API Windows API</description>
+    </item>
+    
+    <item>
+      <title>斐波那契堆</title>
+      <link>https://tickscn.github.io/post/algo19/</link>
+      <pubDate>Sun, 17 Nov 2019 14:25:44 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/algo19/</guid>
+      <description>可合并堆(mergeable heap). 支持以下操作(默认的是最小堆. 可以有对称的最大堆) MAKE-HEAP() 创建一个新的不含任何元素的堆 INSERT(H, x) 将以填入关键字的元素x插入</description>
+    </item>
+    
+    <item>
+      <title>OSC1 导论</title>
+      <link>https://tickscn.github.io/post/osc1/</link>
+      <pubDate>Sat, 16 Nov 2019 15:51:51 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc1/</guid>
+      <description>简介 操作系统的功能 计算机系统 硬件 中央处理器(Central Processing Unit, CPU) 内存(Memory) 输入/输出设备(Input/Output device, I/O device 软件 数据 可</description>
+    </item>
+    
+    <item>
+      <title>Keras 常见功能模块</title>
+      <link>https://tickscn.github.io/post/tf_keras_normal_module/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/tf_keras_normal_module/</guid>
+      <description>Keras 是一个高层的神经网络接口, 可以使用其它神经网络框架作为后端, 而 Tensorflow 实现了自己的 Keras 接口, tf.keras. 结合更紧密, 配合更好. 它的常见功能模块有 网络层类 对于</description>
+    </item>
+    
+    <item>
+      <title>浏览器端</title>
+      <link>https://tickscn.github.io/post/deep_learning/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/deep_learning/</guid>
+      <description>使用命令 1 tensorboard --logdir path</description>
+    </item>
+    
+  </channel>
+</rss>

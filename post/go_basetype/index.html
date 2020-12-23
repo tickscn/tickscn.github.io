@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 基础数据类型 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="Go 语言将数据类型分为四类: 基础类型 复合类型 引用类型 接口类型 整型 Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/go_basetype/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 基础数据类型" />
+<meta property="og:description" content="Go 语言将数据类型分为四类: 基础类型 复合类型 引用类型 接口类型 整型 Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/go_basetype/" />
+<meta property="article:published_time" content="2020-10-28T15:21:00+08:00" />
+<meta property="article:modified_time" content="2020-10-28T15:21:00+08:00" />
+<meta itemprop="name" content="Go 基础数据类型">
+<meta itemprop="description" content="Go 语言将数据类型分为四类: 基础类型 复合类型 引用类型 接口类型 整型 Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可">
+<meta itemprop="datePublished" content="2020-10-28T15:21:00+08:00" />
+<meta itemprop="dateModified" content="2020-10-28T15:21:00+08:00" />
+<meta itemprop="wordCount" content="1233">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 基础数据类型"/>
+<meta name="twitter:description" content="Go 语言将数据类型分为四类: 基础类型 复合类型 引用类型 接口类型 整型 Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 基础数据类型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-10-28 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#整型">整型</a></li>
+        <li><a href="#浮点数">浮点数</a></li>
+        <li><a href="#复数">复数</a></li>
+        <li><a href="#布尔">布尔</a></li>
+        <li><a href="#字符串">字符串</a>
+          <ul>
+            <li><a href="#字符串字面值">字符串字面值</a></li>
+            <li><a href="#unicode">Unicode</a></li>
+            <li><a href="#utf-8">UTF-8</a></li>
+            <li><a href="#byte-切片">Byte 切片</a></li>
+            <li><a href="#字符串和数字的转换">字符串和数字的转换</a></li>
+          </ul>
+        </li>
+        <li><a href="#常量">常量</a>
+          <ul>
+            <li><a href="#iota-常量生成器">iota 常量生成器</a></li>
+            <li><a href="#无类型常量">无类型常量</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Go 语言将数据类型分为四类:</p>
+<ol>
+<li>基础类型</li>
+<li>复合类型</li>
+<li>引用类型</li>
+<li>接口类型</li>
+</ol>
+<h2 id="整型">整型</h2>
+<p>Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可表示相应的无符号</p>
+<p>还有针对特定 CPU 平台机器字定义的 int 和 uint 代表 32 位或 64 位整型</p>
+<p>Unicode 字符码点 rune 是 int32 的等价类型, byte 是 uint8 的等价类型</p>
+<p>还有用来表示指针的 uintptr</p>
+<p>支持的算术运算符与 C 相比</p>
+<blockquote>
+<ol>
+<li>多了一个 <strong>&amp;^</strong> 按位置 0</li>
+<li>按位取反复用了 <strong>^</strong> 运算符. 移位运算符的优先级比</li>
+<li>移位运算优先级提升, 只比乘除取模低</li>
+</ol>
+</blockquote>
+<p>为避免优先级混淆, 建议使用括号</p>
+<p>格式化打印时, 可以使用 %d, %o, %x 表示 10 进制, 9 进制, 16 进制. 使用非 10 进制时可以使用 \# 表示打印前缀, 使用 %c 打印字符, 使用 %p 打印带有引号的字符</p>
+<h2 id="浮点数">浮点数</h2>
+<p>Go 定义两种浮点数 float32 和 float64, 分别相当于 C 语言中的 float 和 double</p>
+<p>打印时%g 表示尽量紧凑的表示, %e 表示科学计数法, %f</p>
+<h2 id="复数">复数</h2>
+<p>Go 提供了 complex64 和 complex128 分别对应由 float32 和 float64 组虚部和实部的复数.
+可以用 complex 函数生成复数, real 函数返回实部, imag 返回虚部包 math/cmplx 提供了很多的复数处理函数</p>
+<h2 id="布尔">布尔</h2>
+<p>只有两种值 true 和 false. 与 C 不同, 非 0 值不会默认转变 false</p>
+<h2 id="字符串">字符串</h2>
+<p>字符串是不可改变的常序列</p>
+<p>len 函数可以返回字符串 <strong>字节</strong> 的数目. 可以使用 [i:j] 操作符构建子字符串, 由原字符串的第 i 个 <strong>字节</strong> 到第 j 个 <strong>字节</strong>. 可以使用 + 拼接字符串. 字符串是可比较的</p>
+<h3 id="字符串字面值">字符串字面值</h3>
+<p>使用双引号括起来的部分, 可以使用 &ldquo;\&rdquo; 进行转义</p>
+<h3 id="unicode">Unicode</h3>
+<p>一个通用 Unicode 码点的数据类型是 int32, 在 Go 语言中可以用 rune 类型. 用 rune 序列表示符文序列的编码方式是 UTF-32 或 UCS-4. 是一种定长编码, 有些浪费空间. 所以有了变长的 UTF-8, UTF-16</p>
+<h3 id="utf-8">UTF-8</h3>
+<table>
+<thead>
+<tr>
+<th>编码</th>
+<th>码点</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xxxxxxx</td>
+<td>0-127</td>
+<td>ASCII</td>
+</tr>
+<tr>
+<td>110xxxxx 10xxxxxx</td>
+<td>128-2047</td>
+<td></td>
+</tr>
+<tr>
+<td>1110xxxx 10xxxxxx 10xxxxxx</td>
+<td>2048-65535</td>
+<td></td>
+</tr>
+<tr>
+<td>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</td>
+<td>65536-0x10FFFF</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>变长编码无法随机访问某一个字符.
+Go 语言的源文件使用 UTF-8 编码, Go 处理 UTF-8 文本的能力也很强. 在文本中可以使用 \u 转义来输入一些很难直接输入的字符. 为了快速的随机访问, 可以将 UTF-8 字符串转为 rune 序列一些 unicode/utf8 包中的函数. 计算字符串的 <strong>字符</strong> 数量 RuneCountInString.
+在使用 range 时会自动解码 UTF-8 字符串.
+可以将字符串显示转为 rune 序列</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">str</span> <span class="kt">string</span> <span class="p">=</span> <span class="s">&#34;你好, 世界! Hello, World!&#34;</span>
+<span class="nx">r</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">rune</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>将 rune 序列转为字符串会使用 UTF-8 编码</p>
+<h3 id="byte-切片">Byte 切片</h3>
+<p>标准库有四个重要的字符串处理包, 分别为 <code>bytes</code>, <code>string</code>, <code>unicode</code>, <code>strconv</code>
+因为字符串是只读的, 大量修改字符串时可能使用 bytes.Buffer 是更好的选择.
+strconv 提供了一些类型与字符串这间的相互转换为了避免转换过程中不必要的内存分配, bytes 和 strings 包同时提供了一些函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Contaions</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">substr</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">Count</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span>
+<span class="kd">func</span> <span class="nf">Fields</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">Index</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span>
+<span class="kd">func</span> <span class="nf">Join</span><span class="p">(</span><span class="nx">a</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>bytes 包中的对应函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Contaions</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">subslice</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">Count</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="kd">func</span> <span class="nf">Fields</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">Index</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="kd">func</span> <span class="nf">Join</span><span class="p">(</span><span class="nx">s</span> <span class="p">[][]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>bytes.Buffer 是一个类似于 C++ 中的字符串的类型, 可以动态增长. 写入时使用 WriteByte 或 WriteRune</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">comma</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">buf</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
+  <span class="nx">len</span> <span class="o">:=</span> <span class="nx">utf8</span><span class="p">.</span><span class="nf">RuneCountInString</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+  <span class="nx">p</span> <span class="o">:=</span> <span class="nx">len</span> <span class="o">%</span> <span class="mi">3</span>
+  <span class="nx">buf</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">s</span><span class="p">[:</span><span class="nx">p</span><span class="p">])</span>
+  <span class="k">for</span> <span class="p">;</span> <span class="nx">len</span> <span class="p">&gt;</span> <span class="nx">p</span><span class="p">;</span> <span class="nx">p</span> <span class="o">+=</span> <span class="mi">3</span> <span class="p">{</span>
+    <span class="nx">buf</span><span class="p">.</span><span class="nf">WriteByte</span><span class="p">(</span><span class="sc">&#39;,&#39;</span><span class="p">)</span>
+    <span class="nx">buf</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">s</span><span class="p">[</span><span class="nx">p</span> <span class="p">:</span> <span class="nx">p</span><span class="o">+</span><span class="mi">3</span><span class="p">])</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">buf</span><span class="p">.</span><span class="nf">String</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="字符串和数字的转换">字符串和数字的转换</h3>
+<p>由 <code>strconv</code> 包提供这些转换功能. Itoa 可以将整数转为 ASCII 序列. FormatInt 和 FormatUint 可以按不同的进制格式化数字.
+可以使用 Atoi 或 ParseInt 来将字符串转为整数.
+可以使用 <code>fmt</code> 包的函数来进行转换</p>
+<h2 id="常量">常量</h2>
+<p>常量是编译期计算, 运行时不可更改</p>
+<h3 id="iota-常量生成器">iota 常量生成器</h3>
+<p>从遇到 const 关键字时初始化为 0, 每次出现自动加 1</p>
+<h3 id="无类型常量">无类型常量</h3>
+<p>可以提供更高精度的算术运算(最低 256bit), 而且使用时不需要强制类型转换. 只有常量可以是无类型的</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-10-28
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/go_branch_loop/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">分支循环</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/osc_security/">
+            <span class="next-text nav-default">系统安全</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-10-28 15:21:00 \u002b0800 CST',
+        title: 'Go 基础数据类型',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

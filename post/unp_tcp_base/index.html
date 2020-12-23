@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>基本 TCP 套接字编程 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="socket 函数 调用 socket 函数指定通信协议类型 1 2 #include &amp;lt;sys/socket.h&amp;gt;int socket(int domain, int type, int protocol); 协议簇 domain 说明 AF_INET IPv4 协议 AF_INET6 IPv6 协议 AF_LOCAL Unix 域协议 AF_ROUTE 路由套接字 AF_KEY 密钥套接字 类型 type 说明 SOCK_STREAM 字节流套接字 SOCK_DGRAM" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/unp_tcp_base/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="基本 TCP 套接字编程" />
+<meta property="og:description" content="socket 函数 调用 socket 函数指定通信协议类型 1 2 #include &lt;sys/socket.h&gt;int socket(int domain, int type, int protocol); 协议簇 domain 说明 AF_INET IPv4 协议 AF_INET6 IPv6 协议 AF_LOCAL Unix 域协议 AF_ROUTE 路由套接字 AF_KEY 密钥套接字 类型 type 说明 SOCK_STREAM 字节流套接字 SOCK_DGRAM" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/unp_tcp_base/" />
+<meta property="article:published_time" content="2020-08-03T11:46:00+08:00" />
+<meta property="article:modified_time" content="2020-08-03T11:46:00+08:00" />
+<meta itemprop="name" content="基本 TCP 套接字编程">
+<meta itemprop="description" content="socket 函数 调用 socket 函数指定通信协议类型 1 2 #include &lt;sys/socket.h&gt;int socket(int domain, int type, int protocol); 协议簇 domain 说明 AF_INET IPv4 协议 AF_INET6 IPv6 协议 AF_LOCAL Unix 域协议 AF_ROUTE 路由套接字 AF_KEY 密钥套接字 类型 type 说明 SOCK_STREAM 字节流套接字 SOCK_DGRAM">
+<meta itemprop="datePublished" content="2020-08-03T11:46:00+08:00" />
+<meta itemprop="dateModified" content="2020-08-03T11:46:00+08:00" />
+<meta itemprop="wordCount" content="1340">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基本 TCP 套接字编程"/>
+<meta name="twitter:description" content="socket 函数 调用 socket 函数指定通信协议类型 1 2 #include &lt;sys/socket.h&gt;int socket(int domain, int type, int protocol); 协议簇 domain 说明 AF_INET IPv4 协议 AF_INET6 IPv6 协议 AF_LOCAL Unix 域协议 AF_ROUTE 路由套接字 AF_KEY 密钥套接字 类型 type 说明 SOCK_STREAM 字节流套接字 SOCK_DGRAM"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">基本 TCP 套接字编程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-03 </span>
+        <div class="post-category">
+            <a href="/categories/unp/"> UNP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#socket-函数">socket 函数</a></li>
+        <li><a href="#connect-函数">connect 函数</a></li>
+        <li><a href="#bind-函数">bind 函数</a></li>
+        <li><a href="#listen-函数">listen 函数</a></li>
+        <li><a href="#accept-函数">accept 函数</a></li>
+        <li><a href="#fork-和-exec-函数">fork 和 exec 函数</a>
+          <ul>
+            <li><a href="#fork">fork</a></li>
+            <li><a href="#exec">exec</a></li>
+          </ul>
+        </li>
+        <li><a href="#并发服务器">并发服务器</a></li>
+        <li><a href="#close-函数">close 函数</a></li>
+        <li><a href="#getsockname-和-getpeername">getsockname 和 getpeername</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="socket-函数">socket 函数</h2>
+<p>调用 socket 函数指定通信协议类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">socket</span><span class="p">(</span><span class="kt">int</span> <span class="n">domain</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">protocol</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>协议簇</p>
+<table>
+<thead>
+<tr>
+<th>domain</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AF_INET</td>
+<td>IPv4 协议</td>
+</tr>
+<tr>
+<td>AF_INET6</td>
+<td>IPv6 协议</td>
+</tr>
+<tr>
+<td>AF_LOCAL</td>
+<td>Unix 域协议</td>
+</tr>
+<tr>
+<td>AF_ROUTE</td>
+<td>路由套接字</td>
+</tr>
+<tr>
+<td>AF_KEY</td>
+<td>密钥套接字</td>
+</tr>
+</tbody>
+</table>
+<p>类型</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOCK_STREAM</td>
+<td>字节流套接字</td>
+</tr>
+<tr>
+<td>SOCK_DGRAM</td>
+<td>数据报套接字</td>
+</tr>
+<tr>
+<td>SOCK_SEQPACKET</td>
+<td>有序分组套接字</td>
+</tr>
+<tr>
+<td>SOCK_RAW</td>
+<td>原始套接字</td>
+</tr>
+</tbody>
+</table>
+<p>协议</p>
+<table>
+<thead>
+<tr>
+<th>protocol</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPPROTO_CP</td>
+<td>TCP 传输协议</td>
+</tr>
+<tr>
+<td>IPPROTO_UDP</td>
+<td>UDP 传输协议</td>
+</tr>
+<tr>
+<td>IPPROTO_SCTP</td>
+<td>SCTP 传输协议</td>
+</tr>
+</tbody>
+</table>
+<h2 id="connect-函数">connect 函数</h2>
+<p>TCP 客户用 connect 函数建立与 TCP 服务器的连接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">connect</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="n">address</span><span class="p">,</span> <span class="n">socklent_t</span> <span class="n">address_len</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如果是 TCP 套接字, 调用 connect 会启动三次握手程序, 而且仅在连接成功或出错的情况下返回, 其中出错返回可能有以下几种情况</p>
+<ol>
+<li>若 TCP 客户没有收到 SYN 段的响应, 就会报 ETIMEDOUT 错误. 具体就是发送 SYN 6s 后未收到响应就再发一个, 又 24s 后仍然无反应, 就在发最后一个, 并且 45s 后没收到响应就返回 ETIMEDOUT</li>
+<li>若对客户的响应是 RST 分节, 立即返回 ECONNREFUSED</li>
+<li>若客户发出的 SYN 段在某个路由器上引发了一个 &ldquo;destination unreachable&rdquo;. 内核会按 1 中的时间重发消息, 如果 75s 后仍然未收到响应, 就返回 ICMP 的相应消息 EHOSTUNREACH 或 ENETUNREACH</li>
+</ol>
+<h2 id="bind-函数">bind 函数</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;  // 一些老的实现需要, 并非POSIX要求</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">bind</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="n">socklen_t</span> <span class="n">addrlen</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中的套接字地址结构可以指定一个端口号或一个 IP 地址, 也可两者都指定, 也可以都不指定</p>
+<ul>
+<li>如果 TCP 客户或服务器未调用 bind 捆绑一个端口, 当调用 <code>connect</code> 或 <code>listen</code> 时, 内核就要为相应的套接字选择一个临时端口</li>
+</ul>
+<h2 id="listen-函数">listen 函数</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">listen</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket</span><span class="p">,</span> <span class="kt">int</span> <span class="n">backlog</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>将主动套接字转为被动套接字</p>
+<ol>
+<li>第一个参数为套接字描述符</li>
+<li>第二个参数为内核为该套接字安排的最大排队连接个数</li>
+</ol>
+<h2 id="accept-函数">accept 函数</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">accept</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">address</span><span class="p">,</span> <span class="n">socklen_t</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">address_len</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>用来从以建立连接队列头返回下一个已完成连接, 如果以完成队列为空, 默认的阻塞模式下进程睡眠</p>
+<ol>
+<li>第一个参数为监听套接字描述符, 返回一个已连接套接字描述符</li>
+<li>如果 address 不为空, 其指向客户端协议地址. 同时 address_len 所指空间保存地址长度</li>
+</ol>
+<h2 id="fork-和-exec-函数">fork 和 exec 函数</h2>
+<h3 id="fork">fork</h3>
+<p>fork 及其各种变体是 Unix 系统中派生新进程的唯一办法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="n">pid_t</span> <span class="nf">fork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>fork 会返回两次, 父进程返回一次, 返回子进程的进程 ID. 子进程返回一次, 返回值为 0. 子进程可以用 getppid 获取父进程的进程 ID. 子进程共享父进程在 fork 之前打开的所有描述符
+fork 有两个典型用法</p>
+<ol>
+<li>创建一个自身的副本, 这样每个副本执行其他任务的同时处理各自的某个操作</li>
+<li>创建一个自身的副本, 其中一个副本调用 exec 把自身替换为新的程序</li>
+</ol>
+<h3 id="exec">exec</h3>
+<p>Unix 执行硬盘上的文件的唯一办法就是以有的进程调用 6 种 exec 中的一个. 把当前进程映象替换为新的程序文件, 替换时进程 ID 并不改变
+6 种 exec 在 3 个方面各有不同</p>
+<ol>
+<li>待执行程序是由文件名还是由路径名来指定</li>
+<li>新程序的参数是一一列出, 还是由一个指针数组来引用</li>
+<li>新程序是使用调用进程的环境, 还是重新指定</li>
+</ol>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C">
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">extern</span> <span class="kt">char</span><span class="o">**</span> <span class="n">environ</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">execl</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/* (char  *)</span> <span class="nb">NULL</span> <span class="err">*/</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">execlp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">file</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/* (char  *)</span> <span class="nb">NULL</span> <span class="err">*/</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">execle</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/*, (char *)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">envp</span><span class="p">[]</span> <span class="err">*/</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">execv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pathname</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">argv</span><span class="p">[]);</span>
+<span class="kt">int</span> <span class="nf">execvp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">file</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">argv</span><span class="p">[]);</span>
+<span class="kt">int</span> <span class="nf">execvpe</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">file</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">argv</span><span class="p">[],</span> <span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">envp</span><span class="p">[]);</span>
+
+<span class="kt">int</span> <span class="nf">execve</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pathname</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">argv</span><span class="p">[],</span> <span class="kt">char</span><span class="o">*</span> <span class="k">const</span> <span class="n">envp</span><span class="p">[]);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="l-execl-execlp-execle">l - execl, execlp, execle</h4>
+<p>参数是一一列出, 用 (char*)NULL 结束参数列表</p>
+<h4 id="v-execv-execvp-execvpe">v - execv, execvp, execvpe</h4>
+<p><code>char* const argv[]</code> 是以 0 结尾的字节串数组</p>
+<h4 id="e-execle-execvpe">e - execle, execvpe</h4>
+<p>指定一个环境列表, 以空指钍表示列表结束</p>
+<h4 id="p-execlp-execvp-execvpe">p - execlp, execvp, execvpe</h4>
+<p>使用文件名, 这些函数将使用 PATH 环境变量将其变为一个路径名</p>
+<h2 id="并发服务器">并发服务器</h2>
+<p>一个简单的并发服务器模版</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">listenfd</span><span class="p">,</span> <span class="n">connfd</span><span class="p">;</span>
+
+<span class="n">listenfd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(...);</span>
+
+<span class="n">bind</span><span class="p">(</span><span class="n">listenfd</span><span class="p">);</span>
+<span class="n">linsten</span><span class="p">(</span><span class="n">listenfd</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">connfd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">listenfd</span><span class="p">,</span> <span class="p">...);</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">listenfd</span><span class="p">);</span>
+        <span class="c1">// do xxx with connfd
+</span><span class="c1"></span>        <span class="n">clone</span><span class="p">(</span><span class="n">listenfd</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">connfd</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="close-函数">close 函数</h2>
+<p>通常的 Unix close 函数也能用来关闭套接字</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="getsockname-和-getpeername">getsockname 和 getpeername</h2>
+<p>这两个函数返回与一个套接字关联的本地协议地址(getsockname)或对端协议地址(getpeername)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">getsockname</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">address</span><span class="p">,</span> <span class="n">socklen_t</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">address_len</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">getpeername</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">address</span><span class="p">,</span> <span class="n">socklen_t</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">address_len</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-03
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/mysql_fulltext_serch/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">全文本搜索</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/unp_socket_introduction/">
+            <span class="next-text nav-default">套接字编程简介</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-08-03 11:46:00 \u002b0800 CST',
+        title: '基本 TCP 套接字编程',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

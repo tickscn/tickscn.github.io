@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OS on ticks blog</title>
+    <link>https://tickscn.github.io/tags/os/</link>
+    <description>Recent content in OS on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 25 Nov 2019 15:57:28 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/os/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>client/server communication</title>
+      <link>https://tickscn.github.io/post/client-server-communication/</link>
+      <pubDate>Mon, 25 Nov 2019 15:57:28 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/client-server-communication/</guid>
+      <description>客户机/服务器通信 套接字(socket) 套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个 套接字由一个IP地址和一个端口号</description>
+    </item>
+    
+    <item>
+      <title>IPC例子</title>
+      <link>https://tickscn.github.io/post/ipc%E4%BE%8B%E5%AD%90/</link>
+      <pubDate>Sat, 23 Nov 2019 17:57:08 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/ipc%E4%BE%8B%E5%AD%90/</guid>
+      <description>POSIX 共享内存 系统调用shm_open 1 2 3 4 5 6 7 8 9 10 11 12 13 14 NAME shm_open, shm_unlink - create/open or unlink POSIX shared memory ob‐ jects SYNOPSIS #include &amp;lt;sys/mman.h&amp;gt; #include &amp;lt;sys/stat.h&amp;gt; /* For mode constants */ #include &amp;lt;fcntl.h&amp;gt; /* For O_* constants */ int shm_open(const char *name, int oflag, mode_t mode);</description>
+    </item>
+    
+    <item>
+      <title>操作系统的实现</title>
+      <link>https://tickscn.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Mon, 18 Nov 2019 16:34:04 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84/</guid>
+      <description>设计与实现 设计目标分为两个基本大类 用户目标(user goal) 系统目标(system goal) 机制与策略 策略(policy) 做什么 机制(mechanism)</description>
+    </item>
+    
+    <item>
+      <title>OSC1 导论</title>
+      <link>https://tickscn.github.io/post/osc1/</link>
+      <pubDate>Sat, 16 Nov 2019 15:51:51 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc1/</guid>
+      <description>简介 操作系统的功能 计算机系统 硬件 中央处理器(Central Processing Unit, CPU) 内存(Memory) 输入/输出设备(Input/Output device, I/O device 软件 数据 可</description>
+    </item>
+    
+  </channel>
+</rss>

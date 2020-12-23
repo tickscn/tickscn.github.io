@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>redis-event on ticks blog</title>
+    <link>https://tickscn.github.io/tags/redis-event/</link>
+    <description>Recent content in redis-event on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 01 Sep 2020 21:12:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/redis-event/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>事件</title>
+      <link>https://tickscn.github.io/post/redis_event/</link>
+      <pubDate>Tue, 01 Sep 2020 21:12:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/redis_event/</guid>
+      <description>Redis 服务器是一个事件驱动的程序, 主要处理两类事件 文件事件. 是客户端通过套接字进行的通信事件 时间事件: 定时操作的抽象 文件事件 基于 Reactor 模式(非阻塞 IO</description>
+    </item>
+    
+  </channel>
+</rss>

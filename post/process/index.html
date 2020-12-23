@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>process - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/process/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="process" />
+<meta property="og:description" content="进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/process/" />
+<meta property="article:published_time" content="2019-11-20T16:36:38+00:00" />
+<meta property="article:modified_time" content="2019-11-20T16:36:38+00:00" />
+<meta itemprop="name" content="process">
+<meta itemprop="description" content="进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状">
+<meta itemprop="datePublished" content="2019-11-20T16:36:38+00:00" />
+<meta itemprop="dateModified" content="2019-11-20T16:36:38+00:00" />
+<meta itemprop="wordCount" content="1135">
+
+
+
+<meta itemprop="keywords" content="OSC,process,CS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="process"/>
+<meta name="twitter:description" content="进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">process</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-20 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"> 操作系统 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#进程process">进程(process)</a>
+      <ul>
+        <li><a href="#进程状态process-state">进程状态(process state)</a></li>
+        <li><a href="#进程控制块process-control-block-pcb">进程控制块(Process Control Block, PCB)</a></li>
+        <li><a href="#线程">线程</a></li>
+      </ul>
+    </li>
+    <li><a href="#进程调度">进程调度</a>
+      <ul>
+        <li><a href="#调度队列">调度队列</a></li>
+      </ul>
+    </li>
+    <li><a href="#进程运行">进程运行</a>
+      <ul>
+        <li><a href="#进程创建">进程创建</a></li>
+      </ul>
+    </li>
+    <li><a href="#进程间通信">进程间通信</a>
+      <ul>
+        <li><a href="#共享内存">共享内存</a></li>
+        <li><a href="#消息传递">消息传递</a>
+          <ul>
+            <li><a href="#命名">命名</a></li>
+            <li><a href="#同步">同步</a></li>
+            <li><a href="#缓存">缓存</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="进程process">进程(process)</h1>
+<ul>
+<li>文本段(test section)或叫代码段(code section)</li>
+<li>程序计数器(program counter)</li>
+<li>栈(stack)</li>
+<li>堆(heap)</li>
+</ul>
+<h2 id="进程状态process-state">进程状态(process state)</h2>
+<ul>
+<li>新的(new): 正在创建</li>
+<li>运行(running): 正在执行</li>
+<li>等待(waiting): 等待事件发生</li>
+<li>就绪(ready): 等待分配处理器</li>
+<li>终止(terminated): 完成</li>
+</ul>
+<p><img src="../../static/state.png" alt=""></p>
+<h2 id="进程控制块process-control-block-pcb">进程控制块(Process Control Block, PCB)</h2>
+<p>也称作任务控制块(task control block). 包含进程相关信息</p>
+<ul>
+<li>进程状态</li>
+<li>程序计数器: 下个指令的地址</li>
+<li>CPU 寄存器(register): 累加器, 索引寄存器, 栈指针, 通用寄存器等</li>
+<li>CPU 调度信息(CPU-scheduling infomation): 进程优先级, 调度队列指针等</li>
+<li>内存管理信息(memory-management information)</li>
+<li>记账信息(accounting information); CPU 时间, 实际使用时间, 时间期限, 进程数量</li>
+<li>I/O 状态</li>
+</ul>
+<h2 id="线程">线程</h2>
+<h1 id="进程调度">进程调度</h1>
+<p>进程调度器(process scheduling)从可用进程集合中选择一个进程执行</p>
+<h2 id="调度队列">调度队列</h2>
+<p>进程进入系统前加入作业队列(job queue), 驻留内存的, 就序的, 等待运行的存在就绪队列(ready queue). 一般用链表存储. 头结点包含两个指针, 指向 PCB 块的开始和结尾
+<img src="../../static/queue.png" alt=""></p>
+<h1 id="进程运行">进程运行</h1>
+<h2 id="进程创建">进程创建</h2>
+<p>创建该进程的进程被称为父进程. 进程可以创建新进程. 从而形成进程树(process tree)</p>
+<p>大多数操作系统使用唯一的进程标识符(process identifier, pid)识别进程</p>
+<ul>
+<li>父进程与子进程并发执行</li>
+<li>父进程等待某个或全部子进程执行完</li>
+</ul>
+<p>地址空间</p>
+<ul>
+<li>子进程是父进程的复制品</li>
+<li>子进程加载另一个程序</li>
+</ul>
+<h1 id="进程间通信">进程间通信</h1>
+<ul>
+<li>信息共享(information sharing)</li>
+<li>计算加速</li>
+<li>模块化</li>
+<li>方便</li>
+</ul>
+<p>进程产间通信(InterProcess Communication, IPC)</p>
+<ul>
+<li>共享内存</li>
+<li>消息传递</li>
+</ul>
+<h2 id="共享内存">共享内存</h2>
+<p>有界缓冲区</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#define BUFFER_SIZE 10
+</span><span class="cp"></span><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+    <span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+<span class="p">}</span><span class="n">item</span><span class="p">;</span>
+
+<span class="n">item</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* 生产者进程 */</span>
+<span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">){</span>
+    <span class="cm">/* 产生一个新信息到next_produced */</span>
+    <span class="k">while</span><span class="p">(((</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="o">==</span> <span class="n">out</span><span class="p">);</span>
+    
+    <span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span>
+    <span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* 消费者进程 */</span>
+<span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">in</span> <span class="o">==</span> <span class="n">out</span><span class="p">);</span>
+    
+    <span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="消息传递">消息传递</h2>
+<ul>
+<li><code>send(message)</code></li>
+<li><code>receive(messae)</code></li>
+<li>通信链路(communication link)
+<ul>
+<li>直接或间接的通信</li>
+<li>同步或异步的通信</li>
+<li>自动或显式的缓冲</li>
+</ul>
+</li>
+</ul>
+<h3 id="命名">命名</h3>
+<h4 id="直接通信">直接通信</h4>
+<p>指定发送者或接收者</p>
+<ul>
+<li>send(P, message): 向进程P发送message</li>
+<li>receive(Q, message): 从进程Q接收message</li>
+</ul>
+<p>链路属性</p>
+<ul>
+<li>自动建立链路</li>
+<li>每条链路只与两个进程相关</li>
+<li>每对进程之间只有一条链路</li>
+</ul>
+<h4 id="间接通信">间接通信</h4>
+<p>邮箱(mailbox), 端口(port)</p>
+<ul>
+<li>send(A, message): 向邮箱A发送message</li>
+<li>receive(A, message): 从邮箱A接收 message</li>
+</ul>
+<p>链路属性</p>
+<ul>
+<li>两个进程有共享邮箱时才可以建立通信链路</li>
+<li>一个链路可以与两个或更多进程相关联</li>
+<li>两个进程可以有多个链路</li>
+</ul>
+<h3 id="同步">同步</h3>
+<p>消息传递可以是阻塞(blocking) 或非阻塞(nonblocking).
+也可以称为同步(synchronous) 或异步(asynchronous)</p>
+<h3 id="缓存">缓存</h3>
+<ul>
+<li>0 容量: 发送者必需阻塞</li>
+<li>有限容量: 队列满时发送者阻塞</li>
+<li>无限容量: 发送者不需要阻塞</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-20
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/osc/">OSC</a>
+          <a href="/tags/process/">process</a>
+          <a href="/tags/cs/">CS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/breadth-first-search/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">breadth-first-search and depth-first-search</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/">
+            <span class="next-text nav-default">图的表示</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-11-20 16:36:38 \u002b0000 UTC',
+        title: 'process',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>algotithms on ticks blog</title>
+    <link>https://tickscn.github.io/tags/algotithms/</link>
+    <description>Recent content in algotithms on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 17 Nov 2019 14:25:44 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/tags/algotithms/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>斐波那契堆</title>
+      <link>https://tickscn.github.io/post/algo19/</link>
+      <pubDate>Sun, 17 Nov 2019 14:25:44 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/algo19/</guid>
+      <description>可合并堆(mergeable heap). 支持以下操作(默认的是最小堆. 可以有对称的最大堆) MAKE-HEAP() 创建一个新的不含任何元素的堆 INSERT(H, x) 将以填入关键字的元素x插入</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>入门示例 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="一个简单的分类任务。已知四个数据点 \((1,1),(-1,1),(-1,-1),(1,-1)\), 分别属于 I \(\sim\) IV 象限. 如果给一个新的点， 如何让机器知道它应该属于哪个象限呢？因为特征简单，传统方法，使用两" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/neural_introduction/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="入门示例" />
+<meta property="og:description" content="一个简单的分类任务。已知四个数据点 \((1,1),(-1,1),(-1,-1),(1,-1)\), 分别属于 I \(\sim\) IV 象限. 如果给一个新的点， 如何让机器知道它应该属于哪个象限呢？因为特征简单，传统方法，使用两" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/neural_introduction/" />
+<meta property="article:published_time" content="2020-12-01T16:54:00+08:00" />
+<meta property="article:modified_time" content="2020-12-01T16:54:00+08:00" />
+<meta itemprop="name" content="入门示例">
+<meta itemprop="description" content="一个简单的分类任务。已知四个数据点 \((1,1),(-1,1),(-1,-1),(1,-1)\), 分别属于 I \(\sim\) IV 象限. 如果给一个新的点， 如何让机器知道它应该属于哪个象限呢？因为特征简单，传统方法，使用两">
+<meta itemprop="datePublished" content="2020-12-01T16:54:00+08:00" />
+<meta itemprop="dateModified" content="2020-12-01T16:54:00+08:00" />
+<meta itemprop="wordCount" content="576">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="入门示例"/>
+<meta name="twitter:description" content="一个简单的分类任务。已知四个数据点 \((1,1),(-1,1),(-1,-1),(1,-1)\), 分别属于 I \(\sim\) IV 象限. 如果给一个新的点， 如何让机器知道它应该属于哪个象限呢？因为特征简单，传统方法，使用两"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">入门示例</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-01 </span>
+        <div class="post-category">
+            <a href="/categories/neural-network/"> Neural-NetWork </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#分析">分析</a>
+          <ul>
+            <li><a href="#输入层">输入层</a></li>
+            <li><a href="#从输入层到隐藏层">从输入层到隐藏层</a></li>
+            <li><a href="#从隐藏层到输出层">从隐藏层到输出层</a></li>
+            <li><a href="#分析">分析</a></li>
+          </ul>
+        </li>
+        <li><a href="#激活层">激活层</a></li>
+        <li><a href="#输出的正则化">输出的正则化</a></li>
+        <li><a href="#对结果的好坏进行判断">对结果的好坏进行判断</a></li>
+        <li><a href="#反向传播与参数优化">反向传播与参数优化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>一个简单的分类任务。已知四个数据点 \((1,1),(-1,1),(-1,-1),(1,-1)\), 分别属于 I \(\sim\) IV 象限. 如果给一个新的点， 如何让机器知道它应该属于哪个象限呢？因为特征简单，传统方法，使用两次判断即可，这次为了讲解神经网络，会使用一个两层网络， 如下
+<img src="/net.jpg" alt=""></p>
+<h2 id="分析">分析</h2>
+<h3 id="输入层">输入层</h3>
+<p>在例子中输入层是坐标, 可以看作是一个 1x2 的矩阵. 输入层的维度与输入量本身的特征相关, 如果输入是一幅 32x32 的灰度图象, 输入层的维度就是 32x32</p>
+<h3 id="从输入层到隐藏层">从输入层到隐藏层</h3>
+<p>连接输入层和隐藏层的是转换矩阵 W1 和 b1. 输入 X 到隐藏层 H 的公式为
+\[H=X*W1+b1\]</p>
+<h3 id="从隐藏层到输出层">从隐藏层到输出层</h3>
+<p>通过矩阵运算进行
+\[Y=H*W2+b2\]</p>
+<h3 id="分析">分析</h3>
+<p>线性运算是可以合并为一个线性方程. 不论有多少层, 这样就失去了网络的意义, 所以需要激活层</p>
+<h2 id="激活层">激活层</h2>
+<p>为矩阵运算的结构添加非线性的, 常用的激活函数有三种</p>
+<ol>
+<li>阶跃函数: \(e(x) = \begin{cases}0,&amp;x\leqslant 0\\ 1,&amp;x &gt; 0\end{cases}\)</li>
+<li>Sigmoid: \(s(x) = \dfrac{1}{1 + \mathrm{e}^{-x}}\)</li>
+<li>ReLU: \(y=e(x)x\)</li>
+</ol>
+<p>阶跃函数因为是二值的, 输出会跳变, 较少使用. Sigmoid 函数在输入绝对值较大时, 梯度会很小. 所以现在常用的是 ReLU</p>
+<p>每一层的矩阵运算完后, 需要添加隐藏层,不能该层的计算是无意义的</p>
+<h2 id="输出的正则化">输出的正则化</h2>
+<p>输出的值可以是任何实数, 为了使输出更类似于概率. 使用 Softmax 层将其正则化
+\[S_j=\dfrac{e_{j}}{\sum_{i}e_{i}}\]</p>
+<h2 id="对结果的好坏进行判断">对结果的好坏进行判断</h2>
+<ol>
+<li>一种直观的方法是用 1 减去 Softmax 输出的最大概率</li>
+<li>另一种更常用的方法是使用 Softmax 输出的对数的负数. \(d=-\log P\). 该输出又被称为 <strong>交叉商损失函数</strong>. 神经网络的训练就是为了减少变个交叉商函数</li>
+</ol>
+<h2 id="反向传播与参数优化">反向传播与参数优化</h2>
+<p>现在的 W 和 b 不一定能使最后的交叉商满足需求, 接下来可以使用梯度下降法等来优化参数</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-01
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/neural_backpropagation/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">反向传播介绍</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/sipingfang/">
+            <span class="next-text nav-default">四平方定理</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-12-01 16:54:00 \u002b0800 CST',
+        title: '入门示例',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
