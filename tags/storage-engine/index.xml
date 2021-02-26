@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Storage-Engine on ticks blog</title>
+    <link>https://tickscn.github.io/tags/storage-engine/</link>
+    <description>Recent content in Storage-Engine on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 05 Aug 2020 15:26:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/storage-engine/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL 体系结构和存储引擎</title>
+      <link>https://tickscn.github.io/post/mysql_engines/</link>
+      <pubDate>Wed, 05 Aug 2020 15:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_engines/</guid>
+      <description>MySQL 体系结构 MySQL 由以下几个部分组成 连接池组件 管理服务和工具组件 SQL 接口组件 查询分析器组件 优化器组件 缓冲组件 插件式存储引擎 物理文件 MySQL 存储引擎 对于开发</description>
+    </item>
+    
+  </channel>
+</rss>

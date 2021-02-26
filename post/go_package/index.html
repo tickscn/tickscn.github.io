@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>包 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="标准库 内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途 unsafe: 一般用于 C/C&#43;&#43; 程序的调用中, 打破了 Go 的类型安全 syscall,os, os/exec: syscall: 提供操作系统低层调用的基本接" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/go_package/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="包" />
+<meta property="og:description" content="标准库 内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途 unsafe: 一般用于 C/C&#43;&#43; 程序的调用中, 打破了 Go 的类型安全 syscall,os, os/exec: syscall: 提供操作系统低层调用的基本接" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/go_package/" />
+<meta property="article:published_time" content="2020-11-07T20:18:00+08:00" />
+<meta property="article:modified_time" content="2020-11-07T20:18:00+08:00" />
+<meta itemprop="name" content="包">
+<meta itemprop="description" content="标准库 内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途 unsafe: 一般用于 C/C&#43;&#43; 程序的调用中, 打破了 Go 的类型安全 syscall,os, os/exec: syscall: 提供操作系统低层调用的基本接">
+<meta itemprop="datePublished" content="2020-11-07T20:18:00+08:00" />
+<meta itemprop="dateModified" content="2020-11-07T20:18:00+08:00" />
+<meta itemprop="wordCount" content="664">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="包"/>
+<meta name="twitter:description" content="标准库 内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途 unsafe: 一般用于 C/C&#43;&#43; 程序的调用中, 打破了 Go 的类型安全 syscall,os, os/exec: syscall: 提供操作系统低层调用的基本接"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">包</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-07 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#标准库">标准库</a>
+          <ul>
+            <li><a href="#练习">练习</a></li>
+          </ul>
+        </li>
+        <li><a href="#正则表达式">正则表达式</a></li>
+        <li><a href="#锁和-sync-包">锁和 sync 包</a></li>
+        <li><a href="#自定义包">自定义包</a>
+          <ul>
+            <li><a href="#包的初始化">包的初始化</a></li>
+          </ul>
+        </li>
+        <li><a href="#godoc">godoc</a></li>
+        <li><a href="#目录结构-go-install-go-test">目录结构, <code>go install</code>, <code>go test</code></a></li>
+        <li><a href="#使用-git-打包和安装">使用 git 打包和安装</a>
+          <ul>
+            <li><a href="#安装-github-上的包">安装 github 上的包</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="标准库">标准库</h2>
+<p>内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途</p>
+<ul>
+<li><code>unsafe</code>: 一般用于 C/C++ 程序的调用中, 打破了 Go 的类型安全</li>
+<li><code>syscall,os, os/exec</code>:
+<ul>
+<li><code>syscall</code>: 提供操作系统低层调用的基本接口</li>
+<li><code>os</code>: 提供平台无关的系统接口</li>
+<li><code>os/exec</code>: 运行外部指令</li>
+</ul>
+</li>
+<li><code>archive/xxx</code>: 提供相应的压缩和解压命令</li>
+<li><code>fmt, io, bufio, path/filepath</code>
+<ul>
+<li><code>fmt</code>: 格式化输入与输出</li>
+<li><code>io</code>: 基本的输入输出功能</li>
+<li><code>bufio</code>: 缓冲的输入输出</li>
+<li><code>path/filepath</code>: 路径</li>
+<li><code>flag</code>: 命令行参数的操作</li>
+<li><code>strings, strconv, unicode, regexp, bytes</code>
+<ul>
+<li><code>strings</code>: 对字符串的操作</li>
+<li><code>strconv</code>: 字符串与其它类型的转换</li>
+<li><code>unicode</code>: unicode 字符支持</li>
+<li><code>regexp</code>: 正则表达式</li>
+<li><code>bytes</code>: 对字符分片的操作</li>
+<li><code>index/suffixarray</code>: 查询</li>
+</ul>
+</li>
+<li><code>math, math/cmath, math/rand, math/big, sort</code>: 常用的数学函数, 对复数的操作, 随机数, 大数, 排序</li>
+<li><code>container/xxx</code>: 集合的操作, 包括双链表(list),  环形链表(ring), 堆(heap)</li>
+<li><code>time</code></li>
+<li><code>log</code></li>
+<li><code>encoding/xxx</code>: 支持 JSON, XML 等的转换</li>
+<li><code>text/template</code>: 模版生成</li>
+<li><code>net, net/http, html</code></li>
+<li><code>runtime</code>: Go 运行时的相关操作</li>
+<li><code>reflect</code>: 反射</li>
+</ul>
+</li>
+</ul>
+<h3 id="练习">练习</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;container/list&#34;</span>
+  <span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">l</span> <span class="p">=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">List</span><span class="p">)</span>
+  <span class="nx">l</span><span class="p">.</span><span class="nf">PushBack</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+  <span class="nx">l</span><span class="p">.</span><span class="nf">PushBack</span><span class="p">(</span><span class="mi">102</span><span class="p">)</span>
+  <span class="nx">l</span><span class="p">.</span><span class="nf">PushBack</span><span class="p">(</span><span class="mi">103</span><span class="p">)</span>
+  <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nf">Front</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">e</span> <span class="p">=</span> <span class="nx">e</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Value</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="正则表达式">正则表达式</h2>
+<p>简单的使用可以直接将字符串与匹配的模式传入 <code>regexp.Match</code> 或 <code>regexp.MatchString</code> 函数, 如果需要更多的操作, 首先需要一个正则对象, 可以使用 <code>Compile</code> 方法产生</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+  <span class="s">&#34;regexp&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">patternURL</span> <span class="p">=</span> <span class="s">&#34;^((ht|f)tps?)://[\\w\\-]+(\\.[\\w\\-]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?$&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">s</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">if</span> <span class="nx">ok</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MatchString</span><span class="p">(</span><span class="nx">patternURL</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="s">&#34;is a valied URL&#34;</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="s">&#34;is an invalied URL&#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="锁和-sync-包">锁和 sync 包</h2>
+<p>sync 包提供普通互斥量, 读定写互斥量等</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">SyncBuf</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Mutex</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+  <span class="nx">buf</span>   <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">UpdateSyncBuf</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">SyncBuf</span><span class="p">,</span> <span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nx">Mutex</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+  <span class="k">defer</span> <span class="nx">b</span><span class="p">.</span><span class="nx">Mutex</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="自定义包">自定义包</h2>
+<p>使用自定义包 <code>import</code> 路径或 URL. 当使用 <code>.</code> 时可以省略包名调用包中的名字. 使用 <code>_</code> 可以只导入副作用, 即执行 init 函数和初始化全局变量. 导入外部安装包需要使用 <code>go install</code> 安装</p>
+<h3 id="包的初始化">包的初始化</h3>
+<p>程序开始执行时, 导入包. 初始化 main 包并调用 main 函数</p>
+<h2 id="godoc">godoc</h2>
+<p>注释以 <code>//</code> 开头并与相应的声明之间无空行</p>
+<h2 id="目录结构-go-install-go-test">目录结构, <code>go install</code>, <code>go test</code></h2>
+<h2 id="使用-git-打包和安装">使用 git 打包和安装</h2>
+<h3 id="安装-github-上的包">安装 github 上的包</h3>
+<ol>
+<li><code>go get github.com/&lt;username&gt;/&lt;repo&gt;</code></li>
+<li><code>import</code></li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-07
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/go_struct_method/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">结构(struct)与方法(method)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/go_func/">
+            <span class="next-text nav-default">函数</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-11-07 20:18:00 \u002b0800 CST',
+        title: '包',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

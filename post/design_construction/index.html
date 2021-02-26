@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>结构型模型 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/design_construction/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="结构型模型" />
+<meta property="og:description" content="结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/design_construction/" />
+<meta property="article:published_time" content="2020-07-25T16:35:00+08:00" />
+<meta property="article:modified_time" content="2020-07-25T16:35:00+08:00" />
+<meta itemprop="name" content="结构型模型">
+<meta itemprop="description" content="结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的">
+<meta itemprop="datePublished" content="2020-07-25T16:35:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-25T16:35:00+08:00" />
+<meta itemprop="wordCount" content="2277">
+
+
+
+<meta itemprop="keywords" content="Construction," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="结构型模型"/>
+<meta name="twitter:description" content="结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">结构型模型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-25 </span>
+        <div class="post-category">
+            <a href="/categories/design-pattern/"> design-pattern </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#适配器模式--adapter">适配器模式(Adapter)</a></li>
+        <li><a href="#桥接模式--bridge">桥接模式(Bridge)</a></li>
+        <li><a href="#组合模式--composite">组合模式(COMPOSITE)</a></li>
+        <li><a href="#装饰模式--decorator">装饰模式(Decorator)</a></li>
+        <li><a href="#外观模式--facade">外观模式(Facade)</a></li>
+        <li><a href="#享元模式--flyweight">享元模式(Flyweight)</a></li>
+        <li><a href="#代理模式--proxy">代理模式(Proxy)</a></li>
+        <li><a href="#结构型模式的对比">结构型模式的对比</a>
+          <ul>
+            <li><a href="#适配器与桥接">适配器与桥接</a></li>
+            <li><a href="#组合-装饰和代理">组合, 装饰和代理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的组合</p>
+<h2 id="适配器模式--adapter">适配器模式(Adapter)</h2>
+<ol>
+<li>意图: 将一个类的接口转为客户希望的另一个接口</li>
+<li>别名: 包装器(Wrapper)</li>
+<li>动机: 有时为复用设计的工具箱类无法在该专业应用领域被复用, 仅仅是因为它的接口与所需接口不匹配</li>
+<li>适用性
+<ul>
+<li>想要使用一个以存在的类, 但是它的接口不符合需求</li>
+<li>想创建一个可以复用的类, 可以与不相关的类或不可预见的类协同工作</li>
+<li>想要使用一些以存在的子类, 但不能对每一个都相应的子类化以匹配接口</li>
+</ul>
+</li>
+<li>参与者
+<ul>
+<li>Target: 本应用使用的相关的接口</li>
+<li>Client: 与符合 Target 的对象协同</li>
+<li>Adaptee: 以存在的类接口</li>
+<li>Adapter: 进行适配的类</li>
+</ul>
+</li>
+<li>效果:
+<ul>
+<li>类适配器
+<ul>
+<li>可以用 Adapter 修改部分 Adaptee 的实现, 因为它是 Adaptee 的子类</li>
+<li>不需要额外指针来间接获取 Adaptee 的对象</li>
+<li>当想匹配一个类和它的所有子类时, 这是不可能的</li>
+</ul>
+</li>
+<li>对象适配器
+<ul>
+<li>可以一次适配 Adaptee 和它的所有子类</li>
+<li>也可一次性为所有的 Adaptee 添加功能</li>
+<li>重定义实现比教困难</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>实现:
+<ul>
+<li>使用 C++ 实现适配器类, 在使用 C++ 实现实现适配器类时, 公有继承 Target, 私有继承 Adaptee</li>
+<li>可插入的适配器类
+<ul>
+<li>首先找到一个 &ldquo;窄&rdquo; 接口, 因为小的接口集更容易适配</li>
+<li>使用抽象接口</li>
+<li>使用代理对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="桥接模式--bridge">桥接模式(Bridge)</h2>
+<ol>
+<li>意图: 分离接口与实现, 使两者可以独立变化</li>
+<li>别名: Handle/Body</li>
+<li>动机:
+当一个抽象可以有多个实现时, 通常用继承来协调它们. 抽象类定义接口, 不同的子类提供不同的实现. 但是不够灵活. 抽象与实现相互绑定, 无法实现部分的独立修改. 例子, 一个支持 X Window 和 PM 系统中都可使用程序, 可以使用继承的方式实现 Window 的两个子类, XWindow 和 PMWindow. 由它们来分别实现对象平台的界面. 但是有一些不足
+<ul>
+<li>扩展 Window 使它支持不同的类型或扩展到新的窗口系统中很不方便. 如果要支持一个用来处理图标的 IconWindow. 两个窗口系统都要各实现一个对应子类, 扩展到新的窗口系统更是需要全部对应 Window 子类</li>
+<li>继承使得客户代码与平台相关, 客户创建窗口时应不涉及到其具体实现.</li>
+<li>使用桥接可以解决这些问题. 使用两个独立的类层次, Window 和 WindowpImp, 对 Window 子类的操作由对应的 Imp 子类来完成</li>
+</ul>
+</li>
+<li>适用性
+<ul>
+<li>希望抽象与实现之间没有固定的绑定关系, 比如希望在运行时更换实现时</li>
+<li>对一个抽象的实现部分代码进行修改不应该影响客户</li>
+<li>在 C++ 中想要完全隐藏抽象的实现部分</li>
+</ul>
+</li>
+<li>参与者
+<ul>
+<li><strong>Abstraction</strong>: 定义抽象类接口, 并维护一个指向实现类的指针</li>
+<li><strong>RefinedAbstraction</strong>: 扩充抽象类的接口</li>
+<li><strong>Implementor</strong>: 定义实现类的接口, 可以是基础操作, 由抽象类使用这些基本操作实现更高层的操作</li>
+<li><strong>ContreteImplementor</strong>: 实现的具体子类</li>
+</ul>
+</li>
+</ol>
+<h2 id="组合模式--composite">组合模式(COMPOSITE)</h2>
+<ol>
+<li>意图: 将对象组合成树形结构以表示 &ldquo;部分-整体&rdquo; 的层次结构. Composite 使得用户对单个对象和组合对象的使用具有一致性</li>
+<li>适用性:
+<ol>
+<li>表示对象的部分-整体层次结构</li>
+<li>用户应忽略单个对象与组合对象的不同</li>
+</ol>
+</li>
+<li>实现
+<ol>
+<li>显示的父部件引用</li>
+<li>共享组件: 一个可行的方法是为子部件存多个父部件</li>
+<li>最大化 Component 接口</li>
+<li>声明管理子部件的操作: 添加和删除子部件的操作放在 Component 时, 用户有可能执行向 Leaf 添加和删除组件的操作, 这是没有意义的. 而将实现放在 Composite 时, 组件与组合的接口又有不同.
+一个折中的办法是 Component 中实现一个 GetComposite 操作, 默认返回空指针. 由 Composite 重写返回 this</li>
+</ol>
+</li>
+</ol>
+<h2 id="装饰模式--decorator">装饰模式(Decorator)</h2>
+<ol>
+<li>意图: 比子类更为灵活的为一个对象添加功能</li>
+<li>适用性:
+<ul>
+<li>在不影响其它对象的情况下, 以动态, 透明的方式给单个 <strong>对象</strong> 添加职责</li>
+<li>处理可撤消的职责</li>
+</ul>
+</li>
+<li>实现
+<ul>
+<li>接口的一致性</li>
+<li>省略抽象的 Decorator 类</li>
+</ul>
+</li>
+</ol>
+<h2 id="外观模式--facade">外观模式(Facade)</h2>
+<ol>
+<li>意图: 为子系统的一组接口提供一个一致的界面</li>
+<li>适用性:
+<ul>
+<li>为复杂系统定制一个简单视图, 而需要更底层定制的也可以越过该层</li>
+<li>客户程序与抽象类的实现有很大的依赖, 可以引入 facade 将它们分离</li>
+<li>构建一个层次系统时, 使用 facade 模式定义每层的入口点, 让它们只通过 facade 进行通迅, 从而简化了它们的依赖关系</li>
+</ul>
+</li>
+<li>参与者
+<ul>
+<li><strong>Facade</strong>: 知道子系统, 将客户主请求发给适当的子系统对象</li>
+<li><strong>Subsystem Class</strong>: 实现子系统功能, 完成 Facade 指派的任务, 并不保存 Facade 的相关信息</li>
+</ul>
+</li>
+<li>实现
+<ul>
+<li>用抽象类定义 Facade 而它和子类对应不同的子系统实现</li>
+<li>公共子系统类和私有子系统类</li>
+</ul>
+</li>
+</ol>
+<h2 id="享元模式--flyweight">享元模式(Flyweight)</h2>
+<ol>
+<li>意图: 运用共享来支持大量细粒度的对象</li>
+<li>适用性:
+<ul>
+<li>一个应用程序使用了大量对象</li>
+<li>由于使用了大量对象造成了很大的开销</li>
+<li>对象的大多数状态可变为外部状态</li>
+<li>如果删除对象的外部状态可以节省开销</li>
+<li>应用程序不依赖对象标识</li>
+</ul>
+</li>
+<li>实现:
+<ol>
+<li>删除外部状态</li>
+<li>管理共享对象: 使用 Flyweight Factory 间接获取对象实例</li>
+</ol>
+</li>
+</ol>
+<h2 id="代理模式--proxy">代理模式(Proxy)</h2>
+<ol>
+<li>意图: 为其它模式提供代理, 控制对这个对象的访问</li>
+<li>别名: Surrogate</li>
+<li>适用性:
+<ul>
+<li>在需要使用比较通用和复杂指针代替简单指针的时候
+<ol>
+<li>远程代理: 为一个对象在不同的局部空间提供代表</li>
+<li>虚代理: 根据需要创建开销很大的对象</li>
+<li>保护代理: 控制对原始对象的访问</li>
+<li>智能指引
+<ul>
+<li>当该对象没有被引用时, 释放它</li>
+<li>当第一次引用一个持久对象时, 将它加入内存</li>
+<li>当访问一个对象时, 检查是否己经加锁</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>参与者:
+<ul>
+<li>Proxy:
+<ul>
+<li>保存一个引用(指针)使得代理可以访问实体</li>
+<li>提供一个与被代理者相同的接口, 可以用来代替</li>
+<li>控制对实体的存取, 可能还要负责创建和删除实体</li>
+</ul>
+</li>
+<li>Subjec: 定义 Proxy 和 RealSubject 的共同接口中, 这样就可以使用 Proxy 来代替 RealSubject</li>
+<li>RealSubject: 被代理的实体</li>
+</ul>
+</li>
+<li>实现:
+<ul>
+<li>有一些语言特性对代理模式的实现是很方便的
+<ul>
+<li>C++ 可以重载 * 与 -&gt; 运算符</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="结构型模式的对比">结构型模式的对比</h2>
+<h3 id="适配器与桥接">适配器与桥接</h3>
+<p>Adapter 和 Bridge 都给另一个对象提供了一定的间接性. 而它们的目的是不同的, Adapter 是不需要重新设计己有的类就可以复用它. 而 Bridge 是对抽象接口与可能的实现进行桥接. 所以 Adapter 一般用于避免代码重复, 而 Bridge 是为了避免接口与实现的耦合</p>
+<h3 id="组合-装饰和代理">组合, 装饰和代理</h3>
+<p>装饰和组合都是基于递归组合来组织可变数目的对象, 但是组合是为了能够统一的对待, 多重对象可以被当成一个对象来处理. 而装饰是为了增加新的功能</p>
+<p>虽然装饰和代理都保存了一个对象的引用(指针), 并向引用的对象传递请求. 两者都提供一致的接口, 但代理不能动态的的添加和分离性质</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-25
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/construction/">Construction</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/design_behavior/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">行为模式</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/unp_chapter2/">
+            <span class="next-text nav-default">TCP, UDP, SFTP</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-25 16:35:00 \u002b0800 CST',
+        title: '结构型模型',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

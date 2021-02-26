@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>一个所见即所得(WYSIWYG)的编辑器 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="设计问题 设计中的 7 个主要问题 文档结构: 对文档内部的表示 格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/design_wysiwyg/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="一个所见即所得(WYSIWYG)的编辑器" />
+<meta property="og:description" content="设计问题 设计中的 7 个主要问题 文档结构: 对文档内部的表示 格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/design_wysiwyg/" />
+<meta property="article:published_time" content="2020-07-20T20:56:00+08:00" />
+<meta property="article:modified_time" content="2020-07-20T20:56:00+08:00" />
+<meta itemprop="name" content="一个所见即所得(WYSIWYG)的编辑器">
+<meta itemprop="description" content="设计问题 设计中的 7 个主要问题 文档结构: 对文档内部的表示 格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何">
+<meta itemprop="datePublished" content="2020-07-20T20:56:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-20T20:56:00+08:00" />
+<meta itemprop="wordCount" content="1928">
+
+
+
+<meta itemprop="keywords" content="lexi," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="一个所见即所得(WYSIWYG)的编辑器"/>
+<meta name="twitter:description" content="设计问题 设计中的 7 个主要问题 文档结构: 对文档内部的表示 格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">一个所见即所得(WYSIWYG)的编辑器</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-20 </span>
+        <div class="post-category">
+            <a href="/categories/design-pattern/"> design-pattern </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#设计问题">设计问题</a></li>
+        <li><a href="#文档结构">文档结构</a>
+          <ul>
+            <li><a href="#递归组合">递归组合</a></li>
+            <li><a href="#图元--glyph">图元(Glyph)</a></li>
+            <li><a href="#组合模式">组合模式</a></li>
+          </ul>
+        </li>
+        <li><a href="#格式化">格式化</a>
+          <ul>
+            <li><a href="#策略模式--strategy">策略模式(Strategy)</a></li>
+          </ul>
+        </li>
+        <li><a href="#修饰用户界面">修饰用户界面</a>
+          <ul>
+            <li><a href="#透明围栏">透明围栏</a></li>
+          </ul>
+        </li>
+        <li><a href="#支持多种视感标准">支持多种视感标准</a>
+          <ul>
+            <li><a href="#工厂类和产品">工厂类和产品</a></li>
+            <li><a href="#抽象工厂模式">抽象工厂模式</a></li>
+          </ul>
+        </li>
+        <li><a href="#支持多种窗口系统">支持多种窗口系统</a>
+          <ul>
+            <li><a href="#封装实现依赖关系">封装实现依赖关系</a></li>
+            <li><a href="#桥接模式">桥接模式</a></li>
+          </ul>
+        </li>
+        <li><a href="#用户操作">用户操作</a>
+          <ul>
+            <li><a href="#命命模式--command">命命模式(Command)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="设计问题">设计问题</h2>
+<p>设计中的 7 个主要问题</p>
+<ol>
+<li>文档结构: 对文档内部的表示</li>
+<li>格式化: 如果将不同的表示对象安排到行和列上? 不同的格式策略要交给哪些对象? 这些策略如何与内部表示相互作用</li>
+<li>修饰用户界面: Lexi 有滚动条, 阴影, 边界等修饰元素, 随着用户界面的演化, 应有不同的变化, 如何设计可以自由增删这些界面元素</li>
+<li>支持多种视感</li>
+<li>支持多种窗口系统: 不同的视感通常是在不同的窗口系统上实现的, Lexi 应尽量独立于窗口系统</li>
+<li>用户操作: 用户的操作分散在不同的按纽, 菜单等对象中, 如何统一的管理, 并提供撤销操作</li>
+<li>拼写检查和连字符</li>
+</ol>
+<h2 id="文档结构">文档结构</h2>
+<p>将文档看成是行, 列, 图形, 表和其它子结构的组合, 这些内部表示应满足</p>
+<ol>
+<li>保持文档的物理结构</li>
+<li>可视化和显示</li>
+<li>根据显示位置映射元素</li>
+<li>文字和图形应一致对待, 两者也不应该有直接的继承关系</li>
+<li>单个元素和组合元素应同等对待</li>
+<li>图形不应该进行拼写检查, 这现 4 有些矛盾, 设计时需要权衡</li>
+</ol>
+<h3 id="递归组合">递归组合</h3>
+<p>字符, 图片等简单元素构成行, 多个行构成列, 多个列组成页. 为了实现, 很明显不同的对象需要对应的类, 同时为了一致性对待, 需要有一些兼容的接口. C++ 可以通过公有继承相同的抽象类来实现</p>
+<h3 id="图元--glyph">图元(Glyph)</h3>
+<p>为了一致性, 定义一个抽象类&ndash;图元. 它的子类既有字符, 图形, 也有行, 列等结构元素.
+图元的接口</p>
+<ol>
+<li>绘图
+<ol>
+<li>virtual void Draw(Windown*)</li>
+<li>virtual void Bounds(Rect&amp;)</li>
+</ol>
+</li>
+<li>点击识别
+<ol>
+<li>virtual bool Intersects(const Point &amp;)</li>
+</ol>
+</li>
+<li>结构
+<ol>
+<li>virtual void Insert(Glyph*, int)</li>
+<li>virtual void Remove(Glyph*)</li>
+<li>virtual Glyph* Child(int)</li>
+<li>virtual Glyph* Parent()</li>
+</ol>
+</li>
+</ol>
+<p>各子类为了显示自己需要重写 Draw(), 调用时需要将操作委托给 Window 参数.  比如长方形 Rectangle 的 Draw</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">void</span> <span class="n">Rectangle</span><span class="o">::</span><span class="n">Drwa</span><span class="p">(</span><span class="n">Window</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">w</span><span class="o">-&gt;</span><span class="n">DrawRect</span><span class="p">(</span><span class="n">_x0</span><span class="p">,</span> <span class="n">_y0</span><span class="p">,</span> <span class="n">_x1</span><span class="p">,</span> <span class="n">_y1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>绘图时需要知道图元占用的显示空间大小. 图元的子类重写 Bounds 函数返回它占用的矩形的大小</p>
+<h3 id="组合模式">组合模式</h3>
+<p>组合模式(Composite)描述了面向对象的递归组合的本质</p>
+<h2 id="格式化">格式化</h2>
+<p>格式化算法非常复杂, 将其独立出图元, 使添加图元不需要考虑格式化, 修改格式化也不需要更改图元. 格式化需要在速度, 缓存, 结果美观等方面权衡, 可以方便替换的格式化算法是应有的.</p>
+<p>一个 Compositor 类是用来封装格式化算法的类. 它可以用来格式化 Composition 的特定图元的子图元. 一个 Composition 创建时得到一个 Compositor 实例, 在必要的时候让 Compositor 执行格式化 Compose</p>
+<p>每一个 Compositor 都能实现一个不同的分行算法</p>
+<h3 id="策略模式--strategy">策略模式(Strategy)</h3>
+<p>用来在对象中封装算法, 主要参与者是策略对象(封装了不同的算法)和它们的操作环境. 本例中, 图元的插入, 删除, 访问操作已经可以满足一般用户的需求了, Compositor 使用何种算法, 都可以完成对文档结构的修改.
+同时, Compositor 的接口也可以让 Composition 启动格式化</p>
+<h2 id="修饰用户界面">修饰用户界面</h2>
+<p>现有两种修饰: 用来界定文本面的边界, 用来显示文档不同部分的滚动条. 为了增加和修改这些装饰(甚至需要在运行时修改), 不能通过继承来将其加入图形界面.</p>
+<h3 id="透明围栏">透明围栏</h3>
+<p>可以通过继承 Composition 来实现不同的修饰组合, 但不同的组合就需要不同的子类, 编写更加复杂, 也不方便管理, 而使用组合, 可能是更好的选择.</p>
+<p>一个边界 Border 类, 如何与图元组合呢. 可以用图元来包含边界, 也可以用边界来包含图元. 不过后面的好像更符合直觉一点.</p>
+<p>Border 类应该是图元的子类, 因为它有形, 且用户并不需要区别对待有边界的图元和无边界的图元, 可以声明一个图元 Glyph 的子类 MonoGlyph 作为所有起修饰作用的子类</p>
+<h2 id="支持多种视感标准">支持多种视感标准</h2>
+<p>为了不同的视感标准, 可能定义了 ScollerBar, Button 等图元的子抽象类. 这些抽象类又有不同的视感标准子类.</p>
+<p>当需要放一个组件图元时, 它必须实例化一个有正确风格的 Glyph 子类, 当然不能直接使用 C++的构造器来实例化, 那会将视觉风格硬编码到代码中, 而不能在运行时决定风格. 当需要行色移植时, 就不得不替换所有的构造代码</p>
+<h3 id="工厂类和产品">工厂类和产品</h3>
+<p>一般可以用以下代码来实例一个 Motif 视感的滚动条</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">ScrollBar</span> <span class="o">*</span><span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MotifScrollBar</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但是以上方法对视感依赖很大, 可以使用以下方法替代</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">ScrollBar</span><span class="o">*</span> <span class="n">sb</span> <span class="o">=</span> <span class="n">GuiFactory</span><span class="o">-&gt;</span><span class="n">CreateScrollBar</span><span class="p">();</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>GuiFactory 是一个 MotifFactory 的实例, 调用相应的构造器来生成实例(产品), 我们说是工厂创建了产品, 这些产品是彼此相关的.</p>
+<p>一个关建问题是工厂类的实例从哪来? 答案是从方便和地方来, 可以是全局变量, 一个众所周知的类的静态成员. 如果整个窗口是在一个类或函数中完成的, 它还可以是一个局部变量. 总知需要在创建组件之前, 确定视感之后</p>
+<h3 id="抽象工厂模式">抽象工厂模式</h3>
+<p>工厂和产品是抽象工厂模式的主要参与者, 适用于产品种类和数目不变, 但是有不同的几个系列产品</p>
+<h2 id="支持多种窗口系统">支持多种窗口系统</h2>
+<p>因为不同窗口系统和类层次结构, 我们不能给每个窗口组件都创建一个公共抽象产品类, 所以不能使用抽象工厂模式. 需要对所有的窗口系统做一个统一的抽象</p>
+<h3 id="封装实现依赖关系">封装实现依赖关系</h3>
+<p>定义一个类 Window, 封装了 Window 要各种不同的窗口系统都要做的事</p>
+<ul>
+<li>画基本几何图形的操作</li>
+<li>变成图标或还原成窗口</li>
+<li>改变自己的大小</li>
+<li>根据需要画出(或重画出)窗口内容</li>
+</ul>
+<p>要使 Window 类跨越不同的窗口系统, 可以</p>
+<ul>
+<li>只使用它们功能的交集: 很多功能将无法使用, 即使这些功能大部分系统都支持</li>
+<li>使用并集: 会导致类变得庞大, 使用时还有不一致的问题</li>
+</ul>
+<p>实际情况下是各退一步, 提供一个支持大多数系统的接口, 并需要支持自己特有的图元</p>
+<h3 id="桥接模式">桥接模式</h3>
+<h2 id="用户操作">用户操作</h2>
+<h3 id="命命模式--command">命命模式(Command)</h3>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-20
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/lexi/">lexi</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/net_application_layer/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">应用层</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/net_udp/">
+            <span class="next-text nav-default">UDP</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-20 20:56:00 \u002b0800 CST',
+        title: '一个所见即所得(WYSIWYG)的编辑器',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

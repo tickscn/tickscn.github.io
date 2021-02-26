@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>全文本搜索 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM 使用全文本搜索 启用全文本搜索 创建 table 时使用 FULLTEXT 子语句 1 2 3 4 5 6 7 CREATE TABLE productnotes( note_id int NOT NULL AUTO_INCREMET, ... note_text text NULL, PRIMARY KEY(note_id), FULLTEXT(note_text)" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/mysql_fulltext_serch/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="全文本搜索" />
+<meta property="og:description" content="常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM 使用全文本搜索 启用全文本搜索 创建 table 时使用 FULLTEXT 子语句 1 2 3 4 5 6 7 CREATE TABLE productnotes( note_id int NOT NULL AUTO_INCREMET, ... note_text text NULL, PRIMARY KEY(note_id), FULLTEXT(note_text)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/mysql_fulltext_serch/" />
+<meta property="article:published_time" content="2020-08-03T18:46:00+08:00" />
+<meta property="article:modified_time" content="2020-08-03T18:46:00+08:00" />
+<meta itemprop="name" content="全文本搜索">
+<meta itemprop="description" content="常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM 使用全文本搜索 启用全文本搜索 创建 table 时使用 FULLTEXT 子语句 1 2 3 4 5 6 7 CREATE TABLE productnotes( note_id int NOT NULL AUTO_INCREMET, ... note_text text NULL, PRIMARY KEY(note_id), FULLTEXT(note_text)">
+<meta itemprop="datePublished" content="2020-08-03T18:46:00+08:00" />
+<meta itemprop="dateModified" content="2020-08-03T18:46:00+08:00" />
+<meta itemprop="wordCount" content="543">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="全文本搜索"/>
+<meta name="twitter:description" content="常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM 使用全文本搜索 启用全文本搜索 创建 table 时使用 FULLTEXT 子语句 1 2 3 4 5 6 7 CREATE TABLE productnotes( note_id int NOT NULL AUTO_INCREMET, ... note_text text NULL, PRIMARY KEY(note_id), FULLTEXT(note_text)"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">全文本搜索</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-03 </span>
+        <div class="post-category">
+            <a href="/categories/sql/"> SQL </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#使用全文本搜索">使用全文本搜索</a>
+          <ul>
+            <li><a href="#启用全文本搜索">启用全文本搜索</a></li>
+            <li><a href="#进行全文本搜索">进行全文本搜索</a></li>
+            <li><a href="#使用查询扩展">使用查询扩展</a></li>
+            <li><a href="#使用-boolean-文本搜索">使用 boolean 文本搜索</a></li>
+            <li><a href="#使用说明">使用说明</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>常用 InnoDB 不支持全文本搜索, 如果要使用应更换引擎为 MyISAM</p>
+<h2 id="使用全文本搜索">使用全文本搜索</h2>
+<h3 id="启用全文本搜索">启用全文本搜索</h3>
+<p>创建 table 时使用 FULLTEXT 子语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nf">productnotes</span><span class="p">(</span>
+ <span class="n">note_id</span> <span class="kt">int</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="n">AUTO_INCREMET</span><span class="p">,</span>
+ <span class="p">...</span>
+ <span class="n">note_text</span> <span class="kt">text</span> <span class="no">NULL</span><span class="p">,</span>
+ <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">(</span><span class="n">note_id</span><span class="p">),</span>
+ <span class="k">FULLTEXT</span><span class="p">(</span><span class="n">note_text</span><span class="p">)</span>
+<span class="p">)</span><span class="n">EIGINE</span><span class="o">=</span><span class="n">MyISAM</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>MySQL 会根据 FULLTEXT 对 note_text 进行索引, 之后, MySQL 自动维护该索引. 在增加, 更新, 或删除行时, 索引随之自动更新</p>
+<h3 id="进行全文本搜索">进行全文本搜索</h3>
+<p>在索引之后, 使用两个函数 Match() 和 Against() 执行全文本搜索. Match() 指定被搜索的列, Against() 指定使用的搜索表达式</p>
+<h3 id="使用查询扩展">使用查询扩展</h3>
+<p>用来放宽全文本搜索结果的范围</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">note_text</span>
+<span class="k">FROM</span> <span class="n">productnotes</span>
+<span class="k">WHERE</span> <span class="k">Match</span><span class="p">(</span><span class="n">note_text</span><span class="p">),</span> <span class="n">Against</span><span class="p">(</span><span class="s1">&#39;anvils&#39;</span> <span class="k">WITH</span> <span class="n">QUERY</span> <span class="n">EXPANSION</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用-boolean-文本搜索">使用 boolean 文本搜索</h3>
+<p>以布尔方式, 可以提供如下内容的细节</p>
+<ul>
+<li>要匹配的词</li>
+<li>要排斥的词</li>
+<li>排列提示</li>
+<li>表达式分组</li>
+</ul>
+<blockquote>
+<p>即使没有定义全文本搜索的索引, 也可以使用不过会非常的慢</p>
+</blockquote>
+<p>支持的布尔操作符</p>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>必须包含</td>
+</tr>
+<tr>
+<td>-</td>
+<td>必须不包含</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>包含, 并增加等级值</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>包含, 且减少等级值</td>
+</tr>
+<tr>
+<td>()</td>
+<td>把词组成子表达式, 允许以其为单位被包含, 排除, 排列</td>
+</tr>
+<tr>
+<td>~</td>
+<td>取消一个词的排序</td>
+</tr>
+<tr>
+<td>*</td>
+<td>词尾通配符</td>
+</tr>
+<tr>
+<td>&quot;&quot;</td>
+<td>定义一个短语</td>
+</tr>
+</tbody>
+</table>
+<h3 id="使用说明">使用说明</h3>
+<ul>
+<li>在索引全文本数据时, <strong>短词</strong> 被忽略且从索引中排除. <strong>短词</strong> 是指长度小于等于 3 的词(可调)</li>
+<li>MySQL 带有一个内建的非用词(stopword)列表, 相当于黑名单, 在索引全文时总被忽略</li>
+<li>如果一个词出现在 50% 以上的行中, 将其当作非用词, 排除索引. 不适用于 布尔模式</li>
+<li>如果表中的行数小于 3 行, 全文搜索不返回结果</li>
+<li>忽略词中的单引号</li>
+<li>不具有词分隔符(如汉语)不能恰当的返回全文本搜索结果</li>
+<li>仅在 MyISAM 引擎中支持</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-03
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/mysql_cursor/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">使用游标</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/unp_tcp_base/">
+            <span class="next-text nav-default">基本 TCP 套接字编程</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-08-03 18:46:00 \u002b0800 CST',
+        title: '全文本搜索',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

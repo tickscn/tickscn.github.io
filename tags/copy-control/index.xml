@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>copy-control on ticks blog</title>
+    <link>https://tickscn.github.io/tags/copy-control/</link>
+    <description>Recent content in copy-control on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 27 May 2020 17:44:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/copy-control/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>拷贝控制</title>
+      <link>https://tickscn.github.io/post/cpp_copy_control/</link>
+      <pubDate>Wed, 27 May 2020 17:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_copy_control/</guid>
+      <description>5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构</description>
+    </item>
+    
+  </channel>
+</rss>

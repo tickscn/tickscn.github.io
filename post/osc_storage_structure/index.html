@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>大容量存储结构 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/osc_storage_structure/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="大容量存储结构" />
+<meta property="og:description" content="概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/osc_storage_structure/" />
+<meta property="article:published_time" content="2020-07-28T19:30:00+08:00" />
+<meta property="article:modified_time" content="2020-07-28T19:30:00+08:00" />
+<meta itemprop="name" content="大容量存储结构">
+<meta itemprop="description" content="概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t">
+<meta itemprop="datePublished" content="2020-07-28T19:30:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-28T19:30:00+08:00" />
+<meta itemprop="wordCount" content="2037">
+
+
+
+<meta itemprop="keywords" content="storage," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="大容量存储结构"/>
+<meta name="twitter:description" content="概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">大容量存储结构</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-28 </span>
+        <div class="post-category">
+            <a href="/categories/osc/"> OSC </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#概述">概述</a>
+          <ul>
+            <li><a href="#磁盘--硬盘">磁盘(硬盘)</a></li>
+            <li><a href="#固态磁盘">固态磁盘</a></li>
+            <li><a href="#磁带">磁带</a></li>
+          </ul>
+        </li>
+        <li><a href="#磁盘结构">磁盘结构</a></li>
+        <li><a href="#磁盘连接">磁盘连接</a>
+          <ul>
+            <li><a href="#主机连接存储">主机连接存储</a></li>
+            <li><a href="#网络连接存储">网络连接存储</a></li>
+          </ul>
+        </li>
+        <li><a href="#磁盘调度">磁盘调度</a>
+          <ul>
+            <li><a href="#fcfs-调度">FCFS 调度</a></li>
+            <li><a href="#sstf">SSTF</a></li>
+            <li><a href="#scan-调度">SCAN 调度</a></li>
+            <li><a href="#循环扫描调度">循环扫描调度</a></li>
+            <li><a href="#look-调度">LOOK 调度</a></li>
+          </ul>
+        </li>
+        <li><a href="#磁盘管理">磁盘管理</a>
+          <ul>
+            <li><a href="#磁盘格式化">磁盘格式化</a></li>
+            <li><a href="#引导块">引导块</a></li>
+            <li><a href="#坏块">坏块</a></li>
+          </ul>
+        </li>
+        <li><a href="#raid-结构">RAID 结构</a></li>
+        <li><a href="#编程题">编程题</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="概述">概述</h2>
+<h3 id="磁盘--硬盘">磁盘(硬盘)</h3>
+<p>由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(track), 每个磁道分为不同的扇区(sector). 一个磁盘通常有多个垂直排列的盘面, 其中同一柱面的磁道被称为柱面(cylinder), 读写的磁头附在磁臂上, 磁臂可以在不同柱面间选则</p>
+<h3 id="固态磁盘">固态磁盘</h3>
+<p>没有移动部件, 会更快, 甚至有使用带电源的 DRAM 来存储的</p>
+<h3 id="磁带">磁带</h3>
+<p>随机读取速率是个垃圾</p>
+<h2 id="磁盘结构">磁盘结构</h2>
+<p>磁盘驱动器寻址可以看作是逻辑块的一个一维数组, 将逻辑块依次映射到扇区, 从上到下, 从外到里. 不过这个转换很难</p>
+<ol>
+<li>缺陷扇区和坏道的问题, 需要用其它空闲扇区来替代</li>
+<li>磁道中所含扇区的多小是不同的, 一般外部多, 内部少.
+<ol>
+<li>可以使有 CLV, 访问内部磁道时加大磁盘转速</li>
+<li>也可以让外部磁盘的比特密度降低, 这样可以用 CAV</li>
+</ol>
+</li>
+</ol>
+<h2 id="磁盘连接">磁盘连接</h2>
+<h3 id="主机连接存储">主机连接存储</h3>
+<p>通过本地 I/O 端口访问数据, 可以使用多种技术, 如 I/O 总线架构用于个人台式 PC, 而用于高端工作站和服务器的有更复杂的 I/O 架构, 例如光纤通道</p>
+<h3 id="网络连接存储">网络连接存储</h3>
+<p>是一种专用存储系统, 可以通过数据网络来远程访问. 客户通过远程过程调用(RPC)访问远程连接存储</p>
+<h2 id="磁盘调度">磁盘调度</h2>
+<p>对于磁盘, 访问时间分为两个部分, 一是 <strong>寻道时间</strong>, 磁臂称动磁头到对应柱面的时间. 二是 <strong>旋转延迟</strong>, 是磁盘旋转目标扇区到磁头下和时间.</p>
+<p>磁盘带宽是传输字节总数除以请求开始到传递结束的总时间</p>
+<h3 id="fcfs-调度">FCFS 调度</h3>
+<p>最简单的是先到先服务调度, 比教公平, 但是通常不是最快的服务考虑一个柱面请求队列 98, 183, 37, 122, 14, 124, 65, 67
+假设磁头初始位于 53. 磁头移动柱面总数
+\[98-53 + 183-98 + 183-37 + 122-37 + 122-14 + 124-14 +124-65 + 67-65 = 640\]</p>
+<h3 id="sstf">SSTF</h3>
+<p>最短寻道时间优先(Shortest-Seek-Time-First, SSTF), 优先处理与当前磁头最接近的请求.
+上面的例子中寻道长度为
+\[65-53+ 67 -65 + 67-37 + 37-14 + 98-14+122-98+124-122+183-124 = 236\]
+有可能造成机饿. 离得远的的柱面请求可能永远不会被访问</p>
+<h3 id="scan-调度">SCAN 调度</h3>
+<p>先向一端移动, 并服务经过的请求, 到达另一端后反向移动上例子</p>
+<ul>
+<li>朝 0 移动 53 + 53  + 183 - 53 = 236</li>
+</ul>
+<h3 id="循环扫描调度">循环扫描调度</h3>
+<p>到达另一端后回到开头而不是反向</p>
+<h3 id="look-调度">LOOK 调度</h3>
+<p>是 SCAN 和 C-SCAN 的修改, 并不移动到端的头, 而是只移动到请求最远端. 分别叫作 LOOK 和 C-LOOK</p>
+<h2 id="磁盘管理">磁盘管理</h2>
+<h3 id="磁盘格式化">磁盘格式化</h3>
+<p>一个新的磁盘只是一个磁性记录的盘子, 它需要被分为不同的扇区来存储数据, 这叫低级格式化或物理格式化. 使用特殊的数据结构填充扇区. 通常有头部, 数据区域. 头部和尾部包含了一些磁盘控制器的使用信息. 如扇区号和纠错代码. 一般磁盘出场之前以进行了低级格式化.</p>
+<p>在可以使用磁盘存储文件系统之前, 操作系统仍然要将自己的数据结构记录在磁盘上, 分为分区和逻辑格式化</p>
+<p>有些操作系统允许将磁盘分区当作一个逻辑块数组. 没有文件系统的数据结构. 被称为原始磁盘(raw disk)</p>
+<h3 id="引导块">引导块</h3>
+<p>为了开始动行计算机, 必须有一个初始程序来运行. 这个初始自举(bootstrap)程序通常很简单. 首先初始化系统的所有部分, 接着启动操作系统. 为此, 自举程序找到磁盘上的操作系统内核, 加载到内存并转到起始地址开始操作系统的执行</p>
+<p>对于大多数计算机, 自举程序位于只读存储器(ROM)中, 这个位置固定且不需要初始化的位置很适合在计算机开机时最先执行. 但是 ROM 不方便更新, 所以更通常的作法是 ROM 中的程序只是用来加载真正的启动程序,而启动程序位于磁盘的固定位置上. 可以方便的更新</p>
+<h3 id="坏块">坏块</h3>
+<p>磁盘具有机械移动部件, 容错差. 有时会出现彻底的损坏, 这时只能更换. 而有时只是一个或多个扇区坏掉. 大多数磁盘出厂时就有坏块</p>
+<h2 id="raid-结构">RAID 结构</h2>
+<p>磁盘冗余阵列(Redundant Arrays of Independent Disk, RAID)是用来组枳多种磁盘的</p>
+<h2 id="编程题">编程题</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C++" data-lang="C++"><span class="cp">#include</span> <span class="cpf">&lt;bits/stdc++.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">List</span><span class="p">[</span><span class="mi">1000</span><span class="p">];</span>
+<span class="kt">int</span> <span class="nf">FCFS</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">SSTF</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">SCAN</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">C_SCAN</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">LOOK</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">C_LOOK</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Usage: a.out &lt;初始位置&gt;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">beg</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">5000</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;FCFS 总数: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">FCFS</span><span class="p">(</span><span class="n">beg</span><span class="p">));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;SSTF 总数: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">SSTF</span><span class="p">(</span><span class="n">beg</span><span class="p">));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;SCAN 总数: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">SCAN</span><span class="p">(</span><span class="n">beg</span><span class="p">));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;C-SCAN 总数: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">C_SCAN</span><span class="p">(</span><span class="n">beg</span><span class="p">));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;LOOK 总数: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">LOOK</span><span class="p">(</span><span class="n">beg</span><span class="p">));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;C-LOOK 总数: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">C_LOOK</span><span class="p">(</span><span class="n">beg</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">FCFS</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="n">abs</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">beg</span><span class="p">);</span>
+        <span class="n">beg</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">SSTF</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">l</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">List</span><span class="p">),</span> <span class="n">end</span><span class="p">(</span><span class="n">List</span><span class="p">));</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">beg</span><span class="p">);</span>
+    <span class="n">sort</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">l</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="kt">int</span> <span class="n">low</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">low</span> <span class="o">&lt;</span> <span class="n">high</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">beg</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">beg</span><span class="p">)</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">low</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">low</span>  <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">low</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">high</span> <span class="o">&lt;=</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">-</span> <span class="n">l</span><span class="p">[</span><span class="n">low</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">l</span><span class="p">[</span><span class="n">high</span><span class="p">]</span> <span class="o">-</span> <span class="n">beg</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">beg</span> <span class="o">-</span> <span class="n">l</span><span class="p">[</span><span class="n">low</span><span class="p">];</span>
+            <span class="n">beg</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">low</span><span class="o">--</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">l</span><span class="p">[</span><span class="n">high</span><span class="p">]</span> <span class="o">-</span> <span class="n">beg</span><span class="p">;</span>
+            <span class="n">beg</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">high</span><span class="o">++</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">low</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">res</span> <span class="o">+=</span> <span class="n">beg</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">high</span> <span class="o">&lt;=</span> <span class="mi">1000</span><span class="p">)</span> <span class="n">res</span> <span class="o">+=</span> <span class="mi">1000</span> <span class="o">-</span> <span class="n">beg</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">SCAN</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">Max</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">Min</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Max</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Max</span><span class="p">);</span>
+        <span class="n">Min</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Min</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">&gt;=</span> <span class="n">Max</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">beg</span> <span class="o">-</span> <span class="n">Min</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">Max</span> <span class="o">+</span> <span class="n">beg</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">C_SCAN</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">Max</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">Min</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Max</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Max</span><span class="p">);</span>
+        <span class="n">Min</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Min</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">&gt;=</span> <span class="n">Max</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">beg</span> <span class="o">-</span> <span class="n">Min</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="mi">10000</span> <span class="o">-</span> <span class="n">Max</span> <span class="o">+</span> <span class="n">beg</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">LOOK</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">Max</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">Min</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Max</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Max</span><span class="p">);</span>
+        <span class="n">Min</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Min</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">&gt;</span> <span class="n">Max</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">beg</span> <span class="o">-</span> <span class="n">Min</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">&gt;</span> <span class="n">Min</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Max</span> <span class="o">+</span> <span class="n">beg</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Min</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">Max</span> <span class="o">-</span> <span class="n">beg</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">C_LOOK</span><span class="p">(</span><span class="kt">int</span> <span class="n">beg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">Max</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">Min</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Max</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Max</span><span class="p">);</span>
+        <span class="n">Min</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Min</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">&gt;</span> <span class="n">Max</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">beg</span> <span class="o">-</span> <span class="n">Min</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">beg</span> <span class="o">&gt;</span> <span class="n">Min</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Max</span> <span class="o">-</span> <span class="n">Min</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Max</span> <span class="o">-</span> <span class="n">beg</span> <span class="o">-</span> <span class="n">Min</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-28
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/storage/">storage</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/osc_io_system/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">I/O 系统</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/osc_file_system_imp/">
+            <span class="next-text nav-default">文件系统实现</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-28 19:30:00 \u002b0800 CST',
+        title: '大容量存储结构',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

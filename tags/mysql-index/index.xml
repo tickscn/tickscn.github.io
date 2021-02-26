@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MySQL-Index on ticks blog</title>
+    <link>https://tickscn.github.io/tags/mysql-index/</link>
+    <description>Recent content in MySQL-Index on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 06 Aug 2020 14:57:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/mysql-index/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>索引与算法</title>
+      <link>https://tickscn.github.io/post/mysql_index/</link>
+      <pubDate>Thu, 06 Aug 2020 14:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/mysql_index/</guid>
+      <description>InnoDB 索引概述 B+ 树索引 全文索引 哈希索引 哈希索引是自适应的, 不能控制是否生成. B+树就是数据库中最常用和最有效的索引 基础数据结构回顾 二叉搜索树与平</description>
+    </item>
+    
+  </channel>
+</rss>

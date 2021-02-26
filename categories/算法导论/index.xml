@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法导论 on ticks blog</title>
+    <link>https://tickscn.github.io/categories/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/</link>
+    <description>Recent content in 算法导论 on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 27 Nov 2019 14:59:46 +0000</lastBuildDate><atom:link href="https://tickscn.github.io/categories/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>单源最短路径</title>
+      <link>https://tickscn.github.io/post/%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</link>
+      <pubDate>Wed, 27 Nov 2019 14:59:46 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</guid>
+      <description>带权有向图 V = (G, E)权重函数了$\omega: E\rightarrow \mathbf{R}$. 图中路径的权重是组成路径的边权重之和. 最短路径问题是求权重最小路径的问题 最短路径的变体 单源</description>
+    </item>
+    
+    <item>
+      <title>最小生成树</title>
+      <link>https://tickscn.github.io/post/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</link>
+      <pubDate>Tue, 26 Nov 2019 13:52:34 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</guid>
+      <description>一个边通无向图 G = (V, E), 为每一条边(u, v)$\in$ E, 赋予权重 w(u, v), 那么 G 的一个无环子集 , 使得 T 连通所有结点且权重最小. 该子集 T 被称作 最小生成树. 求取 T 的</description>
+    </item>
+    
+    <item>
+      <title>强连通分量</title>
+      <link>https://tickscn.github.io/post/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/</link>
+      <pubDate>Mon, 25 Nov 2019 15:38:47 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/</guid>
+      <description>强连通分量 有向图 G = (V, E) 的强连通分量是指一个最大点集C$subseteq$U, $\forall u,v \in C$, u,v 可互相到达 1 2 3 4 5 STRONGLY-CONNECTED-COMPONENTS(G) call DFS(G) to compute u.f compute G&amp;#39;s transpose GT call DFS(GT), each loop of DFS,</description>
+    </item>
+    
+    <item>
+      <title>拓扑排序</title>
+      <link>https://tickscn.github.io/post/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Sat, 23 Nov 2019 18:38:02 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</guid>
+      <description>对有向无环图G = (V, E)来说, 拓扑排序是G的一种线性排序. 该排序满足, 存在弧(u, v), u在v前. 1 2 3 4 5 6 TOPOLOGICAL-SORT(G) { 用 DFS 计算结束时间v.f 当 v结束时</description>
+    </item>
+    
+    <item>
+      <title>breadth-first-search and depth-first-search</title>
+      <link>https://tickscn.github.io/post/breadth-first-search/</link>
+      <pubDate>Thu, 21 Nov 2019 14:00:25 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/breadth-first-search/</guid>
+      <description>广度优先搜索 给定图 G=(V,E) 的一个可以识别的源结点 s, 计算从s可到达的结点的距离, 同时生成一个广度优先搜索树 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 BFS(G,</description>
+    </item>
+    
+    <item>
+      <title>图的表示</title>
+      <link>https://tickscn.github.io/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/</link>
+      <pubDate>Wed, 20 Nov 2019 13:56:10 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA/</guid>
+      <description>对于图 G = (V, E) , V是顶点(Vertex)的集合, E是边(Edge) 的集合 邻接链表 稀疏图($|E| &amp;laquo; |V|^2$) 邻接距阵 多用在稠密图($|E| \approx |V|^2$), 或需要</description>
+    </item>
+    
+    <item>
+      <title>可合并堆操作</title>
+      <link>https://tickscn.github.io/post/algo19-2/</link>
+      <pubDate>Tue, 19 Nov 2019 14:22:42 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/algo19-2/</guid>
+      <description>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 struct FbHeapNode{ int key; FbHeapNode *left; FbHeapNode *right; FbHeapNode *parent; FbHeapNode *child; size_t degree; //&amp;lt; 孩子链表结点数目 bool mark; //&amp;lt; 成为孩子结点后是否失去过</description>
+    </item>
+    
+    <item>
+      <title>斐波那契堆</title>
+      <link>https://tickscn.github.io/post/algo19/</link>
+      <pubDate>Sun, 17 Nov 2019 14:25:44 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/algo19/</guid>
+      <description>可合并堆(mergeable heap). 支持以下操作(默认的是最小堆. 可以有对称的最大堆) MAKE-HEAP() 创建一个新的不含任何元素的堆 INSERT(H, x) 将以填入关键字的元素x插入</description>
+    </item>
+    
+  </channel>
+</rss>

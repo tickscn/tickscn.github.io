@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>内存管理策略 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="基本介绍 硬件 CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下 确保每个进程有一个单独的内存空间" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/osc_memory_management/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="内存管理策略" />
+<meta property="og:description" content="基本介绍 硬件 CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下 确保每个进程有一个单独的内存空间" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/osc_memory_management/" />
+<meta property="article:published_time" content="2020-07-05T15:39:00+08:00" />
+<meta property="article:modified_time" content="2020-07-05T15:39:00+08:00" />
+<meta itemprop="name" content="内存管理策略">
+<meta itemprop="description" content="基本介绍 硬件 CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下 确保每个进程有一个单独的内存空间">
+<meta itemprop="datePublished" content="2020-07-05T15:39:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-05T15:39:00+08:00" />
+<meta itemprop="wordCount" content="2986">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="内存管理策略"/>
+<meta name="twitter:description" content="基本介绍 硬件 CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下 确保每个进程有一个单独的内存空间"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">内存管理策略</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-05 </span>
+        <div class="post-category">
+            <a href="/categories/osc/"> OSC </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#基本介绍">基本介绍</a>
+          <ul>
+            <li><a href="#硬件">硬件</a></li>
+            <li><a href="#地址绑定">地址绑定</a></li>
+            <li><a href="#逻辑地址空间与物理地址空间">逻辑地址空间与物理地址空间</a></li>
+            <li><a href="#动态加载">动态加载</a></li>
+            <li><a href="#动态链接和共享库">动态链接和共享库</a></li>
+          </ul>
+        </li>
+        <li><a href="#交换">交换</a></li>
+        <li><a href="#连续内存分配">连续内存分配</a>
+          <ul>
+            <li><a href="#内存保护">内存保护</a></li>
+            <li><a href="#内存分配">内存分配</a></li>
+            <li><a href="#碎片">碎片</a></li>
+          </ul>
+        </li>
+        <li><a href="#分段">分段</a>
+          <ul>
+            <li><a href="#基本方法">基本方法</a></li>
+            <li><a href="#分段硬件">分段硬件</a></li>
+          </ul>
+        </li>
+        <li><a href="#分页">分页</a>
+          <ul>
+            <li><a href="#基本方法">基本方法</a></li>
+            <li><a href="#硬件支持">硬件支持</a></li>
+            <li><a href="#页共享">页共享</a></li>
+          </ul>
+        </li>
+        <li><a href="#页表结构">页表结构</a>
+          <ul>
+            <li><a href="#分层分页">分层分页</a></li>
+            <li><a href="#哈希页表">哈希页表</a></li>
+            <li><a href="#倒置页表">倒置页表</a></li>
+          </ul>
+        </li>
+        <li><a href="#ia-32-与-x86-64">IA-32 与 x86_64</a>
+          <ul>
+            <li><a href="#ia-32">IA-32</a></li>
+            <li><a href="#x86-64">X86_64</a></li>
+          </ul>
+        </li>
+        <li><a href="#编程量">编程量</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="基本介绍">基本介绍</h2>
+<h3 id="硬件">硬件</h3>
+<p>CPU 可以直接访问的通用存储器只有内存和内置的寄存器. 为了不同进程之间不相互干扰可以采用一种办法如下</p>
+<ol>
+<li>确保每个进程有一个单独的内存空间: 基地址(存储在基地址寄存器, base reester)&ndash;界限地址(存储在界限地址寄存器, limit reester)</li>
+<li>CPU 比较产生的地址与上述寄存器地址来判断是否合法</li>
+</ol>
+<h3 id="地址绑定">地址绑定</h3>
+<p>地址可以有几种表现形式</p>
+<ol>
+<li>符号: 源程序中一般使用这种表示. 编译器通常将符号 <strong>绑定</strong> 到可重定位的地址(相对地址)</li>
+<li>链接器或加载器将可重定位地址绑定到绝对地址</li>
+</ol>
+<p>通常, 指令和数据绑定到存储器地址可在从源代码到二进制内存映象的任何一步</p>
+<ul>
+<li>编译时: 如果编译时就已知进程在内存中的地址, 可以生成绝对代码(absolute code). 如 MS-DOS 的 .COM 格式</li>
+<li>加载时: 编译器生成可重定位地址</li>
+<li>执行时: 进程可以从内存段跳到另一个内存段</li>
+</ul>
+<h3 id="逻辑地址空间与物理地址空间">逻辑地址空间与物理地址空间</h3>
+<ul>
+<li>逻辑地址: CPU 生成的地址</li>
+<li>物理地址: 内存地址寄存器中的地址</li>
+</ul>
+<p>编译时和加载时绑定生成相同的逻辑地址和物理地址. 而执行时绑定生成不同的逻辑地址和物理地址, 一般称此时的逻辑地址为虚拟地址(virtual address), 对应的物理地址集合称为物理地址空间.</p>
+<p>虚拟内存到物理内存的映射是由内存管理单元(Memory-Management Unit, MMU)硬件来完成的</p>
+<h3 id="动态加载">动态加载</h3>
+<p>为了更好的内存利用率可以使用动态加载(dynamic loading), 只有需要时才加载.</p>
+<h3 id="动态链接和共享库">动态链接和共享库</h3>
+<p>动态链接类似于动态加载, 链接延迟到运行时动态链接的二进制映象内每个库程序的引用都有一个存根(stub). 存根是一小段代码, 用来指出如何定位内存中的库程序或者内存中没有时如何加载</p>
+<h2 id="交换">交换</h2>
+<p>进程从内存暂时存储到备份存储, 再次执行时重新调回到内存</p>
+<h2 id="连续内存分配">连续内存分配</h2>
+<p>内存通常分为两个区域, 一个用于驻留操作系统, 另一个用于用户进程. 操作系统可以位于低内存, 也可以放在高内存. 由于中断向量常位于低内存, 所以操作系统也通常位于低内存. 连续内存分配(contiguous memory allocate)时, 每个进程位于一个连续的内存区域, 与包含下一个进程的内存区域相连.</p>
+<h3 id="内存保护">内存保护</h3>
+<p>界限存储器保存逻辑地址范围, 重定位寄存器保存基地址. CPU 产生的每个地址都需要与寄存器进行核对, 保证内存访问可以正常运行</p>
+<h3 id="内存分配">内存分配</h3>
+<p>最为简单的内存分配方式之一就是将内存分为固定大小的分区(partition), 每个分区只包含一个进程. 如今以不再使用.</p>
+<p>对于可变分区方案, 操作系统有一个表, 记录可用内存(hole, 孔)和以分配内存.</p>
+<ul>
+<li>首次适应: 分配首个足够大的孔, 查找可以从头开始, 也可以从上次查找结束的地方开始</li>
+<li>最优适应: 分配满足要求的最小的孔</li>
+<li>最差适应: 分配最大的孔</li>
+</ul>
+<h3 id="碎片">碎片</h3>
+<ul>
+<li>内部碎片: 有时维护剩余的小孔开销很大, 因此通常按固定大小的块来分配内存, 这样分配的内存通常比所需要的内存大一些, 这些在分区内部却不能使用的内存被称为内部碎片</li>
+<li>外部碎片: 多个进程内存空间之间的内存区域, 可以使用. 但是被分隔的每个碎片都较小</li>
+</ul>
+<p>外部碎片的一个可能的解决办法是紧缩, 移动内存内容, 将空闲内存合并成一整块</p>
+<h2 id="分段">分段</h2>
+<h3 id="基本方法">基本方法</h3>
+<p>程序员可以认为程序是由主程序加上一组方法, 过程或函数所构成的, 还可以包含各种数据结构: 对象, 数组, 堆栈, 变量等. 程序员通过名称来引用每个模块和数据, 并不关心这些元素的实际内存位置.</p>
+<p>分段中逻辑地址空间是由一组段构成. 每个段都有名称和长度, 地址指定段名称和称内偏移. 为了实现的简便, 段是编号的使用时根据段号而不是段名称为引用</p>
+<h3 id="分段硬件">分段硬件</h3>
+<p>用户通过二维地址不引用程序内的对象, 但是实际的内存仍然是一维的字节序列. 因此需要一种映射方式, 将用户定义的二维地址映射到一维的物理地址. 可以通过段表(segment table)来实现. 段表的每个条目都有段基地址(物理地址的开始)和段界限(段长度). 段表是基址寄存器与界限寄存器的值的对的数组</p>
+<h2 id="分页">分页</h2>
+<h3 id="基本方法">基本方法</h3>
+<p>将物理内存分为固定大小的块, 称为帧或页帧(frame); 并将逻辑内存也分为同样大小的块, 称为页或页面(page). 当需要执行一个进程时, 它的页从文件系统或备份存储等源处, 加载到内存的可用帧.</p>
+<p>由 CPU 生成的地址分为两个部分: 页码(page number)(p)和页偏移(page offset)(d). 页码作为页表的索引, 而页表包含每页物理内存的基地址.</p>
+<p>页大小是由硬件来决定的, 一般大小为 2 的幂; 选为 2 的幂可以方便地将逻辑地址转为页码和页偏移. 如逻辑地址空间为 \(2^m\), 页大小 \(2^n\) 次方, 那么逻辑地址的低 n 位为页偏移, 高 m-n 位为页码. 不会有外部碎片.
+不过会有内部碎片</p>
+<h3 id="硬件支持">硬件支持</h3>
+<p>页表的硬件实现有多种</p>
+<ul>
+<li>将页表作为专用寄存器来实现: 条目一般比较少</li>
+<li>页表放在内存中: 现代计算机页表条目数目非常大, 需要将页表放入内存, 并使用页表基地址寄存器(Page-Table Base Reester, PTBR)指向页表. 这时一次内存访问任务需要两次内存访问, 这样内存访问的速度减半, 效率过低</li>
+</ul>
+<p>解决大数目页表慢的方法, 采用专用的, 小的, 查找快速的高速硬件缓冲. 称为转换表缓冲区(Translation Look-aside Buffer, TLB). 缓冲区满的话, 需要先择一个条目来替换, 选择方法可以有最小使用替换(LRU), 轮转替换(RRU), 随机替换. 地址空间标识符(Address-Space Identifier, ASID)</p>
+<h3 id="页共享">页共享</h3>
+<p>相同的只读代码段可以共享</p>
+<h2 id="页表结构">页表结构</h2>
+<h3 id="分层分页">分层分页</h3>
+<p>现代计算机系统支持大逻辑地址空间, 这种情况下, 页表本身可能非常大. 如具有 32 位逻辑地址空间的计算机系统, 如果页的大小为 4096(2^{12}), 那么页表可以多达 100 万(2^{32}/2^{12})^{nil}条目, 若每个条目有四个字节, 那么需要 4MiB 物理地址空间来存储页表本身. 连续分配这个页表是有些浪费的.</p>
+<p>一种解决办法是两层分页, 即对页表进行再分页. 如上假设, 对 20 位的页码进行再分页, 分为 10 位的页码(p_{1})和 10 位的页偏移(p_{2}). 这时只加载需要的页, 如果只加载了 1 个页表, 所需空间 2^{10}*4B = 4KiB. 而对于 64 位系统, 分层分页是不适用的, 如果层数少, 条目仍然很多, 层数多访问会不可接受的慢</p>
+<h3 id="哈希页表">哈希页表</h3>
+<p>处理大于 32 位地址空间的常用方法是哈希页表(hashed page table), 采用虚拟页码作为哈希值, 哈希页表的每一个条目包含一个链表, 链表元素由虚拟页码, 映射的帧码, 下一元素的指针</p>
+<h3 id="倒置页表">倒置页表</h3>
+<p>只保存真正内存地址上的页表</p>
+<h2 id="ia-32-与-x86-64">IA-32 与 x86_64</h2>
+<h3 id="ia-32">IA-32</h3>
+<p>CPU 生成逻辑地址, 交给分段单元. 分段单元生成线性地址并交给分页单元以生成物理地址</p>
+<h4 id="分段">分段</h4>
+<p>逻辑地址是一个 6 字节的数据, 前 2 个字节是选择器, 后 4 个字节是偏移.</p>
+<ul>
+<li>选择器</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>s</th>
+<th>g</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bits</td>
+<td>13</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td>段号</td>
+<td>LDT/GDT</td>
+<td>保护信息</td>
+</tr>
+</tbody>
+</table>
+<p>段号引用的段描述符是 8 字节的, 包括基地址和段界限. 检查逻辑地址合法性后, 基地址加上偏移产生 32 位线性地址</p>
+<h4 id="分页">分页</h4>
+<p>IA-32 的页可分为 4KiB 或 4MiB, 对于 4KiB 的页, IA-32 采用二级分页, 32 位线性地址</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>p1</th>
+<th>p2</th>
+<th>d</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bits</td>
+<td>10</td>
+<td>10</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p>外层页表 p_{1} 被称为页目录(CR3 寄存器指向页目录), 页目录指向内部页表(简称页表), 低 12 位是页内偏移</p>
+<p>页目录第目是 32 位, 其中有一个标志 Page_Size, 如果设置了该标志, 表示页帧的大小为 4MiB, 那么跳过内部页表, 使用 22 位的页偏移. 为了提高内存利用率, IA-32 支持页表交换到磁盘. 页表条目包括 12 个固定的标志位, 使用剩下的 20 位表示物理基址</p>
+<p>页地址扩展(Page Address Extension, PAE). 首先将页表条目由 32 位增大到 64 位, 这样多出的空间可以把页表条目中的物理地址由 20 位扩展到 24 位.</p>
+<h3 id="x86-64">X86_64</h3>
+<p>虚拟地址 48 位, 支持 2^{48} B(256TiB)虚拟地址空间, 使用 PAE 可以支持 52 位物理地址</p>
+<h2 id="编程量">编程量</h2>
+<blockquote>
+<p>将 10 进制的虚拟地址转换为页码和偏移</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">input</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">offset</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">pageNumber</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Usage ./a.out &lt;Address&gt;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+    <span class="n">input</span>      <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">offset</span>     <span class="o">=</span> <span class="n">input</span> <span class="o">&amp;</span> <span class="mh">0xFFF</span><span class="p">;</span>
+    <span class="n">pageNumber</span> <span class="o">=</span> <span class="n">input</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;The address %u contains:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">input</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;page number = %u </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">pageNumber</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;offset = %u</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-05
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/osc_virtual_memory/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">虚拟内存管理</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/osc_deadlock/">
+            <span class="next-text nav-default">死锁</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-05 15:39:00 \u002b0800 CST',
+        title: '内存管理策略',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

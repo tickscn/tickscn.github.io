@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hello on ticks blog</title>
+    <link>https://tickscn.github.io/tags/hello/</link>
+    <description>Recent content in hello on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 07 Mar 2020 21:17:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/hello/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 的基本程序设计结构</title>
+      <link>https://tickscn.github.io/post/java_program_construction/</link>
+      <pubDate>Sat, 07 Mar 2020 21:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_program_construction/</guid>
+      <description>1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &amp;#34;Hello, World!&amp;#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访</description>
+    </item>
+    
+  </channel>
+</rss>

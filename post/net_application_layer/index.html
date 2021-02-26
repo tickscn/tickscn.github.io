@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>应用层 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/net_application_layer/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="应用层" />
+<meta property="og:description" content="一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/net_application_layer/" />
+<meta property="article:published_time" content="2020-07-22T19:52:00+08:00" />
+<meta property="article:modified_time" content="2020-07-22T19:52:00+08:00" />
+<meta itemprop="name" content="应用层">
+<meta itemprop="description" content="一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相">
+<meta itemprop="datePublished" content="2020-07-22T19:52:00+08:00" />
+<meta itemprop="dateModified" content="2020-07-22T19:52:00+08:00" />
+<meta itemprop="wordCount" content="2998">
+
+
+
+<meta itemprop="keywords" content="application-layer," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="应用层"/>
+<meta name="twitter:description" content="一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">应用层</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-22 </span>
+        <div class="post-category">
+            <a href="/categories/network/"> network </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#应用层概述">应用层概述</a>
+          <ul>
+            <li><a href="#应用层组件和典型应用服务">应用层组件和典型应用服务</a></li>
+            <li><a href="#c-s-服务模型">C/S 服务模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#web-服务基础">Web 服务基础</a>
+          <ul>
+            <li><a href="#web-服务模型">Web 服务模型</a></li>
+            <li><a href="#万维网的全球统一标识">万维网的全球统一标识</a></li>
+            <li><a href="#万维网文档标记">万维网文档标记</a></li>
+            <li><a href="#html-文档类型">HTML 文档类型</a></li>
+            <li><a href="#万维网的超文本-超媒体-超链接">万维网的超文本, 超媒体, 超链接</a></li>
+            <li><a href="#http-服务访问基本流程">HTTP 服务访问基本流程</a></li>
+            <li><a href="#http-主要特征">HTTP 主要特征</a></li>
+            <li><a href="#http-请求报文格式">HTTP 请求报文格式</a></li>
+            <li><a href="#http-响应报文格式">HTTP 响应报文格式</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP</p>
+<h2 id="应用层概述">应用层概述</h2>
+<h3 id="应用层组件和典型应用服务">应用层组件和典型应用服务</h3>
+<p>应用层需要确认相互通信进程的有效性并提供同步, 需要提供应用程序或进程所需要的信息交换和远程操作, 需要错误恢复机制等通信支持服务. 这些服务统称为应用服务组件(Applicantion Service Element, ASE)</p>
+<p>不同的组件可以让各种网络应用方便的与下层进行通信. 最重要的 3 个 ASE 是</p>
+<ul>
+<li>关联控制服务组件(Association Control Service Element. ACSE): 建立, 维护, 终止连接</li>
+<li>远程操作服务组件(Remote Operation Service Element, ROSE): 使用请求应答机制实现远程操作</li>
+<li>可靠传输组件(Reliable Transfer Service Element, RTSE): 将数据转为 8bit 字节串, 并将数据串分割为多个段</li>
+</ul>
+<p>TCP/IP 体系的应用层</p>
+<ul>
+<li>支撑协议
+<ul>
+<li>域名服务协议(DNS)</li>
+<li>动态主机分配协议(DHCP)</li>
+<li>简单网络管理协议(SNMP)</li>
+</ul>
+</li>
+<li>应用服务
+<ul>
+<li>Web 浏览服务</li>
+<li>E-mail 服务</li>
+<li>文件传输, 访问服务</li>
+<li>远程登录服务</li>
+</ul>
+</li>
+<li>应用服务对应的协议
+<ul>
+<li>超文本传输协议(HTTP)</li>
+<li>简单邮件传输协议(SMTP)</li>
+<li>文件传输协议(FTP)</li>
+<li>简单文件传输协议(TFTP)</li>
+<li>安全文件传输协议(SFTP)</li>
+<li>远程登录协议(Telnet)</li>
+</ul>
+</li>
+</ul>
+<h3 id="c-s-服务模型">C/S 服务模型</h3>
+<p>一方通常需要处于守候状态, 等待连接请求. 这就是 C/S 模型. 一台主机通常可以运行多个应用服务程序, 每个服务程序又有多个线程可以并发的处理多个客户的请求. 服务器上和服务程序启动后注册 TCP 或 UDP 端口. 客户端可通过与 TCP 端口建立连接或向 UDP 端口发送信息来请求服务</p>
+<p>服务器应有对请求的并发处理能力. 可以有以下几个方案</p>
+<ol>
+<li>迭代服务器(iterative server)方案: 服务器维护 FIFO 请求队列, 服务器一个一个的处理队列中的请求</li>
+<li>并发服务器(concurrent server): 主进程只是一个等待请求和守护进程, 当有请求时, 创建一个新的线程来处理请求</li>
+</ol>
+<h2 id="web-服务基础">Web 服务基础</h2>
+<p>目前应用中普级度最高的, 频次最多的 Web 服务是万维网(World Wide Web, WWW), 其核心协议是超文本传输协议(Hypertext Transfer Protocol, HTTP)</p>
+<h3 id="web-服务模型">Web 服务模型</h3>
+<p>任何网络应用都应有一个实现服务请求, 服务提供, 有的还包括服务注册的完整系统结构, 即服务模型</p>
+<p>从用户角度看所有的网站其实是一个巨大的文本库. Web 服务的服务模型就有三个主要部分</p>
+<ol>
+<li>Web 服务器(Web 服务提供者)</li>
+<li>Web 客户端(Web 服务请求者)</li>
+<li>Web 注册中心: 只有互联网中的 Web 服务需要: 负责网站的注册和管理, 并向用户提供域名解析服务</li>
+</ol>
+<h3 id="万维网的全球统一标识">万维网的全球统一标识</h3>
+<p>在 WWW 中存在 3 种维一标识</p>
+<ol>
+<li>统一资源定位器(Uniform Resource Locator, URL): 用来标识路径</li>
+<li>统一资源标识符(Uniform Resource Identifier, URI): 用来标识资源, 可以使用路径也可以使用名称</li>
+<li>统一资源名称(Uniform Resource Name, URN): 用来给资源命名</li>
+</ol>
+<h4 id="url">URL</h4>
+<p>是 URI 的一种, 其一般格式为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">&lt;scheme&gt;://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/&lt;path&gt;:&lt;params&gt;?&lt;query&gt;#&lt;frag&gt;
+&lt;协议&gt;://&lt;用户&gt;:&lt;密码&gt;@&lt;主机名&gt;:&lt;端口&gt;/&lt;路径&gt;:&lt;params&gt;?&lt;query&gt;#&lt;frag&gt;
+简单的
+&lt;协议&gt;://&lt;主机名&gt;:&lt;端口&gt;/&lt;路径&gt;
+</code></pre></td></tr></table>
+</div>
+</div><!--list-separator-->
+<ul>
+<li>
+<p>协议</p>
+<p>访问对象使用的协议, 包括 HTTP, FTP, Gopher, Telnet, File, Mailto 等</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>主机名</p>
+<p>Web 服务器名称, 互联网上的主机名就是网站的域名</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>端口</p>
+<p>用来指定建立连接时所用的传输层端口号, 对于常规协议, 省略端口号时会使有默认端口.</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>路径</p>
+<p>用来指定要访问的对象在服务器上的文件路径</p>
+</li>
+</ul>
+<h4 id="uri-和-urn">URI 和 URN</h4>
+<p>URL 和 URN 都可看为 URI 的子集. 不过 URN 的使用很少. 如国际书号 ISBN, RFC 文档, 电子邮箱账户</p>
+<h3 id="万维网文档标记">万维网文档标记</h3>
+<p>为了在不同的地址都能正常显示网页内容, 网站信息使用全球统一的标记方法, 超文本标记格式(Hypertext Markup Language, HTML). HTML 使用 &lt;&gt; 括起来的标签来标记文档</p>
+<h3 id="html-文档类型">HTML 文档类型</h3>
+<p>保存为 .html 的文档, 没有人工修改就不会改变, 被称为静态 HTML</p>
+<p>动态 HTML, 会根据服务器应用程充或脚本程序自动生成的. 动态 HTML 需要服务器有能够自动生成 HTML 文档的网络应用程序, 这由程序设计师完成. 还要有能够将用户在网页中填写的表单发送到正确的程序, 然后 Web 服务器又能正确的把结果以 HTML 文档的方式显示给用户, 这就是公共网关接口(Common Gateway Interface, CGI)的工作</p>
+<p>CGI 是一种基于流览器的输入, 并可在 Web 服务器上运行程序(统称为 CGI 程序)的方法. 它允许 Web 服务器与后端程序和运行脚本进行通信, 同时后端程序和脚本又可以接收用户输入信息, 最后以 HTML 页面作为用户输入响应</p>
+<p>CGI 程序一般为脚本类语言( 如 Perl, JavaScript, VBScript 等)写的解释执行程序, 除了 CGI 程序, 现在还有在 HTML 文档中内嵌一些由编程语言写的脚本, 然后由 Web 服务器自己来执行这些脚本, 生成动态 HTML 返给客户</p>
+<h3 id="万维网的超文本-超媒体-超链接">万维网的超文本, 超媒体, 超链接</h3>
+<h4 id="超文本--hypertext">超文本(Hypertext)</h4>
+<p>一种文本格式, 可以用超链接的方式将不同位置的文档或信息组织在一起</p>
+<h4 id="超媒体--hypermedia">超媒体(Hypermedia)</h4>
+<p>是超文本的扩展, 现在一般将其等效为超文本, 因为现在 HTML 中不仅可以标记文本, 还可以标记多媒休</p>
+<h4 id="超链接--hyperlink">超链接(HyperLink)</h4>
+<p>是 HTML 最重要的属性, 是指一个网页指向目标的连接关系</p>
+<h3 id="http-服务访问基本流程">HTTP 服务访问基本流程</h3>
+<p>HTTP 是面向文本的应用层协议, 默认使用的端口是 TCP 的 80 端口. 服务器有一个应用进程监听 80 端口, 当有 HTTP 报文请求时, 以 HTTP 响应报文的方式做出响应.
+持续访问模式的流程</p>
+<ol>
+<li>建立 TCP 连接</li>
+<li>发送 HTTP 请求报文</li>
+<li>返回 HTTP 响应报文</li>
+<li>当用户关闭页面时断开 TCP 连接</li>
+</ol>
+<h3 id="http-主要特征">HTTP 主要特征</h3>
+<ol>
+<li>无连接: 利用 TCP 的连接</li>
+<li>C/S 模式</li>
+<li>高可靠性</li>
+<li>无状态</li>
+<li>简单快速</li>
+</ol>
+<h3 id="http-请求报文格式">HTTP 请求报文格式</h3>
+<p>一个 HTPP 请求报文包括</p>
+<ol>
+<li>请求行(request line)</li>
+<li>请求头(request header)</li>
+<li>空行(empty line)</li>
+<li>请求主体(entity body)</li>
+</ol>
+<h4 id="请求行">请求行</h4>
+<p>包括请求方法, &ldquo;URL&rdquo;, &ldquo;协议版本&quot;三个字段, 最后有回车(\r)和换行(\n)控制符, 用 CRLF 表示</p>
+<!--list-separator-->
+<ul>
+<li>HTTP 请求方法
+<table>
+<thead>
+<tr>
+<th>请求方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>请求服务器发送 URL 指定的相关 Web 页面</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>请求 URL 指定 Web 页面的相关信息而不是全部页面</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>请求在服务器 URL 路径下存储一个页面, 现 GET 相反</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>在 URL 指定的 Web 服务器后面附加一个以 URI 格式命名的资源</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除 URL 字段指定的 Web 页面, 是否成功还与用户权限有关</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>指明是用来调试的环回报文</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>用于连接代理服务器</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>请求查询一些特殊选项</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h4 id="请求头">请求头</h4>
+<p>一系列的请求头和对方兴未艾的值指出请求的附加信息以及客户端的信息. 以一系列的行表示, 行以 CRLF 结尾. 许多请求头可以有多个值, 不同的值用逗号隔开</p>
+<table>
+<thead>
+<tr>
+<th>request header</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept</td>
+<td>指定客户端能处理的多用途互联网邮件扩展(Multipurpose Internet Mail Extension, MIME), 如 Accept:img/gif, 要求接收 gif 资源, Accept:text/html</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>指定客户端能接受的字符集, 如 Accept-Charset:utf-8, gb2312, gbk, 如果没有设置默认是所有</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>指定客户端能解码的数据格式, 如 Accept-Encoding:gzip, compress, 默认是所有都可以</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>指定客户端语言类型, 如 Accept-Language:zh-cn</td>
+</tr>
+<tr>
+<td>Authorixation</td>
+<td>指定受信任列表</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>发送以前设置的 Cookie</td>
+</tr>
+<tr>
+<td>Connections</td>
+<td>请求特殊的连接方式, 如 Connections:Keep-Alive</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>指定发送消息的时间</td>
+</tr>
+<tr>
+<td>From</td>
+<td>请求发送者电子邮箱地址</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>指定域名和端口, 默认端口可省略</td>
+</tr>
+<tr>
+<td>referer</td>
+<td>包括一条 URI 信息, 要求从指定的 URI 中访问当前请求页面</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>将客户端的一些信息发送给服务器</td>
+</tr>
+<tr>
+<td>Upgrade</td>
+<td>客户端希望切换到新的协议</td>
+</tr>
+</tbody>
+</table>
+<h4 id="空行">空行</h4>
+<p>提示没有请求头了 CRLF 组成的空行</p>
+<h4 id="请求主体">请求主体</h4>
+<p>不能在 GET 中使用, 可以在 POST 方法中向服务器提供一些凭据信息.</p>
+<h4 id="示例">示例</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">GET /books/?name=Professional%20Ajax HTTP/1.1
+Host: www.baidu.com
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6)
+Gecko/20050225 Firefox/1.0.1
+Connection: Keep-Alive
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="http-响应报文格式">HTTP 响应报文格式</h3>
+<ol>
+<li>响应行(Response)</li>
+<li>响应头(Response Header)</li>
+<li>空行</li>
+<li>响应主体</li>
+</ol>
+<h4 id="响应行">响应行</h4>
+<p>协议版本, 状态码, 描述短语状态码用 3 位数表示状态</p>
+<ul>
+<li>100: 服务器同意处理</li>
+<li>200: 请求成功; 204:无内容, 也表示请求成功</li>
+<li>301: 页面以重定向</li>
+<li>400: 服务器无法理解请求; 401: 未经授权; 403: 服务器拒绝服务; 404: 请求页面不存在</li>
+<li>500: 服务器不可预期的错误; 503: 当前无法处理, 过会再试</li>
+</ul>
+<h4 id="响应头">响应头</h4>
+<p>头与值, 类似请求头</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">HTTP/1.1 200 OK
+Bdpagetype: 3
+Bdqid: 0xfff6e86b000172f1
+Cache-Control: private
+Connection: keep-alive
+Content-Type: text/html;charset=utf-8
+Cxy_all: baidu+18400a231294827c46772bf9f9ff275f
+Cxy_ex: 1595404148+2712710203+d41d8cd98f00b204e9800998ecf8427e
+Date: Wed, 22 Jul 2020 07:49:08 GMT
+P3p: CP=&#34; OTI DSP COR IVA OUR IND COM &#34;
+P3p: CP=&#34; OTI DSP COR IVA OUR IND COM &#34;
+Server: BWS/1.1
+Traceid: 1595404148071411124218444184870201684721
+Vary: Accept-Encoding
+X-Ua-Compatible: IE=Edge,chrome=1
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-22
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/application-layer/">application-layer</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/net_dns/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">DNS 服务</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/design_wysiwyg/">
+            <span class="next-text nav-default">一个所见即所得(WYSIWYG)的编辑器</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-07-22 19:52:00 \u002b0800 CST',
+        title: '应用层',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

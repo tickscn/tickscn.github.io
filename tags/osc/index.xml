@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OSC on ticks blog</title>
+    <link>https://tickscn.github.io/tags/osc/</link>
+    <description>Recent content in OSC on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 25 Dec 2019 15:47:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/osc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>多线程问题习题</title>
+      <link>https://tickscn.github.io/post/osc_chapter4_answer/</link>
+      <pubDate>Wed, 25 Dec 2019 15:47:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_chapter4_answer/</guid>
+      <description>4.15 创建多线程程序验证 3.13 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59</description>
+    </item>
+    
+    <item>
+      <title>多线程问题</title>
+      <link>https://tickscn.github.io/post/multhread-issues/</link>
+      <pubDate>Mon, 09 Dec 2019 20:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/multhread-issues/</guid>
+      <description>fork() and exec() 某个线程调用 fork(), 新进程复制所有线程还是单一线程? 有的 UNIX 系统有两种形式的 fork() exec() 指定的程序会取代所有线程 信号处理 UNIX 信号(signal) 用于通知</description>
+    </item>
+    
+    <item>
+      <title>多线程</title>
+      <link>https://tickscn.github.io/post/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Wed, 04 Dec 2019 14:43:49 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <description>线程是CPU使用的基本单元 线程ID 程序计数器 寄存器组 堆栈 与进程不同的是线程共用数据和代码 多线程的优点 响应性: 部分阻塞时仍能运行 资源共享: 与进</description>
+    </item>
+    
+    <item>
+      <title>simple_unix_shell</title>
+      <link>https://tickscn.github.io/post/simple-unix-shell/</link>
+      <pubDate>Wed, 27 Nov 2019 16:18:40 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/simple-unix-shell/</guid>
+      <description>UNIX Shell 提供命令提示符. 如 ticks&amp;gt; 1 ticks&amp;gt; cat a.txt 读取命令, 创建子进程 命令最后加 &amp;ldquo;&amp;amp;&amp;rdquo; 符号, shell 与 子程序并发执行 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26</description>
+    </item>
+    
+    <item>
+      <title>OSC3 习题</title>
+      <link>https://tickscn.github.io/post/osc3-%E4%B9%A0%E9%A2%98/</link>
+      <pubDate>Tue, 26 Nov 2019 15:19:39 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc3-%E4%B9%A0%E9%A2%98/</guid>
+      <description>习题 以下程序创建了多少进程 1 2 3 4 5 6 7 8 9 10 11 12 #include &amp;lt;stdio.h&amp;gt;#include &amp;lt;unistd.h&amp;gt; int main() { int i; for (i = 0; i &amp;lt; 4; i++) fork(); return 0; } $2^4 = 16$ 假设父进程pid 2600, 子进程pid 2603, 下程序输出 1</description>
+    </item>
+    
+    <item>
+      <title>process</title>
+      <link>https://tickscn.github.io/post/process/</link>
+      <pubDate>Wed, 20 Nov 2019 16:36:38 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/process/</guid>
+      <description>进程(process) 文本段(test section)或叫代码段(code section) 程序计数器(program counter) 栈(stack) 堆(heap) 进程状</description>
+    </item>
+    
+    <item>
+      <title>Linux 内核模块</title>
+      <link>https://tickscn.github.io/post/linux-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/</link>
+      <pubDate>Tue, 19 Nov 2019 16:47:29 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/linux-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/</guid>
+      <description>操作系统概念第二章编程项目&amp;ndash;Linux 内核模块 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 #include &amp;lt;linux/init.h&amp;gt;#include &amp;lt;linux/module.h&amp;gt;#include &amp;lt;linux/kernel.h&amp;gt; /* This function is called when the module is loaded. */ int</description>
+    </item>
+    
+    <item>
+      <title>系统调用</title>
+      <link>https://tickscn.github.io/post/systemcall/</link>
+      <pubDate>Sun, 17 Nov 2019 18:40:06 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/systemcall/</guid>
+      <description>系统调用(system call) 提供操作系统服务接口。应用程序开发人员根据应用编程接口(Application Programming Interface, API) 来设计程序。有三组常用API Windows API</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>application-layer on ticks blog</title>
+    <link>https://tickscn.github.io/tags/application-layer/</link>
+    <description>Recent content in application-layer on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 22 Jul 2020 19:52:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/application-layer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>应用层</title>
+      <link>https://tickscn.github.io/post/net_application_layer/</link>
+      <pubDate>Wed, 22 Jul 2020 19:52:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_application_layer/</guid>
+      <description>一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相</description>
+    </item>
+    
+  </channel>
+</rss>

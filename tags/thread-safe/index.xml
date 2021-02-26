@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>thread-safe on ticks blog</title>
+    <link>https://tickscn.github.io/tags/thread-safe/</link>
+    <description>Recent content in thread-safe on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 16 Aug 2020 16:39:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/thread-safe/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>线程安全的对象生命期管理</title>
+      <link>https://tickscn.github.io/post/linux_cpp_multithread/</link>
+      <pubDate>Sun, 16 Aug 2020 16:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/linux_cpp_multithread/</guid>
+      <description>多线程与析构函数 当一个对象可以被多个线程访问, 如何确认何时销毁对象, 常见的竞态条件有 在即将析构一个对象时, 如何确认是否有其它线程正在使用该对</description>
+    </item>
+    
+  </channel>
+</rss>

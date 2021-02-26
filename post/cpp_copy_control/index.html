@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>拷贝控制 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/cpp_copy_control/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="拷贝控制" />
+<meta property="og:description" content="5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/cpp_copy_control/" />
+<meta property="article:published_time" content="2020-05-27T17:44:00+08:00" />
+<meta property="article:modified_time" content="2020-05-27T17:44:00+08:00" />
+<meta itemprop="name" content="拷贝控制">
+<meta itemprop="description" content="5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构">
+<meta itemprop="datePublished" content="2020-05-27T17:44:00+08:00" />
+<meta itemprop="dateModified" content="2020-05-27T17:44:00+08:00" />
+<meta itemprop="wordCount" content="2207">
+
+
+
+<meta itemprop="keywords" content="copy-control," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="拷贝控制"/>
+<meta name="twitter:description" content="5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">拷贝控制</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-27 </span>
+        <div class="post-category">
+            <a href="/categories/cpp/"> CPP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#拷贝-赋值-析构">拷贝, 赋值, 析构</a>
+          <ul>
+            <li><a href="#拷贝">拷贝</a></li>
+            <li><a href="#赋值">赋值</a></li>
+            <li><a href="#析构">析构</a></li>
+            <li><a href="#原则">原则</a></li>
+            <li><a href="#equal-default"><code>\equal default</code></a></li>
+            <li><a href="#阻止拷贝">阻止拷贝</a></li>
+          </ul>
+        </li>
+        <li><a href="#拷贝控制和资源管理">拷贝控制和资源管理</a>
+          <ul>
+            <li><a href="#valuelike-类">valuelike 类</a></li>
+            <li><a href="#pointorlink-类">pointorlink 类</a></li>
+          </ul>
+        </li>
+        <li><a href="#交换">交换</a>
+          <ul>
+            <li><a href="#用交换赋值">用交换赋值</a></li>
+          </ul>
+        </li>
+        <li><a href="#管理动态内存的类">管理动态内存的类</a>
+          <ul>
+            <li><a href="#复杂对象-reallocate-时使用移动-而不是拷贝">复杂对象 reallocate 时使用移动, 而不是拷贝</a></li>
+          </ul>
+        </li>
+        <li><a href="#移动对象">移动对象</a>
+          <ul>
+            <li><a href="#右值引用">右值引用</a></li>
+            <li><a href="#移动构造和移动赋值">移动构造和移动赋值</a></li>
+            <li><a href="#右值引用和成员函数">右值引用和成员函数</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>5 个特殊成员函数</p>
+<ol>
+<li>拷贝构造</li>
+<li>拷贝赋值</li>
+<li>移动构造</li>
+<li>移动赋值</li>
+<li>析构函数</li>
+</ol>
+<p>如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数</p>
+<h2 id="拷贝-赋值-析构">拷贝, 赋值, 析构</h2>
+<h3 id="拷贝">拷贝</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">HasPtr</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">ps</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">HasPtr</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">())</span> <span class="o">:</span> <span class="n">ps</span><span class="p">(</span><span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">i</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">HasPtr</span><span class="p">(</span><span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="o">:</span> <span class="n">ps</span><span class="p">(</span><span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">ps</span><span class="p">))),</span> <span class="n">i</span><span class="p">(</span><span class="n">ohter</span><span class="p">.</span><span class="n">i</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="赋值">赋值</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">HasPtr</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">ps</span><span class="p">;</span>
+            <span class="n">ps</span> <span class="o">=</span> <span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">ps</span><span class="p">));</span>
+            <span class="n">i</span>  <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="析构">析构</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">HasPtr</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="o">~</span><span class="n">HasPtr</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">ps</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="原则">原则</h3>
+<ol>
+<li>需要析构函数的类也需要拷贝构造和拷贝赋值</li>
+<li>拷贝构造和拷贝赋值如果需要总是成对</li>
+</ol>
+<h3 id="equal-default"><code>\equal default</code></h3>
+<p>使用 <code>\equal default</code> 可以让编译器生成默认函数. 可以向普通函数定义一样</p>
+<h3 id="阻止拷贝">阻止拷贝</h3>
+<p>有些类的拷贝和赋值意义不明, 应该避免出现.</p>
+<h4 id="定义删除的函数-equal-delete">定义删除的函数 <code>\equal delete</code></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">NoCopy</span><span class="p">{</span>
+    <span class="n">NoCopy</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="n">NoCopy</span><span class="p">(</span><span class="n">NoCopy</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="n">NoCopy</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">NoCopy</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">必须在最先声明的地方. =\equal delete= 可以用在仍何函数上. 但是请不要用在析构函数上
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="有时编译器生成的会是-deleted-函数">有时编译器生成的会是 deleted 函数</h4>
+<ol>
+<li>如果有成员变量的析构函数是 deleted 或不可访问的(private), 会生成 deleted 析构函数, 拷贝构造和拷贝赋值</li>
+<li>如果有成员变量的拷贝构造是 deleted 或不可访问的, 会生成 deleted 拷贝构造</li>
+<li>如果有成员变量的拷贝赋值是 deleted 或不可访问的, 或者存在 const 或引用变量, 会生成 deleted 拷贝构造</li>
+</ol>
+<h4 id="私有-copy-control">私有 copy-control</h4>
+<p>在 c11 之前想要阻止 copy-control 可以将这些函数声明为私有的, 并且不提供实现</p>
+<h2 id="拷贝控制和资源管理">拷贝控制和资源管理</h2>
+<p>管理类外资源的类需要构造函数, 拷贝构造和拷贝赋值函数. 后两者的行为取决于类的行为是类似于值还是类似于指针.</p>
+<h3 id="valuelike-类">valuelike 类</h3>
+<p>每个类有自己的资源拷贝</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">LinkList</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
+        <span class="n">T</span> <span class="n">val</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="p">(</span><span class="n">T</span> <span class="n">_val</span><span class="p">)</span> <span class="o">:</span> <span class="n">val</span><span class="p">(</span><span class="n">_val</span><span class="p">),</span> <span class="n">next</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="p">};</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">node</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">head</span>           <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+        <span class="n">node</span>           <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="p">{</span>
+
+                <span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+                <span class="n">tail</span>       <span class="o">=</span> <span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+                <span class="n">node</span>       <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">destroy</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">head</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">ListNode</span><span class="o">*</span> <span class="n">pt</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+                <span class="n">head</span>         <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+                <span class="k">delete</span> <span class="n">pt</span><span class="p">;</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">LinkList</span><span class="p">()</span> <span class="o">:</span> <span class="n">head</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">LinkList</span><span class="p">(</span><span class="k">const</span> <span class="n">LinkList</span><span class="o">&amp;</span> <span class="n">rhl</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rhl</span><span class="p">.</span><span class="n">head</span><span class="p">)</span> <span class="n">copy</span><span class="p">(</span><span class="n">rhl</span><span class="p">.</span><span class="n">head</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">LinkList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">LinkList</span><span class="o">&amp;</span> <span class="n">rhl</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">rhl</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">destroy_</span><span class="p">();</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">rhl</span><span class="p">.</span><span class="n">head</span><span class="p">)</span> <span class="n">copy_</span><span class="p">(</span><span class="n">rhl</span><span class="p">.</span><span class="n">head</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">~</span><span class="n">LinkList</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">destroy_</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="pointorlink-类">pointorlink 类</h3>
+<p>使用 <code>shared_ptr</code> 或使用引用计数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">HasPtr</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">ps</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">size_t</span><span class="o">*</span> <span class="n">use</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">HasPtr</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">())</span> <span class="o">:</span> <span class="n">ps</span><span class="p">(</span><span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">i</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">use</span><span class="p">(</span><span class="k">new</span> <span class="n">size_t</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+    <span class="n">HasPtr</span><span class="p">(</span><span class="k">const</span> <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">)</span> <span class="o">:</span> <span class="n">ps</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">ps</span><span class="p">),</span> <span class="n">i</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">i</span><span class="p">),</span> <span class="n">use</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">use</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">++*</span><span class="n">use</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">rhl</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">rhl</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ps</span>  <span class="o">=</span> <span class="n">rhl</span><span class="p">.</span><span class="n">ps</span><span class="p">;</span>
+            <span class="n">i</span>   <span class="o">=</span> <span class="n">rhl</span><span class="p">.</span><span class="n">il</span><span class="p">;</span>
+            <span class="n">use</span> <span class="o">=</span> <span class="n">rhl</span><span class="p">.</span><span class="n">use</span><span class="p">;</span>
+            <span class="o">++*</span><span class="n">ues</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">~</span><span class="n">HasPtr</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">--*</span><span class="n">use</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">ps</span><span class="p">;</span>
+            <span class="k">delete</span> <span class="n">use</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="交换">交换</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">HasPtr</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="k">public</span><span class="o">:</span>
+    <span class="k">friend</span> <span class="kt">void</span> <span class="n">swap</span><span class="p">(</span><span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+    <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">swap</span><span class="p">(</span><span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">;</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">lhs</span><span class="p">.</span><span class="n">ps</span><span class="p">,</span> <span class="n">rhs</span><span class="p">.</span><span class="n">ps</span><span class="p">);</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">lhs</span><span class="p">.</span><span class="n">i</span><span class="p">,</span> <span class="n">rhs</span><span class="p">.</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">HasPtr</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">HasPtr</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">;</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">rhs</span><span class="p">.</span><span class="n">ps</span><span class="p">);</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">rhs</span><span class="p">.</span><span class="n">i</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="用交换赋值">用交换赋值</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">HasPtr</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="k">public</span><span class="o">:</span>
+    <span class="n">HasPtr</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">HasPtr</span> <span class="n">rhs</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">swap</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">rhs</span><span class="p">);</span>
+        <span class="c1">// swap(rhs);
+</span><span class="c1"></span>        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="管理动态内存的类">管理动态内存的类</h2>
+<p>使用 allocator</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">MyString</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">allocator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">alloc</span><span class="p">;</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">elements</span><span class="p">;</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">first_free</span><span class="p">;</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">cap</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="n">alloc_copy</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">chk_n_alloc</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">capacity</span><span class="p">())</span> <span class="n">reallocate</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">free</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">reallocate</span><span class="p">();</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">MyString</span><span class="p">()</span> <span class="o">:</span> <span class="n">elements</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">first_free</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span> <span class="n">cap</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">MyString</span><span class="p">(</span><span class="k">const</span> <span class="n">MyString</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="n">MyString</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">MyString</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="n">size_t</span> <span class="nf">size</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">first_free</span> <span class="o">-</span> <span class="n">elements</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">size_t</span> <span class="nf">capacity</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">cap</span> <span class="o">-</span> <span class="n">elements</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">push_back</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">);</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="nf">begin</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">elements</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="nf">end</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">first_free</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">MyString</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="kt">char</span><span class="o">*&gt;</span> <span class="n">MyString</span><span class="o">::</span><span class="n">alloc_copy</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">b</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">data</span> <span class="o">=</span> <span class="n">alloc</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">e</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">data</span><span class="p">,</span> <span class="n">uninitialized_copy</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">data</span><span class="p">)};</span>
+<span class="p">}</span>
+
+<span class="n">MyString</span><span class="o">::</span><span class="n">MyString</span><span class="p">(</span><span class="k">const</span> <span class="n">MyString</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">data</span> <span class="o">=</span> <span class="n">alloc_copy</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="n">elements</span>  <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+    <span class="n">cap</span> <span class="o">=</span> <span class="n">first_free</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">MyString</span><span class="o">&amp;</span> <span class="n">MyString</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">MyString</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">free</span><span class="p">();</span>
+        <span class="k">auto</span> <span class="n">data</span> <span class="o">=</span> <span class="n">alloc_copy</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">rhs</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="n">elements</span>  <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">first_free</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MyString</span><span class="o">::</span><span class="n">free</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">first_free</span> <span class="o">!=</span> <span class="n">elements</span><span class="p">)</span> <span class="p">{</span> <span class="n">alloc</span><span class="p">.</span><span class="n">destroy</span><span class="p">(</span><span class="o">--</span><span class="n">first_free</span><span class="p">);</span> <span class="p">}</span>
+    <span class="n">alloc</span><span class="p">.</span><span class="n">deallocate</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">capacity</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="n">MyString</span><span class="o">::~</span><span class="n">MyString</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">free</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MyString</span><span class="o">::</span><span class="n">push_back</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">chk_n_alloc</span><span class="p">();</span>
+    <span class="n">alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">first_free</span><span class="o">++</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="复杂对象-reallocate-时使用移动-而不是拷贝">复杂对象 reallocate 时使用移动, 而不是拷贝</h3>
+<h4 id="移动构造器和-std-move">移动构造器和 <code>std::move</code></h4>
+<h2 id="移动对象">移动对象</h2>
+<p>有时对象在被拷贝后会立即析构, 些时用移动代替拷贝可以有更好的表现</p>
+<h3 id="右值引用">右值引用</h3>
+<p>为了支持移动操作, 定义了另一种引用类型——右值引用. 右值引用是必须引用右值的引用. 声明右值引用使用 <code>&amp;&amp;</code> 替代普通引用的 <code>&amp;</code>. 右值引用有一个重要特性是只能引用将要销毁的对象. 这样可以简单的移动资源的所有权.</p>
+<table>
+<thead>
+<tr>
+<th>左值</th>
+<th>右值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可以在=左边</td>
+<td>只能在=右边</td>
+</tr>
+<tr>
+<td>持续对象</td>
+<td>临时对象</td>
+</tr>
+<tr>
+<td>所有有名字的变量</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="move-函数"><code>move</code> 函数</h4>
+<p>获得左值的右值引用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">使用 =std::move= 而不是 =move=
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="移动构造和移动赋值">移动构造和移动赋值</h3>
+<p>为了移动操作, 需要定义自己的移动构造函数和移动赋值函数.</p>
+<p>移动构造函数的第一个参数是 class type 的右值引用, 并且其它参数(如果有的话)必须有默认值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">StrVec</span><span class="o">::</span><span class="n">StrVec</span><span class="p">(</span><span class="n">StrVec</span><span class="o">&amp;&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">elements</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">elements</span><span class="p">),</span> <span class="n">first_free</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">first_free</span><span class="p">),</span> <span class="n">cap</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">cap</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">first_free</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">cap</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="移动操作和库容器和异常">移动操作和库容器和异常</h4>
+<p>移动不构造新对象, 所以移动通常不会抛出异常. 如果我们写的移动操作不会抛出异常, 应该显式的告诉库, 不然它会作多余的操作来满足可能抛出的异常. 一种通知方法是使用关键字 <code>noexcept</code>. 如果成员函数在类外定义, 必须同时在声明和定义的地方加上 <code>noexcept</code></p>
+<ol>
+<li>虽然移动操作通常不会抛出异常, 仍需要确保它不会</li>
+<li>库容器提供了异常发生时的保证操作. 例如 <code>vector</code> 保证 <code>push_back</code> 发生异常时保持原值不变
+<ul>
+<li>重新分配存储空间时, 若使用移动构造转移元素且操作未完成时发生异常, <code>vector</code> 无法保证原值不变, 而拷贝构造转移可以, 只需要在发生异常时释放新分配的空间就可以了. 所以若不保证移动构造不抛异常, <code>vector</code> 会使用拷贝替代移动</li>
+</ul>
+</li>
+</ol>
+<h4 id="移动赋值">移动赋值</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">StrVec</span><span class="o">&amp;</span> <span class="n">StrVec</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">StrVec</span><span class="o">&amp;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">free</span><span class="p">();</span>
+        <span class="n">elements</span>   <span class="o">=</span> <span class="n">rhs</span><span class="p">.</span><span class="n">elements</span><span class="p">;</span>
+        <span class="n">first_free</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">.</span><span class="n">first_free</span><span class="p">;</span>
+        <span class="n">cap</span>        <span class="o">=</span> <span class="n">rhs</span><span class="p">.</span><span class="n">cap</span><span class="p">;</span>
+        <span class="n">rhs</span><span class="p">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">.</span><span class="n">first_free</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">.</span><span class="n">cap</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="移动来源必须保证是可析构">移动来源必须保证是可析构</h4>
+<p>移动操作并没有析构被移动的对象, 该对象之后有可能会被析构, 所以移动操作需要保证其可被析构. 如 <code>StrVec</code> 将原指针设为 <code>nullptr</code></p>
+<h4 id="左值用拷贝-右值用移动">左值用拷贝, 右值用移动</h4>
+<h4 id="如果没有移动-右值也可用拷贝">如果没有移动, 右值也可用拷贝</h4>
+<h4 id="移动迭代器">移动迭代器</h4>
+<p><code>make_move_iterator</code></p>
+<h3 id="右值引用和成员函数">右值引用和成员函数</h3>
+<p>成员函数可以提供拷贝和移动版本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">- =const T &amp;= 拷贝
+- =T&amp;&amp;= 移动
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="右值和左值引用成员函数">右值和左值引用成员函数</h4>
+<p>一般的, 可以在一个对象上调用成员函数, 不论是左值还是右值.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">string</span> <span class="n">s1</span> <span class="o">=</span> <span class="s">&#34;a value&#34;</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="s">&#34;another&#34;</span><span class="p">;</span>
+<span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">=</span> <span class="s">&#34;wow&#34;</span><span class="p">;</span> <span class="c1">// is valied
+</span></code></pre></td></tr></table>
+</div>
+</div><p>为了兼容, 库中的类仍允许右值被赋值. 不过新的标准允许我们自己的类阻止这种操作. 像 <code>const</code> 一样, 在参数表后面加上引用符号表明 <code>this</code> 是左值或右值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Foo</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Foo</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">&amp;</span><span class="p">;</span>  <span class="c1">// 只有 this 是左值时可调用
+</span><span class="c1"></span>
+<span class="p">};</span>
+
+<span class="n">Foo</span><span class="o">&amp;</span> <span class="n">Foo</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Foo</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">&amp;</span>
+<span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span>    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">如果同时需要 =const= 和 =&amp;= const 需要在 =&amp;= 之前
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="重载和引用函数">重载和引用函数</h4>
+<p>不同的引用修饰可以重载. 用有相同函数名和参数列表的函数重载是必须同时有或没有引用修饰</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-27
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/copy-control/">copy-control</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/oop/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">面像对象编程</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/cpp_dynamic_memory/">
+            <span class="next-text nav-default">动态内存</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-05-27 17:44:00 \u002b0800 CST',
+        title: '拷贝控制',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

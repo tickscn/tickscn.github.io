@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>进程调度 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/osc_scheduling/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="进程调度" />
+<meta property="og:description" content="程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/osc_scheduling/" />
+<meta property="article:published_time" content="2020-06-21T21:45:00+08:00" />
+<meta property="article:modified_time" content="2020-06-21T21:45:00+08:00" />
+<meta itemprop="name" content="进程调度">
+<meta itemprop="description" content="程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执">
+<meta itemprop="datePublished" content="2020-06-21T21:45:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-21T21:45:00+08:00" />
+<meta itemprop="wordCount" content="2153">
+
+
+
+<meta itemprop="keywords" content="process-scheduling,thread-scheduling," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="进程调度"/>
+<meta name="twitter:description" content="程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度 基本概念 CPU-I/O 执行周期 存在 CPU 执"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">进程调度</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-21 </span>
+        <div class="post-category">
+            <a href="/categories/osc/"> OSC </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#基本概念">基本概念</a>
+          <ul>
+            <li><a href="#cpu-i-o-执行周期">CPU-I/O 执行周期</a></li>
+            <li><a href="#cpu-调度程序">CPU 调度程序</a></li>
+            <li><a href="#抢占调度">抢占调度</a></li>
+            <li><a href="#调度程序">调度程序</a></li>
+          </ul>
+        </li>
+        <li><a href="#调度准则">调度准则</a></li>
+        <li><a href="#调度算法">调度算法</a>
+          <ul>
+            <li><a href="#先到先服务调度">先到先服务调度</a></li>
+            <li><a href="#最短作业优先--shortest-job-first-sjf">最短作业优先(Shortest-Job-First, SJF)</a></li>
+            <li><a href="#优先级调度">优先级调度</a></li>
+            <li><a href="#轮转调度--round-robin-rr">轮转调度(Round-Robin, RR)</a></li>
+            <li><a href="#多级队列">多级队列</a></li>
+            <li><a href="#多级反馈调度队列">多级反馈调度队列</a></li>
+          </ul>
+        </li>
+        <li><a href="#线程调度">线程调度</a>
+          <ul>
+            <li><a href="#竞争范围">竞争范围</a></li>
+            <li><a href="#pthreads-调度">Pthreads 调度</a></li>
+          </ul>
+        </li>
+        <li><a href="#多处理器调度">多处理器调度</a>
+          <ul>
+            <li><a href="#负载均衡">负载均衡</a></li>
+          </ul>
+        </li>
+        <li><a href="#实时-cpu-调度">实时 CPU 调度</a></li>
+        <li><a href="#操作系统例子">操作系统例子</a>
+          <ul>
+            <li><a href="#linux">Linux</a></li>
+          </ul>
+        </li>
+        <li><a href="#习题">习题</a>
+          <ul>
+            <li><a href="#5-dot-1">5.1</a></li>
+            <li><a href="#5-dot-3">5.3</a></li>
+            <li><a href="#5-dot-5">5.5</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>程序执行到必须等待时(如 等待 IO 请求完成)时, 如果仍然由该进程控制 CPU, 时间会被浪费. 所以采用多道程序由操作系统进行调度</p>
+<h2 id="基本概念">基本概念</h2>
+<h3 id="cpu-i-o-执行周期">CPU-I/O 执行周期</h3>
+<p>存在 CPU 执行和 I/O 执行的周期. 一般一个进程具有大量短时 CPU 执行, 少量长 CPU 执行</p>
+<h3 id="cpu-调度程序">CPU 调度程序</h3>
+<p>每当 CPU 空闲时, 操作系统从进程就绪队列中选则一个进程来执行. 进程选则采用短期调度程序(short-term scheduler)或 CPU 调度程序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">就绪队列不一定为先进先出(FIFO)队列, 也可以是优先队列, 树, 或无序链表, 其中存储的一般是进程控制块 PCB
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="抢占调度">抢占调度</h3>
+<p>需要执行 CPU 调度的情况</p>
+<ol>
+<li>当一个进程从运行状态切换到等待状态时</li>
+<li>当一个进程从运行状态切换到就绪状态时</li>
+<li>当一个进程从等待状态切换到就绪状态时</li>
+<li>当一个进程终止时</li>
+</ol>
+<p>如果调度只发生在第 1 和第 4 种情况, 调度为非抢占的(nonpreemptive)或协作的(cooperative); 否则调度是抢占的</p>
+<h3 id="调度程序">调度程序</h3>
+<p>调度程序(dispatcher)是一个模块, 用来将 CPU 控制交给其选则的进程, 应该尽可能的快. 其停止一个进程并启动另一个进程所需的时间被称为调度延迟(dispatch latency).</p>
+<ol>
+<li>上下文切换</li>
+<li>切换到用户模式</li>
+<li>跳转到用户程序合适位置, 重启程序</li>
+</ol>
+<h2 id="调度准则">调度准则</h2>
+<p>比较调度算法的准则</p>
+<ul>
+<li>CPU 利用率</li>
+<li>吞吐量: 单位时间内进程完成数量</li>
+<li>周转时间</li>
+<li>等待时间: 调度算法直接影响的准则. 是就绪对列中等待时间之和</li>
+<li>响应时间: 第一次交互响应的时间</li>
+</ul>
+<h2 id="调度算法">调度算法</h2>
+<h3 id="先到先服务调度">先到先服务调度</h3>
+<p>可以说是最简单的调度算法. First-Come, First-Serverd, FCFS. 可以用 FIFO 队列实现. 缺点是</p>
+<ol>
+<li>平均等待时间通常不是很好.</li>
+<li>是非抢占的, 对分时系统来说特别麻烦</li>
+<li>有可能造成护航效应, I/O 密集型会被 CPU 密集型挤占 CPU 控制时间, 使 CPU 和设备的利用率低</li>
+</ol>
+<h3 id="最短作业优先--shortest-job-first-sjf">最短作业优先(Shortest-Job-First, SJF)</h3>
+<p>先执行下次 CPU 执行时间最短的进程, 可以使平均等待时间最短. 难点是无法准确知到进程下次 CPU 执行时间.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">可以是抢占的也可以是非抢占的. 非抢占的允许当前进程先完成执行. 抢占 SJF 会在当前运行进程的剩余时间大于队列中时间最小进程时被抢占. 抢占 SJF 又叫作最短剩余时间优先
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="进似-sjf">进似 SJF</h4>
+<p>使用指数平均(exponential average)来估算下次执行时间. \(\tau_{n+1}\) 为下次 CPU 执行时间预测时间, \(t_n\) 为第 n 次执行时间
+\[\tau_{n+1} = \alpha t_n +(1-\alpha)\tau_n\]</p>
+<h3 id="优先级调度">优先级调度</h3>
+<p>接下来论讨用小数字来代表高优先级. SJF 是优先级调度的一种, 其优先级为下次 CPU 执行时间的倒数.
+优先级的计算可以有内部的或外部的. 内部的如时限, 内存要求, 打开文件数量或 IO 与 CPU 运行时间之比等. 外部要求如进程的重要程度, 付费等</p>
+<p>问题有无穷阻塞. 一个低优先级的进程不断被阻塞, 只有高优先级的被执行. 一个解决办法是老化, 可以提高长时间未执行的进程的优先级</p>
+<h3 id="轮转调度--round-robin-rr">轮转调度(Round-Robin, RR)</h3>
+<p>每个进程执行不超过一个时间片(time slide), 要求时间片应远大于上下文切换的时间. 否则大量时间会用在切换上下文, 从而导致运行效率减慢</p>
+<h3 id="多级队列">多级队列</h3>
+<p>进程根据不同的要求被分为不同组时, 可以有多级队列, 每个队列可以采用不同的调度算法, 队列间采用绝对优先策略. 如 5 个优先级由高到低的队列组成的多级队列</p>
+<ol>
+<li>系统进程</li>
+<li>交互进程</li>
+<li>交互编辑进程</li>
+<li>批处理进程</li>
+<li>学生进程</li>
+</ol>
+<p>只有高优先级的队列为空时, 低优先级进程才会被执行</p>
+<h3 id="多级反馈调度队列">多级反馈调度队列</h3>
+<p>允许进程根据反馈进入不同的队列</p>
+<h2 id="线程调度">线程调度</h2>
+<p>操作系统只能调度内核级线程, 用户线程通过被映射到内核线程来抢占 CPU</p>
+<h3 id="竞争范围">竞争范围</h3>
+<ul>
+<li>进程竞争范围(Process-Contention Scope, PCS)</li>
+<li>系统竞争范围(System-Contention Scope, SCS)</li>
+</ul>
+<h3 id="pthreads-调度">Pthreads 调度</h3>
+<p>POSIX Pthreads API 可以设置和或取竞争范围</p>
+<ul>
+<li><code>pthread_attr_setscope(pthread_attr_t * attr, int scope)</code></li>
+<li><code>pthread_attr_getscope(pthread_attr_t * attr, int* scope)</code></li>
+</ul>
+<p>scope 是以下两值之一</p>
+<ul>
+<li>PTHREAD_SCOPE_PROCESS : PCS 调度</li>
+<li>PTHREAD_SCOPE_SYSTEM : SCS 调度</li>
+</ul>
+<h2 id="多处理器调度">多处理器调度</h2>
+<ul>
+<li>非对称多处理(asymmetric multiprocessing): 一个处理器用来处理调度, 其它处理用户代码</li>
+<li>对称多处理(symmetric multiprocessing): 每个处理器处理自己的调度</li>
+</ul>
+<p>应该避免一个进程从一个处理器移到另一个处理器. 一个进程对它运行的处理器有亲和性. 操作系统尽量保持进程运行在同一处理器上, 但不保证的模式称为软亲和性. 提供系统调用来保证某个进程运行在处理器子集上, 叫作硬亲和性</p>
+<h3 id="负载均衡">负载均衡</h3>
+<p>应保持所有处理器负载平衡, 不然会有些处理器高负载而其它处理器空闲, 无法发挥多处理器优点</p>
+<h2 id="实时-cpu-调度">实时 CPU 调度</h2>
+<ul>
+<li>软实时系统(soft real-time system): 只保证关键进程的优先级高于非关键进程</li>
+<li>硬实时系统(hard real-time system): 要求任务在截止时间之前完成, 超时等于未完成</li>
+</ul>
+<p>从事件发生到事件相应之间的时间称为事件延迟(event latency). 两种延迟影响实时系统的性能</p>
+<ul>
+<li>最小化延迟
+<ol>
+<li>中断延迟</li>
+<li>调度延迟</li>
+</ol>
+</li>
+<li>优先级调度</li>
+<li>单调速度调度: 周期短的有更高的优先级并允许抢占</li>
+<li>最早截止期限优先调度: 截止期限越早, 优先级越高</li>
+<li>比例分享调度: 分配可用时间比例</li>
+<li>POSIX 实时调度: 两种类型的实时调度
+<ol>
+<li>SCHED_FIFO: 先到先服务调度. 非抢占.</li>
+<li>SCHED_RR: 同等优先级的进程分时</li>
+<li><code>pthread_attr_getsched_policy(pthread_attr_t *attr, int *policy)</code></li>
+<li><code>pthread_attr_setsched_policy(pthread_attr_t *attr, int policy)</code></li>
+</ol>
+</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#define NUM_THREADS 5
+</span><span class="cp"></span>
+<span class="kt">void</span><span class="o">*</span> <span class="nf">runner</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">param</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">policy</span><span class="p">;</span>
+    <span class="n">pthread_t</span> <span class="n">pids</span><span class="p">[</span><span class="n">NUM_THREADS</span><span class="p">];</span>
+    <span class="n">pthread_arrr_t</span> <span class="n">attr</span><span class="p">;</span>
+
+    <span class="n">pthread_attr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pthread_attr_getsched_policy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">policy</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Unable tp get scheduling policy.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+        <span class="p">{</span>
+        <span class="k">case</span> <span class="nl">SCHED_OTHER</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;SCHED_OTHER</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">SCHED_FIFO</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;SCHED_FIDO</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">SCHED_RR</span><span class="p">:</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;SCHED_RR</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pthread_attr_setsched_policy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span> <span class="n">SCHED_FIFO</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Unable to set SCHED_FIFO policy&#34;</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM_THREADS</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">attr</span><span class="p">.</span><span class="n">runner</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM_THREADS</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">pthread_join</span><span class="p">(</span><span class="n">pids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="o">*</span> <span class="nf">runner</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pthread_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="操作系统例子">操作系统例子</h2>
+<h3 id="linux">Linux</h3>
+<p>V2.6.23 后采用完全公平调度(Completely Fair Scheduler, CFS)作为默认调度算法. CFS 将就绪的任务存于一个红黑树中.</p>
+<h2 id="习题">习题</h2>
+<h3 id="5-dot-1">5.1</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">为什么区分 CPU 密集型和 I/O 密集型程序对调度程序是重要的
+</code></pre></td></tr></table>
+</div>
+</div><p>因为两者对 CPU 的需求时间是有很大不同的</p>
+<h3 id="5-dot-3">5.3</h3>
+<p>更高优先级的进程可以持有更多的彩票</p>
+<h3 id="5-dot-5">5.5</h3>
+<p>a. 预测下次时间为定值 100ms</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-21
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/process-scheduling/">process-scheduling</a>
+          <a href="/tags/thread-scheduling/">thread-scheduling</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/cpp_extra_trick/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">专门工具和技巧</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/net_mac/">
+            <span class="next-text nav-default">介质访问控制子层(Media Access Control, MAC)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-21 21:45:00 \u002b0800 CST',
+        title: '进程调度',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

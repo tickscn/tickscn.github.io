@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>专门的库特性 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&amp;lt;T1, T2, &amp;hellip;, Tn&amp;gt; t; t 是一个有着 n 个类型分别为 T1, T2" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/cpp_libiary_future/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="专门的库特性" />
+<meta property="og:description" content="元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&lt;T1, T2, &hellip;, Tn&gt; t; t 是一个有着 n 个类型分别为 T1, T2" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/cpp_libiary_future/" />
+<meta property="article:published_time" content="2020-06-04T18:07:00+08:00" />
+<meta property="article:modified_time" content="2020-06-04T18:07:00+08:00" />
+<meta itemprop="name" content="专门的库特性">
+<meta itemprop="description" content="元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&lt;T1, T2, &hellip;, Tn&gt; t; t 是一个有着 n 个类型分别为 T1, T2">
+<meta itemprop="datePublished" content="2020-06-04T18:07:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-04T18:07:00+08:00" />
+<meta itemprop="wordCount" content="2673">
+
+
+
+<meta itemprop="keywords" content="library," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="专门的库特性"/>
+<meta name="twitter:description" content="元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&lt;T1, T2, &hellip;, Tn&gt; t; t 是一个有着 n 个类型分别为 T1, T2"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">专门的库特性</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-04 </span>
+        <div class="post-category">
+            <a href="/categories/cpp/"> CPP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#元组-tuple">元组 <code>tuple</code></a></li>
+        <li><a href="#bitset"><code>bitset</code></a>
+          <ul>
+            <li><a href="#定义和初始化">定义和初始化</a></li>
+            <li><a href="#bitset-的操作">bitset 的操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#正则表达式--regular-expressions">正则表达式(regular expressions)</a>
+          <ul>
+            <li><a href="#使用-re-库">使用 RE 库</a></li>
+            <li><a href="#迭代器和结果集">迭代器和结果集</a></li>
+            <li><a href="#使用子表达式">使用子表达式</a></li>
+            <li><a href="#regex-replace">regex_replace</a></li>
+          </ul>
+        </li>
+        <li><a href="#随机数">随机数</a>
+          <ul>
+            <li><a href="#random-number-engines-和-distribution">random-number engines 和 distribution</a></li>
+          </ul>
+        </li>
+        <li><a href="#io-库更多特性">IO 库更多特性</a>
+          <ul>
+            <li><a href="#格式化输入和输出">格式化输入和输出</a></li>
+            <li><a href="#无格式化输入-输出操作符">无格式化输入/输出操作符</a></li>
+            <li><a href="#流的随机访问">流的随机访问</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="元组-tuple">元组 <code>tuple</code></h2>
+<p>元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象</p>
+<table>
+<thead>
+<tr>
+<th>tuple&lt;T1, T2, &hellip;, Tn&gt; t;</th>
+<th>t 是一个有着 n 个类型分别为 T1, T2&hellip;的元素的元组</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tuple&lt;T1, T2, &hellip;, Tn&gt; t(v1,v2,&hellip;,vn)</td>
+<td></td>
+</tr>
+<tr>
+<td>make_tuple(v1,v2,&hellip;,vn)</td>
+<td></td>
+</tr>
+<tr>
+<td>t1==t2</td>
+<td></td>
+</tr>
+<tr>
+<td>t1!=t2</td>
+<td></td>
+</tr>
+<tr>
+<td>t1 关系运算 t2</td>
+<td>字典序</td>
+</tr>
+<tr>
+<td>get<i> (t)</td>
+<td>访问</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bitset"><code>bitset</code></h2>
+<p>如果小于内建内建整数类型, 可以用整数类型和位运算来当位集. 标准库提供了 bitset 类可以更容易使用并且可以存储远大于整数位长的集合</p>
+<h3 id="定义和初始化">定义和初始化</h3>
+<table>
+<thead>
+<tr>
+<th>bitset<n> b</th>
+<th>b 有 n 位, 每位都是 0. 构造器是编译期常量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bitset<n> b(u)</td>
+<td>从低位拷贝 unsigned long long 的位. 超出部分为 0</td>
+</tr>
+<tr>
+<td>bitset<n> b(s, pos, m, zero, one)</td>
+<td>从 string s 的第 pos 位开始拷贝 m 位. zero 默认是'0', one 默认是 &lsquo;1&rsquo;</td>
+</tr>
+<tr>
+<td>bitset<n> b(cp, pos, m, zero, one)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>bitset 中元素从 0 位开始.</p>
+<h3 id="bitset-的操作">bitset 的操作</h3>
+<table>
+<thead>
+<tr>
+<th>b.any()</th>
+<th>是否有位是 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b,all()</td>
+<td>是否全为 1</td>
+</tr>
+<tr>
+<td>b.none()</td>
+<td>是否全为 0</td>
+</tr>
+<tr>
+<td>b.count()</td>
+<td>1 的数目</td>
+</tr>
+<tr>
+<td>b.size()</td>
+<td></td>
+</tr>
+<tr>
+<td>b.test(pos)</td>
+<td>pos 位否为 1</td>
+</tr>
+<tr>
+<td>b.set(pos, v)</td>
+<td>设置 pos 位为 v. v 默认为 1</td>
+</tr>
+<tr>
+<td>b.set()</td>
+<td>全设为 1</td>
+</tr>
+<tr>
+<td>b.reset(pos )</td>
+<td>pos 位设为 0</td>
+</tr>
+<tr>
+<td>b.reset()</td>
+<td>全设为 1</td>
+</tr>
+<tr>
+<td>b.flip(pos )</td>
+<td>pos 位设反</td>
+</tr>
+<tr>
+<td>b.flip()</td>
+<td>全反</td>
+</tr>
+<tr>
+<td>b[pos]</td>
+<td></td>
+</tr>
+<tr>
+<td>b.to_ulong()</td>
+<td>返回 unsigned long</td>
+</tr>
+<tr>
+<td>b.to_ullong()</td>
+<td>返回 unsigned long long</td>
+</tr>
+<tr>
+<td></td>
+<td>上两个如果位数不够, 抛出 overflow_error 异常</td>
+</tr>
+<tr>
+<td>b.to_string(zero, one)</td>
+<td></td>
+</tr>
+<tr>
+<td>os &laquo; b</td>
+<td></td>
+</tr>
+<tr>
+<td>is &raquo; b</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="正则表达式--regular-expressions">正则表达式(regular expressions)</h2>
+<p>C++ 提供了 RE  library, 定义在 <code>regex</code> 头文件. RE 库内容</p>
+<table>
+<thead>
+<tr>
+<th>regex</th>
+<th>代表正则表达式类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>regex_match</td>
+<td>用正则表达式匹配一个字符串</td>
+</tr>
+<tr>
+<td>regex_search</td>
+<td>寻找第一个匹配的字符串</td>
+</tr>
+<tr>
+<td>regex_replace</td>
+<td>使用给定格式替换匹配的字符串</td>
+</tr>
+<tr>
+<td>sregex_iterator</td>
+<td>在 string 匹配时可以把 regex_search 结果绑定到该迭代器</td>
+</tr>
+<tr>
+<td>smatch</td>
+<td>string 中匹配结果的容器</td>
+</tr>
+<tr>
+<td>ssub_match</td>
+<td>string 中匹配的子表达式</td>
+</tr>
+</tbody>
+</table>
+<h3 id="使用-re-库">使用 RE 库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;regex&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">pattern</span><span class="p">(</span><span class="s">&#34;[^c]ei&#34;</span><span class="p">);</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#34;[[:alpha:]]*&#34;</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="s">&#34;[[:alpha:]]*&#34;</span><span class="p">;</span>
+    <span class="n">regex</span> <span class="n">r</span><span class="p">(</span><span class="n">pattern</span><span class="p">);</span>
+    <span class="n">smatch</span> <span class="n">result</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">test_str</span> <span class="o">=</span> <span class="s">&#34;receipt freind theif receive&#34;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">regex_search</span><span class="p">(</span><span class="n">test_str</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span><span class="p">.</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="regex-对象的选项">regex 对象的选项</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>一些操作</p>
+<ol>
+<li>regex r(reg, flag);
+reg 可以是 string, 迭代器对, C-style 字符串. 字符指针和长度数字.</li>
+<li>r.mark_count() r 中的子表达式</li>
+<li>r.flags() 返标志位</li>
+</ol>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>flags</p>
+<ul>
+<li>icase: 忽略大小写</li>
+<li>nosubs: 不保存子表达式匹配</li>
+<li>optimize: 将时间花在构造上, 执行时更快</li>
+<li>ECMAScript: 语法使用 ECMA-262</li>
+<li>basic: 使用 POSIX 基础语法</li>
+<li>extended: 使用 POSIX 扩展语法</li>
+<li>awk: 使用 POSIX awk 语言语法</li>
+<li>grep: 使用 POSIX grep 语法</li>
+<li>egrep: 使用 POSIX egrep 语法</li>
+</ul>
+</li>
+</ul>
+<h4 id="错误">错误</h4>
+<p>一些错误码. regex 是在运行时运算的, 可以认为 regex 不是属于 C/C++ 的一部分, 而是使用另一种语言的扩展</p>
+<h3 id="迭代器和结果集">迭代器和结果集</h3>
+<h4 id="迭代器">迭代器</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;regex&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">pattern</span>  <span class="o">=</span> <span class="s">&#34;[^c]ei&#34;</span><span class="p">;</span>
+    <span class="n">pattern</span>         <span class="o">=</span> <span class="s">&#34;[[:alpha:]]*&#34;</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="s">&#34;[[:alpha:]]*&#34;</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">test_str</span> <span class="o">=</span> <span class="s">&#34;recipt freind theif receive&#34;</span><span class="p">;</span>
+    <span class="n">regex</span> <span class="n">r</span><span class="p">(</span><span class="n">pattern</span><span class="p">);</span>
+    <span class="n">sregex_iterator</span> <span class="n">it</span><span class="p">(</span><span class="n">test_str</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">test_str</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">r</span><span class="p">),</span> <span class="n">end</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">end</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="o">++</span><span class="n">it</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="使用匹配的数据">使用匹配的数据</h4>
+<p><code>smatch</code> 为了更有用, 提供了很多信息</p>
+<table>
+<thead>
+<tr>
+<th>smatch, cmatch, wsmatch, wcmatch 和匹配的子类型</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m.ready()</td>
+<td>m 被 regex_match 或 regex_search 设置过</td>
+</tr>
+<tr>
+<td>m.size()</td>
+<td>m 的大小</td>
+</tr>
+<tr>
+<td>m.empty()</td>
+<td>返回 m.size()==0</td>
+</tr>
+<tr>
+<td>m.prefix()</td>
+<td>ssub_match 表示匹配串之前的串</td>
+</tr>
+<tr>
+<td>m.suffix()</td>
+<td>ssub_match 表示匹配串之后的串</td>
+</tr>
+<tr>
+<td>m.format(&hellip;)</td>
+<td>格式化</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>m.length(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>m.position(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>m.str(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>m[n]</td>
+<td></td>
+</tr>
+<tr>
+<td>m.begin(), m.end()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="ssub-match">ssub_match</h4>
+<table>
+<thead>
+<tr>
+<th>matched</th>
+<th>public bool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>first</td>
+<td></td>
+</tr>
+<tr>
+<td>second</td>
+<td></td>
+</tr>
+<tr>
+<td>length()</td>
+<td></td>
+</tr>
+<tr>
+<td>str()</td>
+<td></td>
+</tr>
+<tr>
+<td>s=ssub</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;regex&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#34;(cie|[^c]ei)&#34;</span><span class="p">;</span>
+    <span class="n">pattern</span>        <span class="o">=</span> <span class="s">&#34;[[:alpha:]]*&#34;</span> <span class="o">+</span> <span class="n">pattern</span> <span class="o">+</span> <span class="s">&#34;[[:alpha:]]*&#34;</span><span class="p">;</span>
+    <span class="n">regex</span><span class="p">(</span><span class="n">pattern</span><span class="p">);</span>
+    <span class="n">string</span> <span class="n">test_str</span> <span class="o">=</span> <span class="s">&#34;recipt freind theif receive&#34;</span><span class="p">;</span>
+    <span class="n">sregex_iterator</span> <span class="n">it</span><span class="p">(</span><span class="n">str_test</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">str_test</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">r</span><span class="p">),</span> <span class="n">end</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">end</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="p">.</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="o">++</span><span class="n">it</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">ei 语法规则. 合法
+1. ei: 不在 c 之后
+2. cie
+3. 例外
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用子表达式">使用子表达式</h3>
+<p>一个匹配的模式可以包括一个或多个子表达式. 正则表达式使用括号来提供子表达式.</p>
+<h4 id="使用正则表达式进行数据验证">使用正则表达式进行数据验证</h4>
+<p>正则表达式可以用来进行验证一些有特殊格式的数据. 比如说电话号码. 3 位区域码, 7 位本地码. 7 位码可以由'-', &lsquo;.&rsquo;, ' &lsquo;进行分隔, 或者不进行分隔</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(\\()?(\\d{3}) (\\))?([-. ])?(\\d{3})([-. ]?)(\\d{4})
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;regex&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="nf">valid</span><span class="p">(</span><span class="k">const</span> <span class="n">smatch</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">phone</span> <span class="o">=</span> <span class="s">&#34;(</span><span class="se">\\</span><span class="s">()?(</span><span class="se">\\</span><span class="s">d{3})(</span><span class="se">\\</span><span class="s">))?([-. ])?(</span><span class="se">\\</span><span class="s">d{3})([-. ]?)(</span><span class="se">\\</span><span class="s">d{4})&#34;</span><span class="p">;</span>
+    <span class="n">regex</span> <span class="n">r</span><span class="p">(</span><span class="n">phone</span><span class="p">);</span>
+    <span class="n">smatch</span> <span class="n">m</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">sregex_iterator</span> <span class="n">it</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">r</span><span class="p">),</span> <span class="n">end</span><span class="p">;</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">valid</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">))</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;valid: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;not valid: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">str</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">valid</span><span class="p">(</span><span class="k">const</span> <span class="n">smatch</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">marched</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">matched</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">matched</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">str</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34; &#34;</span><span class="p">);</span>  <span class="c1">//括号成对出现.
+</span><span class="c1"></span>    <span class="k">else</span>
+        <span class="k">return</span> <span class="o">!</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">matched</span> <span class="o">&amp;&amp;</span> <span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">str</span><span class="p">()</span> <span class="o">==</span> <span class="n">m</span><span class="p">[</span><span class="mi">6</span><span class="p">].</span><span class="n">str</span><span class="p">();</span> <span class="c1">// 不匹配时可以返回字符串
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="regex-replace">regex_replace</h3>
+<ol>
+<li>m.format(dst, fmt, mft) // dst 目标, fmt 格式化字符串, mft 可选标志类型</li>
+<li>m.format(fmt, mft)</li>
+<li>regex_replace(dst, seq, r, fmt, mft)</li>
+<li>regex_replace(seq, r, fmt, mft)</li>
+</ol>
+<p>格式化字符串用 $number 引用子匹配</p>
+<h4 id="控制匹配和格式化的标志符">控制匹配和格式化的标志符</h4>
+<p>定义在 <code>regex_constants</code></p>
+<h2 id="随机数">随机数</h2>
+<p>C++11 之前, c++标准库和 C 语言一样使用 C 库函数 <code>rand</code> 来生成 0~(依赖具体系统, 不过最小为)32767 的伪有随机数. 有一些问题</p>
+<ol>
+<li>许多程序需要的随机数范围与 <code>rand</code> 提供的不一样</li>
+<li>一些程序需要浮点型随机数</li>
+</ol>
+<p>定义在头文件 <code>random</code> 的随机数标准库可以解决这些问题. 该库提供了 <strong>random-number engines</strong> 和 <strong>random-number distribution classes</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">C++ 程序员应该使用 default_random_engines 来代替 rand
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="random-number-engines-和-distribution">random-number engines 和 distribution</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">default_random_engine</span> <span class="n">e</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; &#34;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>结果是 16807 282475249 1622650073 984943658 1144108930 470211272 101027544 1457850878 1458777923 2007237709, 而且多次运行结果相同, 好像与 C++ primer 5th 的示例结果也相同. 因为没有设置随机种子. 库定义了一些随机数引擎. 每个编译器指定其中一个为默认引擎.</p>
+<ol>
+<li>Engine e: 用默认种子构造</li>
+<li>Engine e(s): 使用整数类型作为种子</li>
+<li>e.seed(s): 重设种子</li>
+<li>e.min()</li>
+<li>e.max()</li>
+<li>Engine::result_type</li>
+<li>e.discard(u): 使用 unsigned long long 来跳过 u 个随机数</li>
+</ol>
+<p>将随机数范围正确的转换到需要的范围是有些困难的</p>
+<h4 id="distribution-类型和引擎">distribution 类型和引擎</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">uniform_int_distribution</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span> <span class="n">u</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+    <span class="n">default_random_engine</span> <span class="n">e</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">u</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; &#34;</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以让 engine 和 distribution 都为 static, 这样可以保存状态, 每次调用产生之后的序列</p>
+<h4 id="使用种子生成器">使用种子生成器</h4>
+<p>程序每次运行产生相同的序列可以方便 debug, 但是有可能在发布的时候更需要每次运行结果都不同</p>
+<h4 id="非均匀分布">非均匀分布</h4>
+<p>库定义了 20 多种其它的分布类型.</p>
+<!--list-separator-->
+<ul>
+<li>
+<p>正态分布 normal-distribution</p>
+<p>\(X\sim N(\mu, \sigma^2)\) 数学期望 μ, 方差 σ^{2}, 概率分布为
+\[f(x) = \dfrac{1}{\sqrt{2\pi}\sigma}\exp^{-\frac{(x-\mu)^2}{2\sigma^2}}\]</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">default_random_engine</span> <span class="n">e</span><span class="p">;</span>
+    <span class="n">normal_distribution</span><span class="o">&lt;&gt;</span> <span class="n">n</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span>  <span class="c1">// 期望 4, 标准差 1.5. 出现在 (-0.5, 8.5) 的概率为 99.74%
+</span><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span> <span class="n">count</span><span class="p">[</span><span class="mi">9</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">unsigned</span> <span class="n">r</span> <span class="o">=</span> <span class="n">lround</span><span class="p">(</span><span class="n">n</span><span class="p">(</span><span class="n">e</span><span class="p">));</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">)</span> <span class="o">++</span><span class="n">count</span><span class="p">[</span><span class="n">r</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">string</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="sc">&#39;*&#39;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>伯努力分布 bernoulli-distribution</p>
+<p>\(X \sim B(1,p)\) n 为 1 的二项分布, 一次实验成功概率为 p. 失败为 1-p. 期望 p, 方差 p(1-p)
+C++ 新库中 bernoulli-distribution 不是模板类, 是普通类. 按照给定概率(默认为 0.5) 返回 true</p>
+</li>
+</ul>
+<h2 id="io-库更多特性">IO 库更多特性</h2>
+<h3 id="格式化输入和输出">格式化输入和输出</h3>
+<p>库定义了一套控制符. 可以改变流的格式化状态. 可以是输入输出操作符的操作数. 返回调用的流, 可以将操作和数据写在一个语上</p>
+<h4 id="bool">bool</h4>
+<table>
+<thead>
+<tr>
+<th>boolalpha</th>
+<th>noboolalpha</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>true</td>
+<td>1</td>
+</tr>
+<tr>
+<td>false</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="integer">integer</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>进制</p>
+<ul>
+<li>oct: 8 进制</li>
+<li>hex: 16 进制</li>
+<li>dec: 10 进制</li>
+</ul>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>进制前辍
+<table>
+<thead>
+<tr>
+<th>showbase</th>
+<th>noshowbase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oct</td>
+<td>0</td>
+</tr>
+<tr>
+<td>hex</td>
+<td>0x</td>
+</tr>
+<tr>
+<td>dec</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>16 进制大小写</p>
+<p>uppercase/nouppercase</p>
+</li>
+</ul>
+<h4 id="浮点">浮点</h4>
+<p>输出流可以控制浮点类型的 3 点</p>
+<ol>
+<li>精确度</li>
+<li>16 进制, 10 进制或科学计数法</li>
+<li>是否为整值打印小数点</li>
+</ol>
+<p>需要参数的控制符定义在 <code>iomanip</code> 头文件</p>
+<table>
+<thead>
+<tr>
+<th>控制符(*默认)</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boolalpha/*noboolalpha</td>
+<td></td>
+</tr>
+<tr>
+<td>showbase/*noshowbase</td>
+<td></td>
+</tr>
+<tr>
+<td>showpoint/*noshowpoint</td>
+<td>没有小数部分时显示/不显示小数点</td>
+</tr>
+<tr>
+<td>showpos/*noshowpos</td>
+<td>正数显示 +</td>
+</tr>
+<tr>
+<td>uppercase/*nouppercase</td>
+<td>显示大写字母</td>
+</tr>
+<tr>
+<td>*dec</td>
+<td>10 进制整型</td>
+</tr>
+<tr>
+<td>oct</td>
+<td>8 进制整型</td>
+</tr>
+<tr>
+<td>dec</td>
+<td>16 进制整型</td>
+</tr>
+<tr>
+<td>left</td>
+<td>值的右边填充字符</td>
+</tr>
+<tr>
+<td>right</td>
+<td>值的左边填充字符</td>
+</tr>
+<tr>
+<td>internal</td>
+<td>在标志与值之间填充字符</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>10 进制浮点</td>
+</tr>
+<tr>
+<td>hexfloat</td>
+<td>16 进制浮点</td>
+</tr>
+<tr>
+<td>defaultfloat</td>
+<td>设为 10 进制</td>
+</tr>
+<tr>
+<td>unitbuf/*nounitbuf</td>
+<td>立即更新缓冲区</td>
+</tr>
+<tr>
+<td>*skipws/noskipws</td>
+<td>输入时跳过空白符</td>
+</tr>
+<tr>
+<td>flush</td>
+<td>更新缓冲区</td>
+</tr>
+<tr>
+<td>ends</td>
+<td>插入 null, 更新 ostream 缓冲区</td>
+</tr>
+<tr>
+<td>endl</td>
+<td>入新行, 更新 ostream 缓冲区</td>
+</tr>
+</tbody>
+</table>
+<h3 id="无格式化输入-输出操作符">无格式化输入/输出操作符</h3>
+<p>将流看为无中断字节流.</p>
+<h4 id="单字节操作符">单字节操作符</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">cin</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="n">cout</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>  <span class="c1">// c语言的 getchar() 和 putchar()
+</span></code></pre></td></tr></table>
+</div>
+</div><table>
+<thead>
+<tr>
+<th>is.get(ch)</th>
+<th>返回 is, 下一比特放入 ch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is.get()</td>
+<td>返回下一比特</td>
+</tr>
+<tr>
+<td>is.putback(ch)</td>
+<td>将 ch 返回输入流, 返回 is</td>
+</tr>
+<tr>
+<td>is.unget()</td>
+<td>is 返回一个比特, 返回 is</td>
+</tr>
+<tr>
+<td>is.peek()</td>
+<td>返回下一比特, 但是不移除它</td>
+</tr>
+<tr>
+<td>os.put(ch )</td>
+<td>将 ch 写入输出流, 返回 os</td>
+</tr>
+</tbody>
+</table>
+<h4 id="多字节操作符">多字节操作符</h4>
+<p>一次性操作一个数据块, 需要管理字符数组, 是内存泄漏的高发区.</p>
+<table>
+<thead>
+<tr>
+<th>is.get(sink, size, delim)</th>
+<th>delim 结束符, 不将其保存到 sink, 而是留在输入流中</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is.getline(sink, size, delim)</td>
+<td>delim 存入 sink</td>
+</tr>
+<tr>
+<td>is.read(sink, size)</td>
+<td>读 size 个比特</td>
+</tr>
+<tr>
+<td>is.gcount()</td>
+<td>上一次无格式读取读入的比特</td>
+</tr>
+<tr>
+<td>os.write(source, size)</td>
+<td>将 source 中 size 比特的字符写入 os</td>
+</tr>
+<tr>
+<td>is.ignore(size, delim)</td>
+<td>忽略 size 个比特或到 delim. size 默认为 1, delim 默认为 eof</td>
+</tr>
+</tbody>
+</table>
+<h3 id="流的随机访问">流的随机访问</h3>
+<p>许多流支持随机访问, 不过常用的 cin, cout, cerr, clog 不支持</p>
+<h4 id="seek-和-tell">seek 和 tell</h4>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tellg()/tellp()</td>
+<td>返回输入/输出标志当前位置</td>
+</tr>
+<tr>
+<td>seekg(pos)/seekp(pos)</td>
+<td>重定位</td>
+</tr>
+<tr>
+<td>seekg(offset, from)/seekp(offset, from)</td>
+<td>输入流/输出流重定位到 from 偏移 offset 的位置</td>
+</tr>
+</tbody>
+</table>
+<p>from 可以是</p>
+<ul>
+<li>beg: 流的头</li>
+<li>cur: 当前位置</li>
+<li>end: 流的尾</li>
+</ul>
+<p>流中只有一个标志位, 即使是同时支持读/写的流</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-04
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/library/">library</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/cpp_extra_tool/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">大型程序工具</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/oop/">
+            <span class="next-text nav-default">面像对象编程</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-04 18:07:00 \u002b0800 CST',
+        title: '专门的库特性',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

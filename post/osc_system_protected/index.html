@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>系统保护 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="保护目标 最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/osc_system_protected/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="系统保护" />
+<meta property="og:description" content="保护目标 最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/osc_system_protected/" />
+<meta property="article:published_time" content="2020-08-07T14:23:00+08:00" />
+<meta property="article:modified_time" content="2020-08-07T14:23:00+08:00" />
+<meta itemprop="name" content="系统保护">
+<meta itemprop="description" content="保护目标 最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源">
+<meta itemprop="datePublished" content="2020-08-07T14:23:00+08:00" />
+<meta itemprop="dateModified" content="2020-08-07T14:23:00+08:00" />
+<meta itemprop="wordCount" content="1390">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="系统保护"/>
+<meta name="twitter:description" content="保护目标 最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">系统保护</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-07 </span>
+        <div class="post-category">
+            <a href="/categories/osc/"> OSC </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#保护目标">保护目标</a></li>
+        <li><a href="#保护原则">保护原则</a></li>
+        <li><a href="#保护域">保护域</a>
+          <ul>
+            <li><a href="#域结构">域结构</a></li>
+            <li><a href="#例-unix">例: UNIX</a></li>
+          </ul>
+        </li>
+        <li><a href="#访问矩阵">访问矩阵</a></li>
+        <li><a href="#访问矩阵的实现">访问矩阵的实现</a>
+          <ul>
+            <li><a href="#全局表">全局表</a></li>
+            <li><a href="#对象访问列表">对象访问列表</a></li>
+            <li><a href="#域的能力列表">域的能力列表</a></li>
+            <li><a href="#锁-钥匙机制">锁-钥匙机制</a></li>
+          </ul>
+        </li>
+        <li><a href="#访问控制">访问控制</a></li>
+        <li><a href="#访问权限的撤回">访问权限的撤回</a></li>
+        <li><a href="#基于语言的保护">基于语言的保护</a>
+          <ul>
+            <li><a href="#基于编译程序的实现">基于编译程序的实现</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="保护目标">保护目标</h2>
+<p>最初是多道程序操作系统的附属产物, 使不可信用户可以安全的共享公共逻辑命名空间或者共享公共物理命名空间. 如今保护是为了所有使用共享资源的任何系统的可靠性</p>
+<p>可靠系统需要活动程序组件按照规定的策略来使用系统资源</p>
+<h2 id="保护原则">保护原则</h2>
+<p>一个经过时间检验的的重要指导原则是 <strong>最低特权原则</strong>, 即程序, 用户, 系统需要足够的权限以便执行任务. 遵循最低特权原则的操作系统实现它的特征, 程序, 系统调用和数据结构, 以便组件的故障可以做到最小伤害</p>
+<h2 id="保护域">保护域</h2>
+<p>每个计算机系统是进程和对象的一组集合, 对象分为硬件对象和软件对象, 每个对象都有一个唯一的名称, 以便于所有其它对象进行区分. 每个对象应该只由经过明确定义的, 有意义的操作来访问.</p>
+<p>进程只应允许访问获取了足够权限的对象. 无论何时, 进程都不应该获得完成任务用不到的资源</p>
+<h3 id="域结构">域结构</h3>
+<p>进程在保护域内执行, 该保护域指定了进程可以访问的资源. 每个域定义了: 一组可以访问的对象和可以对每个对象调用的操作类型. 对对象执行操作的能力被称为访问权限(access right). 每个域为访问权限的组合.
+每个权限为一个有序对&lt; object-name, right-set &gt;. 域可以共享, 即域集合可以有交集进程和域的关联可以是静态的, 也可以是动态的. 静态的关联如果想要最低权限原则需要域是可变的. 动态域应允许进程进行域切换域的实现可以有多种</p>
+<ul>
+<li>每个用户可以是个域. 当用户切换时发生域切换</li>
+<li>每个进程可以是个域. 当一个进程发送消息给另一个进程, 然后等待响应时, 发生域切换</li>
+<li>每个过程可以是个域. 当进行过程调用时, 发生域切换</li>
+</ul>
+<h3 id="例-unix">例: UNIX</h3>
+<p>域与用户关联. 切换域对应域暂时改变用户身份. 这种改变通过文件系统来实现. 每个文件有一个域(用户)关联位. 当该位打开时, 进程执行该文件时 userID 被设为文件所有者.</p>
+<p>系统为了更有约束力, 更安全需要进制更改 userID, 这时需要另外的方法来允许用户访问必要的特权功能. 例如 <strong>守护进程</strong> 可以在引导时启动, 并按特殊 userID 动行. 当用户进程需要变些功能时就给守护进程发消息</p>
+<h2 id="访问矩阵">访问矩阵</h2>
+<p>可将通用保护模型抽象为一个矩阵, 称为访问矩阵(access matrix). 该矩阵的行表示域, 列表示对象. 每个条目是访问权限的一组集合. 域也可以被认为是对象, 可以有切换的操作</p>
+<h2 id="访问矩阵的实现">访问矩阵的实现</h2>
+<h3 id="全局表">全局表</h3>
+<p>最简单实现采用一个全局表. 包括一组有序三元组 &lt;domain, object-name, rights-set&gt;. 当域 D_{i} 内对对象 O_{j} 执行 M 操作, 就查询 &lt;D_{i}, O_{j}, R_{k}&gt;, M ∈ R_{k}. 如果找到就执行, 不然就引起一个异常或错误</p>
+<h3 id="对象访问列表">对象访问列表</h3>
+<p>为第每个对象设置一个访问列表, 包括一组有序对 &lt;domain, rights-set&gt;</p>
+<h3 id="域的能力列表">域的能力列表</h3>
+<p>每个域关联一个能力列表. 进程不能直接访问该列表, 因为该列表是受保护的. 决不允许迁移能力到用户可以直接访问的任何地址空间</p>
+<h3 id="锁-钥匙机制">锁-钥匙机制</h3>
+<p>每个对象有一个唯一的位模式列表, 称为锁. 每个域都有一个唯一的位模式列表, 称为钥匙. 仅当域有与锁匹配的钥匙时, 域中的进程才可以访问一个对象</p>
+<h2 id="访问控制">访问控制</h2>
+<p>文件系统的访问控制思想也可用于操作系统的其它方面. 通过基于角色访问控制(Role-Based Access Control, RBAC)来明确最低访问特权原则. 特权是指为执行系统调用或采用系统调用和选项</p>
+<h2 id="访问权限的撤回">访问权限的撤回</h2>
+<p>在动态保护系统中, 可能有时需要撤回用户对某个共享对象的访问权限. 撤回可能引起各种问题</p>
+<ul>
+<li>立即还时延迟</li>
+<li>可选还是全部</li>
+<li>临时还是永久</li>
+</ul>
+<p>采用访问列表方案, 撤回是很容易的. 只需搜索访问列表以便查找需要撤回的任何访问权限, 并从列表中删除</p>
+<h2 id="基于语言的保护">基于语言的保护</h2>
+<h3 id="基于编译程序的实现">基于编译程序的实现</h3>
+<p>采用程序语言, 指定系统共享资源的所需访问控制是资源的声明语句. 这种声明语句可以通过扩展类型功能集成到语言中</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-07
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/c&#43;&#43;14/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">C&#43;&#43;14</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/innodb_lock/">
+            <span class="next-text nav-default">锁</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-08-07 14:23:00 \u002b0800 CST',
+        title: '系统保护',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

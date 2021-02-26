@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>storage on ticks blog</title>
+    <link>https://tickscn.github.io/tags/storage/</link>
+    <description>Recent content in storage on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 28 Jul 2020 19:30:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>大容量存储结构</title>
+      <link>https://tickscn.github.io/post/osc_storage_structure/</link>
+      <pubDate>Tue, 28 Jul 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_storage_structure/</guid>
+      <description>概述 磁盘(硬盘) 由多个盘片构成存储区, 每个盘片的直径大约为 1.8~3.5 英寸. 盘片两端有磁性材料, 通过磁性来保存数据. 每个盘片分为不同直径的圆形磁道(t</description>
+    </item>
+    
+  </channel>
+</rss>

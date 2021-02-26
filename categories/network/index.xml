@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>network on ticks blog</title>
+    <link>https://tickscn.github.io/categories/network/</link>
+    <description>Recent content in network on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 23 Jul 2020 15:58:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>电子邮件服务</title>
+      <link>https://tickscn.github.io/post/net_email/</link>
+      <pubDate>Thu, 23 Jul 2020 15:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_email/</guid>
+      <description>电子邮件是需要中间服务器暂存和转发邮件的, 目前使用电子邮件发送协议有 SMTP(Simple Mail Transfer Protocol, 简单邮件传输协议), 发送邮件的 POP3(Post Office Protocal 3, 简单邮局协议 3), IMAP(Internet Message Access Protocol, 互联</description>
+    </item>
+    
+    <item>
+      <title>DHCP</title>
+      <link>https://tickscn.github.io/post/net_dhcp/</link>
+      <pubDate>Thu, 23 Jul 2020 15:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_dhcp/</guid>
+      <description>动态主机配置协议(DHCP)一种用来简化 IP 配置的管理的服务. 可以为安装了 DHCP 客户端的主机自动配置动态 IP DHCP 服务维户一个 IP 地址池, 其中保存着可用的</description>
+    </item>
+    
+    <item>
+      <title>DNS 服务</title>
+      <link>https://tickscn.github.io/post/net_dns/</link>
+      <pubDate>Wed, 22 Jul 2020 19:53:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_dns/</guid>
+      <description>DNS(Domain Name System), 在 *unix 中一般被称为 BIND(Berkeley Internet Name Domain Service), 用来将主机名翻译为 IP 地址 引入原因 IP 地址标识的不足 不便记忆 不方便地址变更 不安全 host 文件名称解析方案 可以使用一个文</description>
+    </item>
+    
+    <item>
+      <title>应用层</title>
+      <link>https://tickscn.github.io/post/net_application_layer/</link>
+      <pubDate>Wed, 22 Jul 2020 19:52:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_application_layer/</guid>
+      <description>一般网络应用都是客户端/服务器(Client/Server, C/S)模式, 主要介绍 HTTP, E-mail, DNS, DHCP 应用层概述 应用层组件和典型应用服务 应用层需要确认相</description>
+    </item>
+    
+    <item>
+      <title>UDP</title>
+      <link>https://tickscn.github.io/post/net_udp/</link>
+      <pubDate>Mon, 20 Jul 2020 16:43:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_udp/</guid>
+      <description>当丢失一部分数据, 影响不大, 反而传输的连续性要求更高时, 可以使用用户数据报协议(User Datagram Protocol, UDP) UDP 基础概念 无连接性 不可靠性 以报文为边界 无流量控</description>
+    </item>
+    
+    <item>
+      <title>TCP 概述</title>
+      <link>https://tickscn.github.io/post/net_tcp/</link>
+      <pubDate>Mon, 20 Jul 2020 16:20:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_tcp/</guid>
+      <description>TCP 主要特性 面向连接的协议 仅支持单播传输: 不支持多播和广播. 只支持两个套接字的连接(Socket 由 IP 地址和端口号组成) 提供可靠的交付服务 传输单</description>
+    </item>
+    
+    <item>
+      <title>传输层概述</title>
+      <link>https://tickscn.github.io/post/net_transport/</link>
+      <pubDate>Sun, 19 Jul 2020 17:14:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_transport/</guid>
+      <description>传输层概述 传输层是承上启下的一层, 与下面的层共同构成通信部分, 同时又是面向用户和最低层. 虽然网络层以经可以将数据由一个主机传输到另一个主机,</description>
+    </item>
+    
+    <item>
+      <title>IP 地址和子网</title>
+      <link>https://tickscn.github.io/post/net_ip_address_and_subnet/</link>
+      <pubDate>Thu, 16 Jul 2020 15:46:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_ip_address_and_subnet/</guid>
+      <description>IPv4 地址 基本格式 IPv4 使用 32 bits(4 Bytes)地址, 因些整个地址空间有(\(2^{32}\), 4294967296) 约 43 亿 个地址. 不过其中一些地址被保留用于特殊用徐, 如局</description>
+    </item>
+    
+    <item>
+      <title>网络层</title>
+      <link>https://tickscn.github.io/post/network_net/</link>
+      <pubDate>Tue, 14 Jul 2020 20:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/network_net/</guid>
+      <description>概述 网络层主要作用 屏蔽网络差异, 提供透明传输 为网络间通信提供路由选择 数据包封装和解封装 拥塞控制 网络层数据交换与相关控制 线路交换 线路交换(Ci</description>
+    </item>
+    
+    <item>
+      <title>介质访问控制子层(Media Access Control, MAC)</title>
+      <link>https://tickscn.github.io/post/net_mac/</link>
+      <pubDate>Fri, 19 Jun 2020 16:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_mac/</guid>
+      <description>用来对址和解决介质争用 CSMA 监听信道直到信道空闲才发送数据. 隔段时间监听, 一直监听, 一直监听但概率发送 CSMA/CD 可以检测到冲突和组织冲突 检测原理 保证发送</description>
+    </item>
+    
+    <item>
+      <title>数据链路层</title>
+      <link>https://tickscn.github.io/post/net_data_link/</link>
+      <pubDate>Fri, 19 Jun 2020 15:31:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_data_link/</guid>
+      <description>在局域网中数据链路层可分为逻辑链路层(LLC), 介质访问控制(MAC) 功能以级实现 数据链路管理 封装成帧 透明传输 差错控制 数据链路管理 服务类型 有</description>
+    </item>
+    
+    <item>
+      <title>chapter III 计算机网络体系结构(Computer Network Architecture)</title>
+      <link>https://tickscn.github.io/post/net_architecture/</link>
+      <pubDate>Fri, 12 Jun 2020 23:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_architecture/</guid>
+      <description>典型计算机网络体系结构 OSI/RM 开放系统互连参考模型(Open System Interconnection Reference Model, OSI/RM) 是第一个标准化的计算机网络体系结构, 分为 7 层 应用层(Application Layer)</description>
+    </item>
+    
+    <item>
+      <title>chapter II</title>
+      <link>https://tickscn.github.io/post/net_base/</link>
+      <pubDate>Sun, 07 Jun 2020 22:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/net_base/</guid>
+      <description>计算机网络概述 计算机网络发展历史 第一代面向终端的计算机网络 开始时, 网络结构是位于计算中心的计算机主机为中心, 一台或多台终端位于各处. 主机负则</description>
+    </item>
+    
+  </channel>
+</rss>

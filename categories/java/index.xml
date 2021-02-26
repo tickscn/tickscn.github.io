@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>java on ticks blog</title>
+    <link>https://tickscn.github.io/categories/java/</link>
+    <description>Recent content in java on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 03 May 2020 16:59:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>日期和时间 API</title>
+      <link>https://tickscn.github.io/post/java_date_and_time/</link>
+      <pubDate>Sun, 03 May 2020 16:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_date_and_time/</guid>
+      <description>时间线 JAVA 的 Date 和 Time API 规范使用时间尺度为 86400s/d 每天正午与官方时间精确匹配 其它时间点, 精确的方式与官方时间接近匹配 Instant 表示时间线上的某一点, 原点为 UTC 1970 年</description>
+    </item>
+    
+    <item>
+      <title>数据库编程</title>
+      <link>https://tickscn.github.io/post/java_database/</link>
+      <pubDate>Sat, 02 May 2020 16:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_database/</guid>
+      <description>Java 数据库连接(JDBC) API 用来使编程人员连接数据库. 并使用结构化查询语言(Structured Query Language, SQL)完成对数据的查询与更新. JDBC 的设计 Java</description>
+    </item>
+    
+    <item>
+      <title>网络</title>
+      <link>https://tickscn.github.io/post/java_network/</link>
+      <pubDate>Tue, 28 Apr 2020 15:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_network/</guid>
+      <description>连接到服务器 使用 telnet 1 2 3 4 5 6 7 $ telnet time-a.nist.gov 13 Trying 129.6.15.28... Connected to time-a.nist.gov. Escape character is &amp;#39;^]&amp;#39;. 58965 20-04-26 11:43:02 50 0 0 484.9 UTC(NIST) * Connection closed by foreign host. 使用 Java 连接到服务器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18</description>
+    </item>
+    
+    <item>
+      <title>可扩展标记语言(Extensible Markup Language, XML)</title>
+      <link>https://tickscn.github.io/post/java_xml/</link>
+      <pubDate>Sat, 25 Apr 2020 09:40:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_xml/</guid>
+      <description>XML 概述 XML 与 HTML 都继承于标准通用标记语言(Standard Generalized Markup Language, SGML), 两者有很大的相似性. XML 文档结构 文档头 1 2 &amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt; &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; 文档类型定义 在文档头后通常是</description>
+    </item>
+    
+    <item>
+      <title>输入与输出</title>
+      <link>https://tickscn.github.io/post/java_io/</link>
+      <pubDate>Tue, 21 Apr 2020 18:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_io/</guid>
+      <description>输入输出流 输入流: 可以读入一个字节序列的对象 输出流: 可以写入一个字节序列的对象 来源和目的地可以是文件, 网络链接或者是内存块 抽象类 InputStream/OutputStream 处理 Unicode 可以</description>
+    </item>
+    
+    <item>
+      <title>流库</title>
+      <link>https://tickscn.github.io/post/java_stream/</link>
+      <pubDate>Sat, 18 Apr 2020 21:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_stream/</guid>
+      <description>通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String</description>
+    </item>
+    
+    <item>
+      <title>并发</title>
+      <link>https://tickscn.github.io/post/java_concurrency/</link>
+      <pubDate>Wed, 15 Apr 2020 21:41:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_concurrency/</guid>
+      <description>将任务移到实现了 Runable 接口类的 run 方法中 由 Runable 创建一个 Thread 对象 启动线程 线程 一个程序同时执行多个任务, 每个任务叫一个线程. #begin_example 一般来说, 进程(proces</description>
+    </item>
+    
+    <item>
+      <title>部署 Java 应用程序</title>
+      <link>https://tickscn.github.io/post/java_release/</link>
+      <pubDate>Sat, 11 Apr 2020 17:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_release/</guid>
+      <description>JAR 文件 Java 归档文件, 包含类文件, 资源文件等 创建 JAR 文件 1 jar cvf JARFilename file1 file2 ... 清单文件 每个 JAR 还包含一个描述归档特征的清单文件, 位于 JAR 特殊目录 MATE-INF 中的 MANIFEST.MF 简单的</description>
+    </item>
+    
+    <item>
+      <title>Swing 用户组件</title>
+      <link>https://tickscn.github.io/post/java_swing/</link>
+      <pubDate>Fri, 10 Apr 2020 21:51:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_swing/</guid>
+      <description>模式 组件三要素 内容 外观 行为 模型-视图-控制器(MVC) 模型: 存储内容 视图: 显示内容 控制器: 处理输入 布局管理 面板默认是流布局(flow layout manager). 居中</description>
+    </item>
+    
+    <item>
+      <title>事件处理</title>
+      <link>https://tickscn.github.io/post/java_event/</link>
+      <pubDate>Fri, 10 Apr 2020 20:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_event/</guid>
+      <description>事件处理基础 监听器 事件源, 可以注删监听器 事件发生, 事件源将事件发送给所有注删的监听器 监听器对象响应事件 简单的例子 1 2 3 4 5 6 7 8 9 10 11 12 13 14</description>
+    </item>
+    
+    <item>
+      <title>图形程序设计</title>
+      <link>https://tickscn.github.io/post/java_gui/</link>
+      <pubDate>Wed, 08 Apr 2020 22:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_gui/</guid>
+      <description>Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4</description>
+    </item>
+    
+    <item>
+      <title>集合</title>
+      <link>https://tickscn.github.io/post/java_collection/</link>
+      <pubDate>Wed, 08 Apr 2020 19:30:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_collection/</guid>
+      <description>Java 集合框架 将集合的接口与实现分离 Java 将常用数据结构类库的接口与实现分离. 如队列(queue). 尾部插入 头部删除 查找元素个数 1 2 3 4 5 6 public interface Queue&amp;lt;E&amp;gt; {</description>
+    </item>
+    
+    <item>
+      <title>泛型程序设计</title>
+      <link>https://tickscn.github.io/post/java_generic/</link>
+      <pubDate>Sat, 04 Apr 2020 21:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_generic/</guid>
+      <description>定义简单泛型类 1 2 3 4 5 6 7 8 9 10 public class Pair&amp;lt;T&amp;gt; { private T first; private T second; public Pair() {first = null; second = null;} public Pair(T fitst, T second) {this.first = first; this.second = second;} public T getFirst(){return first;} public T getSecond(){return second;} public void setFirst(T newValue){first = newValue;} public void setSecond(T newValue){second = newValue;} } 定义泛</description>
+    </item>
+    
+    <item>
+      <title>异常、断言、日志</title>
+      <link>https://tickscn.github.io/post/java_exception/</link>
+      <pubDate>Sat, 04 Apr 2020 21:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_exception/</guid>
+      <description>异常 异常分类 Java 中异常对象都派生于 Throwable 类的一个实例.分为两个分支 Error Exception Error 类表示系统内部错误和资源耗尽错误. 只能通告用户并尽力使程序安全退出 Exception RuntimeException 程序</description>
+    </item>
+    
+    <item>
+      <title>接口, lambda, 内部类</title>
+      <link>https://tickscn.github.io/post/java_interface_lambda/</link>
+      <pubDate>Thu, 26 Mar 2020 23:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_interface_lambda/</guid>
+      <description>接口(interface) 带有接口的类必须实现接口中的方法 1 2 3 4 public interface Comparable { int compareTo(Object other); } 类实现一个接口 声明类的时候使用关键字 implements 对接口中的方法进行定</description>
+    </item>
+    
+    <item>
+      <title>继承</title>
+      <link>https://tickscn.github.io/post/java_inherit/</link>
+      <pubDate>Sun, 08 Mar 2020 21:29:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_inherit/</guid>
+      <description>类, 超类, 子类 定义子类 Java 使用 关键字 extends 来继承. Java 只有公有继承. 没有私有和保护继承 覆盖方法 子类的方法不能访问超类的私有域 super 可以告诉编译器调用超类</description>
+    </item>
+    
+    <item>
+      <title>对象与类</title>
+      <link>https://tickscn.github.io/post/java_object_and_class/</link>
+      <pubDate>Sat, 07 Mar 2020 21:45:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_object_and_class/</guid>
+      <description>OOP 面向对象程序设计 类 类是构建对象的蓝图 对象 对象的主要特征 行为. 允许的操作, 类提供的方法 状态. 标识 用户自定义类 构造器 同 C++ 类似, 不过总是伴随 new 操</description>
+    </item>
+    
+    <item>
+      <title>java 开始</title>
+      <link>https://tickscn.github.io/post/java_beging/</link>
+      <pubDate>Sat, 07 Mar 2020 21:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_beging/</guid>
+      <description>Hello, World! 非常传统的开局 1 2 3 4 5 6 7 public class Hello { public static void main(String[] args){ String out = &amp;#34;Hello, World!&amp;#34;; System.out.println(out); } }; 在终端输入 1 2 3 4 $ javac Hello.java $ java Hello Hello, World! $ javac 将 Hello.java 编译成 Hello.class. 用 java 执行 class 中的字节码</description>
+    </item>
+    
+    <item>
+      <title>Java 的基本程序设计结构</title>
+      <link>https://tickscn.github.io/post/java_program_construction/</link>
+      <pubDate>Sat, 07 Mar 2020 21:17:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_program_construction/</guid>
+      <description>1 2 3 4 5 6 7 public class Hello{ public static void main(String[] args) { String out = &amp;#34;Hello, World!&amp;#34;; System.out.println(out); } } 分析 Hello, World Java 区分大小写 分析 Hello, World Java 区分大小写. public 是访问修饰符(access modifier), 控制其它代码对其的访</description>
+    </item>
+    
+  </channel>
+</rss>

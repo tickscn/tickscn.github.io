@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>event on ticks blog</title>
+    <link>https://tickscn.github.io/tags/event/</link>
+    <description>Recent content in event on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 10 Apr 2020 20:22:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/event/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>事件处理</title>
+      <link>https://tickscn.github.io/post/java_event/</link>
+      <pubDate>Fri, 10 Apr 2020 20:22:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_event/</guid>
+      <description>事件处理基础 监听器 事件源, 可以注删监听器 事件发生, 事件源将事件发送给所有注删的监听器 监听器对象响应事件 简单的例子 1 2 3 4 5 6 7 8 9 10 11 12 13 14</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>IO Library - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="IO Classes header Type iostream istream, wistream, ostream, wostream, iostream, wiostream fstream ifstream, wifstream, ofstream, wofstream, fstream, wfstream sstream istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream 为了支持使用宽字符的语言, 库提供了 wchar_t, 操作宽字符的版本一般以 w 开头, 如 wcin, wcout, wcerr 相当于 cin, cout, cerr 不要" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/cpp_io/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="IO Library" />
+<meta property="og:description" content="IO Classes header Type iostream istream, wistream, ostream, wostream, iostream, wiostream fstream ifstream, wifstream, ofstream, wofstream, fstream, wfstream sstream istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream 为了支持使用宽字符的语言, 库提供了 wchar_t, 操作宽字符的版本一般以 w 开头, 如 wcin, wcout, wcerr 相当于 cin, cout, cerr 不要" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/cpp_io/" />
+<meta property="article:published_time" content="2020-05-19T14:26:00+08:00" />
+<meta property="article:modified_time" content="2020-05-19T14:26:00+08:00" />
+<meta itemprop="name" content="IO Library">
+<meta itemprop="description" content="IO Classes header Type iostream istream, wistream, ostream, wostream, iostream, wiostream fstream ifstream, wifstream, ofstream, wofstream, fstream, wfstream sstream istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream 为了支持使用宽字符的语言, 库提供了 wchar_t, 操作宽字符的版本一般以 w 开头, 如 wcin, wcout, wcerr 相当于 cin, cout, cerr 不要">
+<meta itemprop="datePublished" content="2020-05-19T14:26:00+08:00" />
+<meta itemprop="dateModified" content="2020-05-19T14:26:00+08:00" />
+<meta itemprop="wordCount" content="585">
+
+
+
+<meta itemprop="keywords" content="IO," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="IO Library"/>
+<meta name="twitter:description" content="IO Classes header Type iostream istream, wistream, ostream, wostream, iostream, wiostream fstream ifstream, wifstream, ofstream, wofstream, fstream, wfstream sstream istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream 为了支持使用宽字符的语言, 库提供了 wchar_t, 操作宽字符的版本一般以 w 开头, 如 wcin, wcout, wcerr 相当于 cin, cout, cerr 不要"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">IO Library</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-19 </span>
+        <div class="post-category">
+            <a href="/categories/cpp/"> CPP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#io-classes">IO Classes</a>
+          <ul>
+            <li><a href="#不要拷贝和赋值-io-对象">不要拷贝和赋值 IO 对象</a></li>
+            <li><a href="#状态">状态</a></li>
+            <li><a href="#输出缓冲区">输出缓冲区</a></li>
+          </ul>
+        </li>
+        <li><a href="#文件输入输出">文件输入输出</a>
+          <ul>
+            <li><a href="#文件模式">文件模式</a></li>
+          </ul>
+        </li>
+        <li><a href="#stringstream"><code>stringstream</code></a>
+          <ul>
+            <li><a href="#istringstream">istringstream</a></li>
+            <li><a href="#ostringstream">ostringstream</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="io-classes">IO Classes</h2>
+<table>
+<thead>
+<tr>
+<th>header</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iostream</td>
+<td>istream, wistream, ostream, wostream, iostream, wiostream</td>
+</tr>
+<tr>
+<td>fstream</td>
+<td>ifstream, wifstream, ofstream, wofstream, fstream, wfstream</td>
+</tr>
+<tr>
+<td>sstream</td>
+<td>istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream</td>
+</tr>
+</tbody>
+</table>
+<p>为了支持使用宽字符的语言, 库提供了 <code>wchar_t</code>, 操作宽字符的版本一般以 w 开头, 如 <code>wcin</code>, <code>wcout</code>, <code>wcerr</code> 相当于 <code>cin</code>, <code>cout</code>, <code>cerr</code></p>
+<h3 id="不要拷贝和赋值-io-对象">不要拷贝和赋值 IO 对象</h3>
+<p>不能对 IO 对象拷贝和赋值. IO 对象按引用传递, 读或写一个 IO 对象会改变其状态, 所以 IO 对象不能是 <code>const</code></p>
+<h3 id="状态">状态</h3>
+<p>Condition States</p>
+<table>
+<thead>
+<tr>
+<th>strm::iostate</th>
+<th>machine-dependent integral type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>strm::badbit</td>
+<td>strm::iostate 的值之一, 表示 stream 有错误</td>
+</tr>
+<tr>
+<td>strm::failbit</td>
+<td>表示 IO 操作失败</td>
+</tr>
+<tr>
+<td>strm::eofbit</td>
+<td>iostream 读到了 EOF(end-of-file)</td>
+</tr>
+<tr>
+<td>strm::goodbit</td>
+<td>正常, 值是 0</td>
+</tr>
+<tr>
+<td>s.eof()</td>
+<td>eofbit is set</td>
+</tr>
+<tr>
+<td>s.fail()</td>
+<td>failbit 或 badbit is set</td>
+</tr>
+<tr>
+<td>s.bad()</td>
+<td>badbit is set</td>
+</tr>
+<tr>
+<td>s.good()</td>
+<td>goodbit is set</td>
+</tr>
+<tr>
+<td>s.clear()</td>
+<td>重置 iostate 为 good</td>
+</tr>
+<tr>
+<td>s.clear(flags)</td>
+<td></td>
+</tr>
+<tr>
+<td>s.setstate(flags)</td>
+<td></td>
+</tr>
+<tr>
+<td>s.rdstate()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="输出缓冲区">输出缓冲区</h3>
+<p>每一个输出流都有一个缓冲区, 用来存储读写数据. 使用缓冲区可以让操作系统组合多个输出操作为一个系统级写出. 写到设置是很费时间的, 这样可以提高效率. 以下情况会立即将缓冲区写入目标</p>
+<ol>
+<li>程序结束. 主函数的 <code>return</code> 包括清空缓冲区</li>
+<li>缓冲区满</li>
+<li><code>unitbuf</code> is set. 默认时 <code>cerr</code> 的 <code>unitbuf</code> 置 1. 所以 <code>cerr</code> 会立即输出</li>
+<li>绑定了另外一个流, 会立即清空被绑定的流</li>
+</ol>
+<h4 id="清空缓冲区">清空缓冲区</h4>
+<p><code>cout &lt;&lt; flush;</code></p>
+<h4 id="unitbuf"><code>unitbuf</code></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">unitbuf</span><span class="p">;</span>
+<span class="c1">//... 输出立即清空缓冲区
+</span><span class="c1"></span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">nounitbuf</span><span class="p">;</span> <span class="c1">// 恢复
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="绑定输入输出">绑定输入输出</h4>
+<p>当输入流绑定输出流时, 任何从输入流的读入都会先清空输出流缓冲区</p>
+<h2 id="文件输入输出">文件输入输出</h2>
+<h3 id="文件模式">文件模式</h3>
+<ol>
+<li>in, 以读的方式打开</li>
+<li>out, 以写的方式打开</li>
+<li>app, 写之前跳转到文件尾</li>
+<li>ate, 打开后立即跳转到文件尾</li>
+<li>trunc, 截断文件, 即把文件长度设为 0</li>
+<li>binary, 二进制方式</li>
+</ol>
+<p>规则</p>
+<ul>
+<li>out 只能对 ofstream 和 fstream</li>
+<li>in 只能对 ifstream 和 fstream</li>
+<li>trunc 只能对设置了 out 的</li>
+<li>app 与 trunc 矛盾. 设置了 app 就自动设置了 out</li>
+<li>out 默认是 trunc 的</li>
+</ul>
+<h2 id="stringstream"><code>stringstream</code></h2>
+<h3 id="istringstream">istringstream</h3>
+<p>将 string 当作输入源.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;111 222 333 444 555&#34;</span><span class="p">;</span>
+    <span class="n">istringstream</span> <span class="n">record</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">num</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">record</span> <span class="o">&gt;&gt;</span> <span class="n">num</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">num</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="ostringstream">ostringstream</h3>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-19
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/io/">IO</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/cpp_algorithms/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">算法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/cpp_seq_container/">
+            <span class="next-text nav-default">顺序容器</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-05-19 14:26:00 \u002b0800 CST',
+        title: 'IO Library',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

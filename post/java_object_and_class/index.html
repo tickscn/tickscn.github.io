@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>对象与类 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="OOP 面向对象程序设计 类 类是构建对象的蓝图 对象 对象的主要特征 行为. 允许的操作, 类提供的方法 状态. 标识 用户自定义类 构造器 同 C&#43;&#43; 类似, 不过总是伴随 new 操" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_object_and_class/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="对象与类" />
+<meta property="og:description" content="OOP 面向对象程序设计 类 类是构建对象的蓝图 对象 对象的主要特征 行为. 允许的操作, 类提供的方法 状态. 标识 用户自定义类 构造器 同 C&#43;&#43; 类似, 不过总是伴随 new 操" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_object_and_class/" />
+<meta property="article:published_time" content="2020-03-07T21:45:00+08:00" />
+<meta property="article:modified_time" content="2020-03-07T21:45:00+08:00" />
+<meta itemprop="name" content="对象与类">
+<meta itemprop="description" content="OOP 面向对象程序设计 类 类是构建对象的蓝图 对象 对象的主要特征 行为. 允许的操作, 类提供的方法 状态. 标识 用户自定义类 构造器 同 C&#43;&#43; 类似, 不过总是伴随 new 操">
+<meta itemprop="datePublished" content="2020-03-07T21:45:00+08:00" />
+<meta itemprop="dateModified" content="2020-03-07T21:45:00+08:00" />
+<meta itemprop="wordCount" content="1128">
+
+
+
+<meta itemprop="keywords" content="class," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="对象与类"/>
+<meta name="twitter:description" content="OOP 面向对象程序设计 类 类是构建对象的蓝图 对象 对象的主要特征 行为. 允许的操作, 类提供的方法 状态. 标识 用户自定义类 构造器 同 C&#43;&#43; 类似, 不过总是伴随 new 操"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">对象与类</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-07 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#oop">OOP</a>
+          <ul>
+            <li><a href="#类">类</a></li>
+            <li><a href="#对象">对象</a></li>
+            <li><a href="#用户自定义类">用户自定义类</a></li>
+            <li><a href="#静态域和静态方法">静态域和静态方法</a></li>
+            <li><a href="#方法参数">方法参数</a></li>
+            <li><a href="#对象构造">对象构造</a></li>
+            <li><a href="#包">包</a></li>
+            <li><a href="#类路径">类路径</a></li>
+            <li><a href="#文档注释">文档注释</a></li>
+            <li><a href="#类设计技巧">类设计技巧</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="oop">OOP</h2>
+<p>面向对象程序设计</p>
+<h3 id="类">类</h3>
+<p>类是构建对象的蓝图</p>
+<h3 id="对象">对象</h3>
+<p>对象的主要特征</p>
+<ol>
+<li>行为. 允许的操作, 类提供的方法</li>
+<li>状态.</li>
+<li>标识</li>
+</ol>
+<h3 id="用户自定义类">用户自定义类</h3>
+<h4 id="构造器">构造器</h4>
+<p>同 C++ 类似, 不过总是伴随 <code>new</code> 操作符</p>
+<h4 id="隐式参数和显式参数">隐式参数和显式参数</h4>
+<ol>
+<li>隐式参数,是方法的调用者. <code>this</code></li>
+<li>显式参数是括号中明确的参数</li>
+</ol>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Java 中方法都定义在类中
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="final">final</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Java 中 =final= 建议修饰基本类型或不可变域的类
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="静态域和静态方法">静态域和静态方法</h3>
+<h4 id="静态域">静态域</h4>
+<p>被 <code>static</code> 修饰. 类的所有对象共享同一个域.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">静态域又称为类域
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="静态方法">静态方法</h4>
+<p>不能向对象实施操作的方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">可以使用对象调用静态方法, 不过建议使用类名来调用
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>不需要隐式参数</li>
+<li>只访问静态参数</li>
+</ol>
+<h4 id="工厂方法--factory-method">工厂方法(factory method)</h4>
+<p>是静态方法的另一用途. 以后会详细说明</p>
+<ol>
+<li>实例采用不同的构造名字, 构造器无法实现</li>
+<li>构造器无法改变构造对象类型</li>
+</ol>
+<h4 id="main-方法">main 方法</h4>
+<p>main 方法启动时没有具体的对象.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">不同的类可以有自己的 main 方法, 只需要在 Java 虚拟机启动时指定启动的类.
+可以用来进行测试
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="方法参数">方法参数</h3>
+<p>Java 总是采取按值调用</p>
+<ol>
+<li>不能修改基本类型参数</li>
+<li>可以改变对象参数的状态</li>
+<li>不能对象参数引用一个新的对象</li>
+</ol>
+<h3 id="对象构造">对象构造</h3>
+<h4 id="重载">重载</h4>
+<p>方法的签名包括方法名, 参数. 不包含返回值</p>
+<h4 id="默认域初始化">默认域初始化</h4>
+<p>与局部变量不同, 域的值会默认初始化, 数据类型是 0, boolean 是 false, 对象引用是 null</p>
+<h4 id="显式域初始化">显式域初始化</h4>
+<p>可以在类定义中将任何值赋值给域</p>
+<h4 id="调用另一个构造器">调用另一个构造器</h4>
+<p>通过 <code>this(...)</code> 调用另一个构造器</p>
+<h4 id="初始化块">初始化块</h4>
+<p>类的声明中可以包含多个代码块, 会在对象实例化的时候执行初始化静态类型的代码块可以用 <code>static</code> 标记</p>
+<h3 id="包">包</h3>
+<p>用来组织类, 类似于 <code>namespace</code></p>
+<h4 id="导入类">导入类</h4>
+<ol>
+<li>使用完整的包名</li>
+<li><code>import</code> . 使用一个 * 导入所有类. 明确导入的类有时可以提高可读性</li>
+</ol>
+<h4 id="静态导入">静态导入</h4>
+<p>import 不仅可以导入类, 也可以导入静态方法和静态域</p>
+<h4 id="将类放入包中">将类放入包中</h4>
+<ul>
+<li>在文件开头 package 包名</li>
+<li>将文件放入与包名相对应的目录中</li>
+</ul>
+<h4 id="包作用域">包作用域</h4>
+<ul>
+<li><code>public</code> 任意类都可使用</li>
+<li><code>private</code> 本类使用</li>
+<li>没有指定时可被同一个包的所有方法访问</li>
+</ul>
+<h3 id="类路径">类路径</h3>
+<p>类存储在子目录中. 路径需要与包名匹配</p>
+<ol>
+<li>把类放入一个目录中. 如 ~/classdir</li>
+<li>把 JAR 文件放入另一个目录中, 如 ~/javaarchives</li>
+<li>设置类路径
+<ul>
+<li>*unix 使用冒号分隔(~/classdir:.:~/javaarchives)</li>
+<li>Windows 使用分号分隔 (c:\classdir;.;c:\javaarchives)</li>
+</ul>
+</li>
+</ol>
+<h4 id="设置类路径">设置类路径</h4>
+<ol>
+<li>java 使用 -classpath 或者 -cp 指定类路径</li>
+<li>设置环境变量 CLASSPATH</li>
+</ol>
+<h3 id="文档注释">文档注释</h3>
+<p>以 /** 开始的注释可以被 javadoc 生成 html 文档</p>
+<h4 id="注释的插入">注释的插入</h4>
+<p>javadoc 从下面几个方面抽取文档</p>
+<ul>
+<li>包</li>
+<li>公有类与接口</li>
+<li>公有的和受保护的构造器与方法</li>
+<li>公有的和受保护的域</li>
+</ul>
+<h4 id="类注释">类注释</h4>
+<p>import 之后, 类之前</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * A {@code Student} object.
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span><span class="o">{</span>
+    <span class="c1">//...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="方法注释">方法注释</h4>
+<p>放在方法之前</p>
+<ul>
+<li>@param 参数描述</li>
+<li>@return 返回值描述</li>
+<li>@throws 异常描述</li>
+</ul>
+<h4 id="域注释">域注释</h4>
+<p>通常只需要对公有域进行注释</p>
+<h4 id="通用注释">通用注释</h4>
+<ol>
+<li>类文档
+<ul>
+<li>@author 作者</li>
+<li>@version 版本</li>
+</ul>
+</li>
+<li>所有文档
+<ul>
+<li>@since 始于&hellip;, 可以用来标记引入某个特性的版本</li>
+<li>@deprecated 对不在使用的类, 方法, 域提示</li>
+<li>@see 超链接
+@see package.class#label</li>
+</ul>
+</li>
+</ol>
+<h4 id="包注释">包注释</h4>
+<ol>
+<li>package.html 中 <body>&hellip;</body> 之间的文本</li>
+<li>package-info.java 包语句之后唯一的文档注释</li>
+</ol>
+<h3 id="类设计技巧">类设计技巧</h3>
+<ol>
+<li>数据私有</li>
+<li>初始化</li>
+<li>减少基本类型. 把相关的数据抽象为一个新的类</li>
+<li>按需实现访问器和修改器</li>
+<li>不要让一个类过于复杂</li>
+<li>类名和方法名应有意义, 最好从名子可以看出作用</li>
+<li>如果可以, 使用不可变类</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-03-07
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/class/">class</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java_inherit/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">继承</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_beging/">
+            <span class="next-text nav-default">java 开始</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-03-07 21:45:00 \u002b0800 CST',
+        title: '对象与类',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

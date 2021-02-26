@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>stream on ticks blog</title>
+    <link>https://tickscn.github.io/tags/stream/</link>
+    <description>Recent content in stream on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 18 Apr 2020 21:15:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/stream/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>流库</title>
+      <link>https://tickscn.github.io/post/java_stream/</link>
+      <pubDate>Sat, 18 Apr 2020 21:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_stream/</guid>
+      <description>通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String</description>
+    </item>
+    
+  </channel>
+</rss>

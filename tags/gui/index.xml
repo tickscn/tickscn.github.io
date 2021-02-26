@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gui on ticks blog</title>
+    <link>https://tickscn.github.io/tags/gui/</link>
+    <description>Recent content in gui on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 08 Apr 2020 22:59:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/gui/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>图形程序设计</title>
+      <link>https://tickscn.github.io/post/java_gui/</link>
+      <pubDate>Wed, 08 Apr 2020 22:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_gui/</guid>
+      <description>Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4</description>
+    </item>
+    
+  </channel>
+</rss>

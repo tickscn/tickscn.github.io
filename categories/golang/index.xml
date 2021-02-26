@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang on ticks blog</title>
+    <link>https://tickscn.github.io/categories/golang/</link>
+    <description>Recent content in golang on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 09 Nov 2020 19:21:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>接口(interfaces)和反射(reflection)</title>
+      <link>https://tickscn.github.io/post/go_interfaces_reflection/</link>
+      <pubDate>Mon, 09 Nov 2020 19:21:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_interfaces_reflection/</guid>
+      <description>接口介绍 Go 不是传统的面向对象的语言, 但是可以实现很多面向对象的特性. 其中接口是一种强大工具. 接口是一个方法定义的集合, 它不提供方法的实现代码</description>
+    </item>
+    
+    <item>
+      <title>结构(struct)与方法(method)</title>
+      <link>https://tickscn.github.io/post/go_struct_method/</link>
+      <pubDate>Sun, 08 Nov 2020 20:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_struct_method/</guid>
+      <description>以经知道可以使用 struct 来定义自定义的类型, 在 C 中也是有的 使用工厂方法创建结构体实例 结构体工厂 按惯例, Go 中工厂方法以 new 或 New 开头. 返回的是结构体实例</description>
+    </item>
+    
+    <item>
+      <title>包</title>
+      <link>https://tickscn.github.io/post/go_package/</link>
+      <pubDate>Sat, 07 Nov 2020 20:18:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_package/</guid>
+      <description>标准库 内置在 Go 中包含常用功能的包有 150 个以上, 学习一些简单的用途 unsafe: 一般用于 C/C++ 程序的调用中, 打破了 Go 的类型安全 syscall,os, os/exec: syscall: 提供操作系统低层调用的基本接</description>
+    </item>
+    
+    <item>
+      <title>函数</title>
+      <link>https://tickscn.github.io/post/go_func/</link>
+      <pubDate>Sat, 07 Nov 2020 00:57:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_func/</guid>
+      <description>Go 语言中有三种类型的函数, 具有名字的普通函数, 匿名函数或 lambda 函数, 方法. 除了 main 和 init 函数外其它函数都可以有参数和返回值. Go 中强制要求左大括号不换</description>
+    </item>
+    
+    <item>
+      <title>分支循环</title>
+      <link>https://tickscn.github.io/post/go_branch_loop/</link>
+      <pubDate>Fri, 06 Nov 2020 02:19:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_branch_loop/</guid>
+      <description>条件语句 if 单分支 1 2 3 if condition { /*condition 为 true 时执行*/ } 双分支 1 2 3 4 5 if condition { /*condition 为 true 时执行*/ } else { /*condition 为 false 时执行*/ } 多分支 1 2 3 4 5 6 7 if condition1 { } else if</description>
+    </item>
+    
+    <item>
+      <title>Go 基础数据类型</title>
+      <link>https://tickscn.github.io/post/go_basetype/</link>
+      <pubDate>Wed, 28 Oct 2020 15:21:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_basetype/</guid>
+      <description>Go 语言将数据类型分为四类: 基础类型 复合类型 引用类型 接口类型 整型 Go 语言提供了多种大小的有符号和无符号整型, 有符号整型包括 int8, int16, int32, int64, 前面加上 u 就可</description>
+    </item>
+    
+    <item>
+      <title>Go 程序结构</title>
+      <link>https://tickscn.github.io/post/go_program_struct/</link>
+      <pubDate>Tue, 27 Oct 2020 18:39:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/go_program_struct/</guid>
+      <description>命名 函数, 变量, 常量, 类型, 语名标号, 包名都以 Unicode 字母或下划线开头, 后面可以有任意数量的数字, 字母, 下划线. 命名区分大小写 一个名字在函数内部定</description>
+    </item>
+    
+  </channel>
+</rss>

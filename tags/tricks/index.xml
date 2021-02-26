@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tricks on ticks blog</title>
+    <link>https://tickscn.github.io/tags/tricks/</link>
+    <description>Recent content in tricks on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 24 Jun 2020 22:04:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/tricks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>专门工具和技巧</title>
+      <link>https://tickscn.github.io/post/cpp_extra_trick/</link>
+      <pubDate>Wed, 24 Jun 2020 22:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_trick/</guid>
+      <description>介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>file-system on ticks blog</title>
+    <link>https://tickscn.github.io/tags/file-system/</link>
+    <description>Recent content in file-system on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 28 Jul 2020 15:05:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/file-system/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>文件系统实现</title>
+      <link>https://tickscn.github.io/post/osc_file_system_imp/</link>
+      <pubDate>Tue, 28 Jul 2020 15:05:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/osc_file_system_imp/</guid>
+      <description>文件系统结构 为了提高 I/O 效率, 内存和磁盘之间以块(block)为单位传输. 每个块有一个或多个扇区. 根据驱动不同, 扇区大小从 32B 到 4096B 不等, 一个磁盘</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,42 @@
+digraph G {
+	rankdir=LR;
+	splines=line;
+	nodesep=.1;
+    subgraph cluster_0 {
+		color=white;
+		node [style=solid,color=green,shape=circle];
+			x1,x2;
+		node [style=filled, color=black, shape=point]
+			p1,p2,p3;
+		node [style=solid,color=green,shape=circle];
+	     	x3
+			label = "Input x";
+	}
+
+	subgraph cluster_1 {
+		color=white;
+		{
+		node [style=solid,color=blue, shape=circle, label="+"];
+			h11;
+		}
+			label = "sum";
+	}
+	subgraph cluster_2 {
+		color=white;
+		node [style=solid,color=red, shape=square, label="Step"];
+			s;
+			label="";
+	}
+	subgraph cluster_3 {
+		color=white;
+		node [style=invis,color=red, shape=circle];
+			o;
+			label="Output";
+	}
+
+        x1 -> h11
+		x2 -> h11
+		x3 -> h11
+		h11 -> s
+		s -> o [label="a"]
+}

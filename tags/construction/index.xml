@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Construction on ticks blog</title>
+    <link>https://tickscn.github.io/tags/construction/</link>
+    <description>Recent content in Construction on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 25 Jul 2020 16:35:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/construction/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>结构型模型</title>
+      <link>https://tickscn.github.io/post/design_construction/</link>
+      <pubDate>Sat, 25 Jul 2020 16:35:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/design_construction/</guid>
+      <description>结构型模型涉及到如何组合类和对象以获得更大的结构. 结构型类模式采用继承机制组合接口或实现. 结构型对象模型不是对接口和实现的组合, 而是对对象的</description>
+    </item>
+    
+  </channel>
+</rss>

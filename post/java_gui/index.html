@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>图形程序设计 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_gui/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="图形程序设计" />
+<meta property="og:description" content="Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_gui/" />
+<meta property="article:published_time" content="2020-04-08T22:59:00+08:00" />
+<meta property="article:modified_time" content="2020-04-08T22:59:00+08:00" />
+<meta itemprop="name" content="图形程序设计">
+<meta itemprop="description" content="Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4">
+<meta itemprop="datePublished" content="2020-04-08T22:59:00+08:00" />
+<meta itemprop="dateModified" content="2020-04-08T22:59:00+08:00" />
+<meta itemprop="wordCount" content="801">
+
+
+
+<meta itemprop="keywords" content="gui," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="图形程序设计"/>
+<meta name="twitter:description" content="Swing 古老的 AWT 使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多 Swing 设置不同的观感 创建框架 框架(frame) 顶层窗口 JFrame 1 Swing 中的组件以 J 开头 1 2 3 4"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">图形程序设计</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-08 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#swing">Swing</a>
+          <ul>
+            <li><a href="#古老的-awt">古老的 AWT</a></li>
+            <li><a href="#swing">Swing</a></li>
+          </ul>
+        </li>
+        <li><a href="#创建框架">创建框架</a></li>
+        <li><a href="#框架定位">框架定位</a>
+          <ul>
+            <li><a href="#框架属性">框架属性</a></li>
+            <li><a href="#确定合适的框架大小">确定合适的框架大小</a></li>
+          </ul>
+        </li>
+        <li><a href="#显示信息">显示信息</a></li>
+        <li><a href="#处理-2d-图形">处理 2D 图形</a></li>
+        <li><a href="#使用颜色">使用颜色</a></li>
+        <li><a href="#设置字体">设置字体</a>
+          <ul>
+            <li><a href="#获取可用字体名">获取可用字体名</a></li>
+            <li><a href="#五个逻辑字体">五个逻辑字体</a></li>
+            <li><a href="#创建-font-类">创建 Font 类</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="swing">Swing</h2>
+<h3 id="古老的-awt">古老的 AWT</h3>
+<p>使用相应平台界面元素. 显示不统一. 不同平台的 bug 很多</p>
+<h3 id="swing">Swing</h3>
+<p>设置不同的观感</p>
+<h2 id="创建框架">创建框架</h2>
+<p>框架(frame) 顶层窗口 JFrame</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Swing 中的组件以 J 开头
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.awt.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.swing.*</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">sun.awt.EventQueueItem</span><span class="o">;</span>
+<span class="kd">class</span> <span class="nc">SimpleFrame</span> <span class="kd">extends</span> <span class="n">JFrame</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_WIDTH</span> <span class="o">=</span> <span class="n">300</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_Height</span> <span class="o">=</span> <span class="n">200</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">SimpleFrame</span><span class="o">(){</span>
+        <span class="n">setSize</span><span class="o">(</span><span class="n">DEFAULT_WIDTH</span><span class="o">,</span> <span class="n">DEFAULT_Height</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span><span class="n">args</span><span class="o">){</span>
+        <span class="n">EventQueue</span><span class="o">.</span><span class="na">invokeLater</span><span class="o">(()-&gt;{</span>
+            <span class="n">SimpleFrame</span> <span class="n">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFrame</span><span class="o">();</span>
+            <span class="n">frame</span><span class="o">.</span><span class="na">setDefaultCloseOperation</span><span class="o">(</span><span class="n">JFrame</span><span class="o">.</span><span class="na">EXIT_ON_CLOSE</span><span class="o">);</span>
+            <span class="n">frame</span><span class="o">.</span><span class="na">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+            <span class="o">});</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>所有的 Swing 组件应由事件分派线程(event dispatch thread)进行配置</p>
+<h2 id="框架定位">框架定位</h2>
+<ul>
+<li>setLocation setBounds 设置位置</li>
+<li>setIconImage 设置图标</li>
+<li>setTitle 设置标题栏文字</li>
+<li>setResizable 是否允许用户改变大小</li>
+</ul>
+<p>setLocation(x,y) 设置位置, 左上角是(0,0)
+setBounds(x,y,width,height)设置位置和大小. setLocationByPlatform(true)让窗口系统控制窗口的位置</p>
+<h3 id="框架属性">框架属性</h3>
+<p>属性是获取/设置方法对. getXxx/setXxx, 返回值是 boolean 时获取用 is 而不是 get</p>
+<h3 id="确定合适的框架大小">确定合适的框架大小</h3>
+<h4 id="获取屏幕大小">获取屏幕大小</h4>
+<p>为了使组件大小合适, 需要根据屏幕分辩率设置组件大小. 调用 Toolkit 的静态类 getDefaultToolkit 得到一个 Toolkit 对象
+getScreenSize 可以返回一个 Dimension</p>
+<h2 id="显示信息">显示信息</h2>
+<p>JFrame 有四层面板. Swing 程序员最常操作的是内容面板(content pane), 下列代码可以将组件添加到内容窗格</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Container</span> <span class="n">contentPane</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="na">getContentPane</span><span class="o">();</span>
+<span class="n">Component</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">contentPane</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Java SE 1.4 之后的版本可以直接调用 frame.add()</p>
+<p>绘制组件需要扩展 JComponent 类并覆盖 paintComponent 方法</p>
+<h2 id="处理-2d-图形">处理 2D 图形</h2>
+<p>从 Java SE 2 开始 paintComponent 会自动获取 Graphics2D 对象, 只需要使用时进行类型转换</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">paintComponent</span><span class="o">(</span><span class="n">Graphics</span> <span class="n">g</span><span class="o">)</span>
+<span class="o">{</span>
+  <span class="n">Graphics2D</span> <span class="n">g2</span> <span class="o">=</span> <span class="o">(</span><span class="n">Graphics2D</span><span class="o">)</span> <span class="n">g</span><span class="o">;</span>
+  <span class="c1">//...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Graphics2D 包含描述直线, 矩形, 椭圆的类</p>
+<ul>
+<li>Line2D</li>
+<li>Rectangle2D</li>
+<li>Ellipse2D</li>
+</ul>
+<p>都实现了 Shape 接口.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">更多的图形以后再说
+</code></pre></td></tr></table>
+</div>
+</div><p>矩形和椭圆 4 个参数,分别为左上角坐标, 宽, 高如果知道的是对顶点的坐标. 需要先建立一个空矩形</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Rectangle2D</span> <span class="n">rect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Rectangle2D</span><span class="o">.</span><span class="na">Double</span><span class="o">();</span>
+<span class="n">rect</span><span class="o">.</span><span class="na">setFrameFromDiagonal</span><span class="o">(</span><span class="n">px</span><span class="o">,</span><span class="n">py</span><span class="o">,</span><span class="n">qx</span><span class="o">,</span><span class="n">qy</span><span class="o">);</span>
+<span class="c1">// 如果坐标以 Point2D 提供
+</span><span class="c1"></span><span class="n">rect</span><span class="o">.</span><span class="na">setFrameFromDiagonal</span><span class="o">(</span><span class="n">p</span><span class="o">,</span><span class="n">q</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>椭圆</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Ellipse2D</span> <span class="n">ellipse</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Ellipse2D</span><span class="o">.</span><span class="na">Doubel</span><span class="o">(</span><span class="n">CenterX</span><span class="o">-</span><span class="n">Width</span><span class="o">/</span><span class="n">2</span><span class="o">,</span> <span class="n">CenterY</span><span class="o">-</span><span class="n">Height</span><span class="o">/</span><span class="n">2</span><span class="o">,</span><span class="n">Width</span><span class="o">,</span><span class="n">Height</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用颜色">使用颜色</h2>
+<p>setPaint 后序操作的颜色
+Color 类用于定义颜色, java.awt.Color 中定义了 13 个常量</p>
+<ul>
+<li>BLACK 黑</li>
+<li>BLUE 蓝</li>
+<li>CYAN 青</li>
+<li>DARK_GRAY 黑灰</li>
+<li>GRAY 灰</li>
+<li>LIGHT_GRAY 亮灰</li>
+<li>MAGENTA 品红</li>
+<li>ORANGE 橙</li>
+<li>PINK 粉</li>
+<li>RED 红</li>
+<li>WHITE 白</li>
+<li>YELLOW 黄</li>
+</ul>
+<p>Color(r,g,b) 可以定义任意颜色</p>
+<h2 id="设置字体">设置字体</h2>
+<h3 id="获取可用字体名">获取可用字体名</h3>
+<p>GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontNames();</p>
+<h3 id="五个逻辑字体">五个逻辑字体</h3>
+<ul>
+<li>SansSerif 无衬线字体</li>
+<li>Serif 衬线字体</li>
+<li>Monospaced 等宽字体</li>
+<li>Dialog 消息字体</li>
+<li>DialogInput</li>
+</ul>
+<h3 id="创建-font-类">创建 Font 类</h3>
+<ul>
+<li>名</li>
+<li>风格</li>
+<li>大小</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Font serifBold14 = new Font(&#34;Serif&#34;, Font.Bold, 14);
+</code></pre></td></tr></table>
+</div>
+</div><p>也可读取 TrueType 和 PostScript Type I 格式字体, 要要字体输入流. 调用 Font.creatFont</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&#34;xxx&#34;</span><span class="o">);</span>
+<span class="n">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="na">openStream</span><span class="o">();</span>
+<span class="n">Font</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">Font</span><span class="o">.</span><span class="na">creatFont</span><span class="o">(</span><span class="n">Font</span><span class="o">.</span><span class="na">TRUETYPE_FONT</span><span class="o">,</span><span class="n">in</span><span class="o">);</span>
+<span class="n">Font</span> <span class="n">f</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="na">deriveFont</span><span class="o">(</span><span class="n">14</span><span class="o">.</span><span class="na">0F</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-08
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/gui/">gui</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java_event/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">事件处理</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_collection/">
+            <span class="next-text nav-default">集合</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-04-08 22:59:00 \u002b0800 CST',
+        title: '图形程序设计',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

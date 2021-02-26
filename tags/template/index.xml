@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>template on ticks blog</title>
+    <link>https://tickscn.github.io/tags/template/</link>
+    <description>Recent content in template on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 02 Jul 2020 09:16:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/template/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>模板编程</title>
+      <link>https://tickscn.github.io/post/cpp_templates/</link>
+      <pubDate>Thu, 02 Jul 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_templates/</guid>
+      <description>定义一个模板 函数模板 函数模板是生成特定类型函数的蓝图. 由关键字 template 后跟模板参数列表(template parameter list), 参数至少有一个 1 2 3 4 5 6 7 template &amp;lt;typename T&amp;gt; int compare(const</description>
+    </item>
+    
+  </channel>
+</rss>

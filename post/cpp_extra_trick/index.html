@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>专门工具和技巧 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/cpp_extra_trick/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="专门工具和技巧" />
+<meta property="og:description" content="介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/cpp_extra_trick/" />
+<meta property="article:published_time" content="2020-06-24T22:04:00+08:00" />
+<meta property="article:modified_time" content="2020-06-24T22:04:00+08:00" />
+<meta itemprop="name" content="专门工具和技巧">
+<meta itemprop="description" content="介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器">
+<meta itemprop="datePublished" content="2020-06-24T22:04:00+08:00" />
+<meta itemprop="dateModified" content="2020-06-24T22:04:00+08:00" />
+<meta itemprop="wordCount" content="4221">
+
+
+
+<meta itemprop="keywords" content="tools,tricks," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="专门工具和技巧"/>
+<meta name="twitter:description" content="介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">专门工具和技巧</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-24 </span>
+        <div class="post-category">
+            <a href="/categories/cpp/"> CPP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#控制内存分配">控制内存分配</a>
+          <ul>
+            <li><a href="#重载-new-和-delete">重载 <code>new</code> 和 <code>delete</code></a></li>
+            <li><a href="#原位-new-表达式">原位 new 表达式</a></li>
+          </ul>
+        </li>
+        <li><a href="#运行时类型识别--rtti-run-time-type-identification">运行时类型识别(RTTI, Run-Time Type Identification)</a>
+          <ul>
+            <li><a href="#dynamic-cast">dynamic_cast</a></li>
+            <li><a href="#typeid">typeid</a></li>
+            <li><a href="#使用-rtti">使用 RTTI</a></li>
+            <li><a href="#type-info-类">type_info 类</a></li>
+          </ul>
+        </li>
+        <li><a href="#枚举--enumerations">枚举(Enumerations)</a>
+          <ul>
+            <li><a href="#枚举元素--enumerator">枚举元素(enumerator)</a></li>
+          </ul>
+        </li>
+        <li><a href="#成员指针--pointer-to-member">成员指针(pointer to member)</a>
+          <ul>
+            <li><a href="#数据成员指针">数据成员指针</a></li>
+            <li><a href="#成员函数指针">成员函数指针</a></li>
+            <li><a href="#把成员函数作为可调用对象">把成员函数作为可调用对象</a></li>
+          </ul>
+        </li>
+        <li><a href="#嵌套类--内部类">嵌套类(内部类)</a></li>
+        <li><a href="#联合体--union">联合体(union)</a>
+          <ul>
+            <li><a href="#匿名-union">匿名 union</a></li>
+            <li><a href="#包念类类型的-union">包念类类型的 union</a></li>
+          </ul>
+        </li>
+        <li><a href="#本地类--local-class">本地类(local class)</a></li>
+        <li><a href="#固有的可迁移特性">固有的可迁移特性</a>
+          <ul>
+            <li><a href="#位域--bit-fields">位域(Bit-fields)</a></li>
+            <li><a href="#volatile-修饰符">volatile 修饰符</a></li>
+            <li><a href="#链接指令-extern-c">链接指令: extern &ldquo;C&rdquo;</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>介绍一些只有部分应用需要使用的特性</p>
+<h2 id="控制内存分配">控制内存分配</h2>
+<h3 id="重载-new-和-delete">重载 <code>new</code> 和 <code>delete</code></h3>
+<p>当我们使用 <code>new</code> 表达式时, 主要有三步</p>
+<ol>
+<li>调用库函数 <code>operator new</code> 或 <code>operator new[]</code>, 分配足够大的没有特化的内存</li>
+<li>编译器调用相关的构造器构造相关对象</li>
+<li>返回指向新分配且已构造的的内存的指针</li>
+</ol>
+<p>使用 <code>delete</code> 有两步</p>
+<ol>
+<li>调用析构函数</li>
+<li>使用库函数 <code>operator delete</code> 或 <code>operator delete[]</code> 释放内存</li>
+</ol>
+<p>当我们定义自己的 <code>operator new</code> 和 <code>operator delete</code>, 编译器不会提出重复定义而是使用我们自定义的函数</p>
+<h4 id="operator-new-和-operator-delete-接口">operator new 和 operator delete 接口</h4>
+<p>8 个库重载的 new 和 delete</p>
+<ul>
+<li>void* operator new(size_t);                // can throw a bad_alloc exception</li>
+<li>void* operator delete(void*) noexcept;</li>
+<li>void* operator new<a href="size_t"></a>;              // can throw a bad_alloc exception</li>
+<li>void* operator delete<a href="void*"></a> noexcept;</li>
+</ul>
+<p>不会抛出异常</p>
+<ul>
+<li>void* operator new(size_t, nothrow_t&amp;);</li>
+<li>void* operator delete(void*, nothrow_t&amp;) noexcept;</li>
+<li>void* operator new[](size_t, nothrow_t&amp;);</li>
+<li>void* operator delete[](void*, nothrow_t&amp;) noexcept;</li>
+</ul>
+<p>库中定义了一个常量 nothrow 可以传递给 new 来表示使用不抛出异常的版本. 用户可以在全局空间或类域中定义自己的 new 和 delete 操作符. 定义在类域中的隐式声明为 static, operator new 和 operator new[] 必须返回 void*. 第一个参数应是 size_t, 并且不应该有默认值. 我们通常可以定义我们需要的参数, 不过我们 <strong>不应该</strong> 定义下面的这个</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span><span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">size_t</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个函数己经被库函数重定义过了, 用户不应该再重定义自己的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">C++ 没有载 new 和 delete 表达式与 operator new 和 operator delete. 我们不能修改 new 和 delete 表达式的行为
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="malloc-和-free">malloc 和 free</h4>
+<p>实现自己的 operator new 和 operator delete 后, 测试一下是否可以向通常实现一样正常式作是很有用的. 为此需要了解两个函数. 继承于 C 语言的 <code>malloc</code> 和 <code>free</code>. 定义在头文件 cstdlib. 一个简单的 operator new 和 operator delete 实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span><span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">mem</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">mem</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">throw</span> <span class="n">bad_alloc</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="o">*</span> <span class="k">operator</span> <span class="nf">delete</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">mem</span><span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">mem</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="原位-new-表达式">原位 new 表达式</h3>
+<p>虽然 operator new 和 operator delete 计划是让 new 和 delete 表达式调用, 可是它们是库中的普通函数, 当然也可以普通的调用. 在 alloctor 不是库中一员的实候, 类可使用 operator new 和 operator delete 来控制内存. 只是这两个函数没有构造功能. 可以使用原位 new 来构造</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">new</span> <span class="p">(</span><span class="n">place_address</span><span class="p">)</span> <span class="n">type</span><span class="p">;</span>
+<span class="k">new</span> <span class="p">(</span><span class="n">place_address</span><span class="p">)</span> <span class="n">type</span><span class="p">(</span><span class="n">initializers</span><span class="p">);</span>
+<span class="k">new</span> <span class="p">(</span><span class="n">place_address</span><span class="p">)</span> <span class="n">type</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+<span class="k">new</span> <span class="p">(</span><span class="n">place_address</span><span class="p">)</span> <span class="n">type</span><span class="p">[</span><span class="n">size</span><span class="p">]{</span><span class="n">initializer</span> <span class="n">list</span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>传递给原位 new 的指针不必指向相应的 new 分配的内存, 甚至可以不是动态分配的内存</p>
+<h4 id="显式调用析构器">显式调用析构器</h4>
+<p>显式调用析构器只会销毁对象, 不会释放对象本身的内存</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">string</span><span class="o">*</span> <span class="n">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&#34;a new string&#34;</span><span class="p">);</span>
+<span class="n">sp</span><span class="o">-&gt;~</span><span class="n">string</span><span class="p">();</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="运行时类型识别--rtti-run-time-type-identification">运行时类型识别(RTTI, Run-Time Type Identification)</h2>
+<p>通过两个操作符</p>
+<ul>
+<li>typeid : 返回类型信息</li>
+<li>dynamic_cast: 安全的将基类指针或引用转为衍生类的指针或引用. 当使用一个有虚函数的指针或引用时, 使用对象的动态类型.
+通常来说使用虚函数可能是更好的远择.</li>
+</ul>
+<h3 id="dynamic-cast">dynamic_cast</h3>
+<ul>
+<li>dynamic_cast&lt;type*&gt;(e) // 失败返回 0</li>
+<li>dynamic_cast&lt;type&amp;&gt;(e) // 失败抛出 bad_cast, 下同</li>
+<li>dynamic_cast&lt;type&amp;&amp;&gt;(e)</li>
+</ul>
+<p>最好在分支语句的条件语句处使用, 可以判断转换是否成功</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">if</span> <span class="p">(</span><span class="n">Derived</span><span class="o">*</span> <span class="n">dp</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">bp</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="c1">// use dp
+</span><span class="c1"></span><span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+    <span class="c1">// use bp
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">可以对 nullptr 进行 dynamic_cast , 返回特定类型的空指针
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">Derived</span><span class="o">&amp;</span> <span class="n">d</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+        <span class="c1">// use d
+</span><span class="c1"></span>    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">bad_cast</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="练习">练习</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.3</p>
+<figure>
+    <img src="ltximg/19.3.png"/> 
+</figure>
+
+ <!--list-separator-->
+<ul>
+<li>(a) 可以</li>
+</ul>
+ <!--list-separator-->
+<ul>
+<li>(b) 失败</li>
+</ul>
+ <!--list-separator-->
+<ul>
+<li>(c) 失败</li>
+</ul>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.4</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">try</span>
+<span class="p">{</span>
+    <span class="n">C</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">C</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">pa</span><span class="p">);</span>
+    <span class="c1">// use c
+</span><span class="c1"></span><span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="n">bad_cast</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.5</p>
+<p>基类不是抽象类, 但也不应该实现某个函数</p>
+</li>
+</ul>
+<h3 id="typeid">typeid</h3>
+<p>typeid(e), e 可以是任何表达式, 也可以是类型名. 返回值是一个 type_info 对象或其衍生类对象的常量引用. type_info 定义在头文件 typeinfo 中.</p>
+<p>typeid 会和其它操作一样忽略顶级 const, 如果表达式是引用, 返回引用的对象的类型. 不会把数组自动转为指针, 可以正确输出数组类型. 如果表达式是定义了虚函数的类或其对象, typeid 会在运行时运算</p>
+<h4 id="使用-typeid">使用 typeid</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Derived</span><span class="o">*</span> <span class="n">dp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">;</span>
+<span class="n">Base</span><span class="o">*</span> <span class="n">bp</span>    <span class="o">=</span> <span class="n">dp</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">typeid</span><span class="p">(</span><span class="o">*</span><span class="n">dp</span><span class="p">)</span> <span class="o">==</span> <span class="k">typeid</span><span class="p">(</span><span class="o">*</span><span class="n">bp</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="c1">// xxx
+</span><span class="c1"></span><span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">typeid</span><span class="p">(</span><span class="o">*</span><span class="n">bp</span><span class="p">)</span> <span class="o">==</span> <span class="k">typeid</span><span class="p">(</span><span class="n">Derived</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="c1">// xxx
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如果 p 是空指针, typeid(*p) 抛出 bad_typeid 异常</p>
+<h3 id="使用-rtti">使用 RTTI</h3>
+<p>使用 == 来举例</p>
+<h4 id="类层次">类层次</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+    <span class="n">firend</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span><span class="p">);</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// interface
+</span><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">equal</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// other interface
+</span><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+    <span class="kt">bool</span> <span class="n">equal</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="类型敏感的">类型敏感的 ==</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nf">typeid</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="o">==</span> <span class="k">typeid</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">lhs</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rhs</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="virtual-equal">virtual equal</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">bool</span> <span class="n">Derived</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// 已经检测过类型
+</span><span class="c1"></span>    <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">Derived</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">rhs</span><span class="p">);</span>
+    <span class="c1">// 判断
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="基类-equal">基类 equal</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">bool</span> <span class="n">Base</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// 不需要转类型, 直接判断
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="type-info-类">type_info 类</h3>
+<p>不同编译器的具体实现可能不同, 标准的要求有</p>
+<ul>
+<li>定义的头文件是 typeinfo</li>
+<li>必须支持以下操作</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>t1 == t2</td>
+<td>如果 t1 和 t2 表示相同类型</td>
+</tr>
+<tr>
+<td>t1 != t2</td>
+<td>返回的值与 !(t1==t2) 相同</td>
+</tr>
+<tr>
+<td>t.name()</td>
+<td>返回类型的可打印名称(是一个 C 类型的字符串)</td>
+</tr>
+<tr>
+<td>t1.before(t2)</td>
+<td>t1 比 t2 早的意思是编译时的依赖关系</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>虚析构函数, 可以被衍生</li>
+</ul>
+<p>typeid 没有默认构造函数, 拷贝, 移动, 赋值被定义为 <code>deleted</code>. 唯一获得 type_info 类的方法是 typeid 操作符</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;bits/stdc++.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">b</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">ll</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">f</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">d</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">ui</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ivec</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;bool typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">b</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;char typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">c</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;int typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">i</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;long long typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">ll</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;float typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">f</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;double typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">d</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;string typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">s</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;unsigned typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">ui</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;vector&lt;int&gt; typeid name:&#34;</span> <span class="o">&lt;&lt;</span> <span class="k">typeid</span><span class="p">(</span><span class="n">ivec</span><span class="p">).</span><span class="n">name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">bool typeid name:b
+char typeid name:c
+int typeid name:i
+long long typeid name:x
+float typeid name:f
+double typeid name:d
+string typeid name:NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+unsigned typeid name:j
+vector&lt;int&gt; typeid name:St6vectorIiSaIiEE
+</code></pre></td></tr></table>
+</div>
+</div><p>binutils 包里有一个 c++filt 可以将这些名字转为易于理解的名字</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">c++filt -t St6vectorIiSaIiEE
+std::vector&lt;int, std::allocator&lt;int&gt; &gt;
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="枚举--enumerations">枚举(Enumerations)</h2>
+<p>枚举可以把整型常量集成一组, 每个枚举定义了一个新的类型. C++ 有两类枚举: 域化枚举, 非域化枚举. 可以使用关键字 <code>enum class/struct</code> 定义域化枚举.
+单独使用 <code>enum</code> 定义非域化枚举, 非域化枚举的类型名是可选的. 不过匿名枚举对象只能在枚举类型定义时同时定义</p>
+<h3 id="枚举元素--enumerator">枚举元素(enumerator)</h3>
+<p>域化枚举类型的枚举元素的名字遵循通用的域规则.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">enum</span> <span class="nc">color</span> <span class="p">{</span> <span class="n">red</span><span class="p">,</span> <span class="n">yellow</span><span class="p">,</span> <span class="n">green</span> <span class="p">};</span>
+<span class="k">enum</span> <span class="nc">stoplight</span> <span class="p">{</span> <span class="n">red</span><span class="p">,</span> <span class="n">yellow</span><span class="p">,</span> <span class="n">green</span> <span class="p">};</span>      <span class="c1">// error, 重复定义
+</span><span class="c1"></span><span class="k">enum</span> <span class="k">class</span> <span class="nc">peppers</span> <span class="p">{</span> <span class="n">red</span><span class="p">,</span> <span class="n">yellow</span><span class="p">,</span> <span class="n">green</span> <span class="p">};</span>  <span class="c1">// OK
+</span><span class="c1"></span><span class="n">color</span> <span class="n">eyes</span> <span class="o">=</span> <span class="n">green</span><span class="p">;</span>                         <span class="c1">// OK
+</span><span class="c1"></span><span class="n">peppers</span> <span class="n">p</span>  <span class="o">=</span> <span class="n">green</span><span class="p">;</span>                         <span class="c1">// error
+</span><span class="c1"></span><span class="n">color</span> <span class="n">hair</span> <span class="o">=</span> <span class="n">color</span><span class="o">::</span><span class="n">red</span><span class="p">;</span>                    <span class="c1">// OK 非域化的枚举也可以显式使用域操作符
+</span><span class="c1"></span><span class="n">peppers</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">peppers</span><span class="o">::</span><span class="n">red</span><span class="p">;</span>                  <span class="c1">// OK
+</span></code></pre></td></tr></table>
+</div>
+</div><p>默认时, 枚举元素的值从 0 开始, 后面的比前面的大 1. 当然也可以特别初始化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">enum</span> <span class="k">class</span> <span class="nc">intTypes</span> <span class="p">{</span> <span class="n">charTyp</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">shortTyp</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">intTyp</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span> <span class="n">longTyp</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">long_longTyp</span> <span class="o">=</span> <span class="mi">64</span> <span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如上枚举元素的值并不要求唯一(longTyp 和 long_longTyp 有相同的值)</p>
+<h4 id="指定枚举无素大小">指定枚举无素大小</h4>
+<p>默认时使用 int. 可以特别提定</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">enum</span> <span class="k">class</span> <span class="nc">Tricolor</span> <span class="o">:</span> <span class="kt">char</span> <span class="p">{</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span> <span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="前置声明">前置声明</h4>
+<p>可以不使用{&hellip;}定义, 只是声明一个枚举类型. 前置声明时必须指定类型大小(域化枚举可以隐式声明为 int 大小)</p>
+<h4 id="参数匹配">参数匹配</h4>
+<p>因为一个枚举对象只能被同类型的对象或该枚举类型元素赋值. 枚举参数无法匹配整数类型. 不过反过来, 整型参数可以匹配 <strong>非域化</strong> 枚举类对象或其枚举元素</p>
+<h2 id="成员指针--pointer-to-member">成员指针(pointer to member)</h2>
+<p>成员指针是指指向类的非静态成员的指针(静态变量不属于任何一个对象, 指向它的指针是普通指针).</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Screen</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="nf">get_cursor</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">contents</span><span class="p">[</span><span class="n">cursor</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="nf">get</span><span class="p">(</span><span class="n">pos</span> <span class="n">ht</span><span class="p">,</span> <span class="n">pos</span> <span class="n">wt</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">contents</span><span class="p">;</span>
+    <span class="n">pos</span> <span class="n">cursor</span><span class="p">;</span>
+    <span class="n">pos</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="数据成员指针">数据成员指针</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">const</span> <span class="n">string</span> <span class="n">Screen</span><span class="o">::*</span><span class="n">pdata</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>用来声明指针的 <code>*</code> 号位于类域::之后.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">pdata</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">contents</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>pdata 不是指向某一个具体对象的 contents, 而是类 Screen 的成员. 新标准可以使用 auto 或 decltype 来简化声明</p>
+<h4 id="使用数据成员指针">使用数据成员指针</h4>
+<p>需要理解当初始化或被赋值的成员指针并没有指向任何数据. 与普通成员的访问符 <code>.</code> , <code>-&gt;</code> 不同, 成员指针使用 <code>.*</code> <code>-&gt;*</code>, 来给成员指针提供一个对象</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Screen</span> <span class="n">myScreen</span><span class="p">,</span> <span class="o">*</span><span class="n">pScreen</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">myScreen</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">s</span> <span class="o">=</span> <span class="n">myScreen</span><span class="p">.</span><span class="o">*</span><span class="n">pdata</span><span class="p">;</span>
+<span class="n">s</span>      <span class="o">=</span> <span class="n">pScreen</span><span class="o">-&gt;*</span><span class="n">pdata</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="返回数据成员指针的函数">返回数据成员指针的函数</h4>
+<p>访问控制符对成员指针任然适用, contents 是 private, 所以使用上面定义的 pdata 必须在可以访问 contents 的域中(成员或友元内部)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Screen</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">Screen</span><span class="o">::*</span><span class="n">data</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">contents</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="练习">练习</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.11</p>
+<p>普通指针指向确切的地址. 而成员指针指向类的成员, 使用时需要绑定到确切的类对象.</p>
+</li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.12</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">auto</span> <span class="n">pCursor</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">cursor</span><span class="p">;</span>
+
+<span class="n">Screen</span> <span class="n">myScreen</span><span class="p">,</span> <span class="o">*</span><span class="n">pScreen</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">myScreen</span><span class="p">;</span>
+
+<span class="kt">char</span> <span class="n">c</span>  <span class="o">=</span> <span class="n">myScreen</span><span class="p">.</span><span class="o">*</span><span class="n">pCursor</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">ch</span> <span class="o">=</span> <span class="n">pScreen</span><span class="o">-&gt;*</span><span class="n">pCursor</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.13</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">const</span> <span class="n">string</span> <span class="n">Sales_data</span><span class="o">::*</span><span class="n">pNo</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Scales_data</span><span class="o">::</span><span class="n">bookNo</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="成员函数指针">成员函数指针</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">auto</span> <span class="n">pmf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">get_cursor</span><span class="p">;</span>  <span class="c1">// &amp; 不能省略
+</span><span class="c1">// 具体
+</span><span class="c1"></span>
+<span class="kt">char</span> <span class="p">(</span><span class="n">Screen</span><span class="o">::*</span><span class="n">pmf2</span><span class="p">)(</span><span class="n">Screen</span><span class="o">::</span><span class="n">pos</span><span class="p">,</span> <span class="n">Screen</span><span class="o">::</span><span class="n">pos</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="n">pmf2</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">get</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">char</span> <span class="n">c</span>  <span class="o">=</span> <span class="p">(</span><span class="n">myScreen</span><span class="p">.</span><span class="o">*</span><span class="n">pmf</span><span class="p">)();</span>
+<span class="kt">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="n">pScreen</span><span class="o">-&gt;*</span><span class="n">pmf2</span><span class="p">)(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="类型别名">类型别名</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">using</span> <span class="n">Action</span> <span class="o">=</span> <span class="kt">char</span> <span class="p">(</span><span class="n">Screen</span><span class="o">::*</span><span class="p">)(</span><span class="n">Screen</span><span class="o">::</span><span class="n">pos</span><span class="p">,</span> <span class="n">Screen</span><span class="o">::</span><span class="n">pos</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="成员函数指针表">成员函数指针表</h4>
+<p>成员函数指针可以用来存储相同类型的成员函数到一个表中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Screen</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="k">public</span><span class="o">:</span>
+    <span class="k">using</span> <span class="n">Action</span> <span class="o">=</span> <span class="n">Screen</span><span class="o">&amp;</span> <span class="p">(</span><span class="n">Screen</span><span class="o">::*</span><span class="p">)();</span>
+    <span class="k">enum</span> <span class="nc">Directions</span> <span class="p">{</span> <span class="n">home</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">back</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">down</span> <span class="p">};</span>
+    <span class="n">Screen</span><span class="o">&amp;</span> <span class="n">home</span><span class="p">();</span>
+    <span class="n">Screen</span><span class="o">&amp;</span> <span class="n">forward</span><span class="p">();</span>
+    <span class="n">Screen</span><span class="o">&amp;</span> <span class="n">back</span><span class="p">();</span>
+    <span class="n">Screen</span><span class="o">&amp;</span> <span class="n">up</span><span class="p">();</span>
+    <span class="n">Screen</span><span class="o">&amp;</span> <span class="n">down</span><span class="p">();</span>
+    <span class="n">Screen</span><span class="o">&amp;</span> <span class="n">move</span><span class="p">(</span><span class="n">Directions</span><span class="p">);</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">static</span> <span class="n">Action</span> <span class="n">Menu</span><span class="p">[];</span>
+<span class="p">};</span>
+
+<span class="n">Screen</span><span class="o">&amp;</span> <span class="n">Screen</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">Directions</span> <span class="n">cm</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">Menu</span><span class="p">[</span><span class="n">cm</span><span class="p">])();</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="练习">练习</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.14</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">auto</span> <span class="n">pmf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">get_cursor</span><span class="p">;</span>  <span class="c1">// 合法, pmf 指向get_cursor成员
+</span><span class="c1"></span><span class="n">pmf</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="n">Screen</span><span class="o">::</span><span class="n">get</span><span class="p">;</span>         <span class="c1">// 合法, 指向无参 get版本
+</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="把成员函数作为可调用对象">把成员函数作为可调用对象</h3>
+<p>成员函数指针不是一个可调用对象</p>
+<h4 id="使用-function-生成可调用对象">使用 function 生成可调用对象</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span> <span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">fcn</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">string</span><span class="o">::</span><span class="n">empty</span><span class="p">;</span>
+<span class="n">find_if</span><span class="p">(</span><span class="n">svec</span><span class="p">.</span><span class="n">beign</span><span class="p">(),</span> <span class="n">svec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">fcn</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="使用-mem-fn">使用 mem_fn</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">find_if</span><span class="p">(</span><span class="n">svec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">svec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">mem_fn</span><span class="p">(</span><span class="o">&amp;</span><span class="n">string</span><span class="o">::</span><span class="n">empty</span><span class="p">));</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="使用-bind">使用 bind</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">string</span><span class="o">::</span><span class="n">empty</span><span class="p">,</span> <span class="n">_1</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="练习">练习</h4>
+<!--list-separator-->
+<ul>
+<li>
+<p>19.18</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">countEmpty</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">svec</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">count_if</span><span class="p">(</span><span class="n">svec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">svec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">mem_fn</span><span class="p">(</span><span class="o">&amp;</span><span class="n">string</span><span class="o">::</span><span class="n">empty</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="嵌套类--内部类">嵌套类(内部类)</h2>
+<p>定义在类内的另一个类. 这两个类相对独立</p>
+<h2 id="联合体--union">联合体(union)</h2>
+<p>union 的成员不能是引用, 但可以是其它类型几乎都可以, 新标准不允许了有构造器和析构器的类</p>
+<h3 id="匿名-union">匿名 union</h3>
+<p>编译器会自动生成一个匿名 union 对象</p>
+<h3 id="包念类类型的-union">包念类类型的 union</h3>
+<p>包含类的 union 在转换为类数据类型时, 需要调用构造函数, 转走时需要调用析构函数. union 会将类成员的构造和拷贝控制函数定义为 deleted.</p>
+<h4 id="使用类来管理-union-成员">使用类来管理 union 成员</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Token</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">enum</span> <span class="p">{</span> <span class="n">INT</span><span class="p">,</span> <span class="n">CHAR</span><span class="p">,</span> <span class="n">DBL</span><span class="p">,</span> <span class="n">STR</span> <span class="p">}</span> <span class="n">tok</span><span class="p">;</span>
+    <span class="k">union</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">cval</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">ival</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">dval</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">sval</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="kt">void</span> <span class="nf">copyUnion</span><span class="p">(</span><span class="k">const</span> <span class="n">Token</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tok</span><span class="p">)</span>
+        <span class="p">{</span>
+        <span class="k">case</span> <span class="nl">INT</span><span class="p">:</span> <span class="n">ival</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">ival</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">CHAR</span><span class="p">:</span> <span class="n">cval</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">cval</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">DBL</span><span class="p">:</span> <span class="n">dval</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">dval</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">STR</span><span class="p">:</span> <span class="k">new</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">sval</span><span class="p">)</span> <span class="n">string</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">sval</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Token</span><span class="p">()</span> <span class="o">:</span> <span class="n">tok</span><span class="p">(</span><span class="n">INT</span><span class="p">),</span> <span class="n">ival</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">Token</span><span class="p">(</span><span class="k">const</span> <span class="n">Token</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span> <span class="o">:</span> <span class="n">tok</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tok</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">copyUnion</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Token</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">Token</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tok</span> <span class="o">==</span> <span class="n">STR</span><span class="p">)</span> <span class="n">sval</span><span class="p">.</span><span class="o">~</span><span class="n">string</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="n">Token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tok</span> <span class="o">==</span> <span class="n">STR</span><span class="p">)</span>
+            <span class="n">sval</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">new</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">sval</span><span class="p">)</span> <span class="n">string</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+            <span class="n">tok</span> <span class="o">=</span> <span class="n">STR</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tok</span> <span class="o">==</span> <span class="n">STR</span><span class="p">)</span> <span class="n">sval</span><span class="p">.</span><span class="o">~</span><span class="n">string</span><span class="p">();</span>
+        <span class="n">cval</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+        <span class="n">tok</span>  <span class="o">=</span> <span class="n">CHAR</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+    <span class="n">Token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="kt">double</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="本地类--local-class">本地类(local class)</h2>
+<p>定义在函数体中的类. 其包括函数在内的成员必须在类中完成定义. 并且不被允许定义静态数据成员</p>
+<ul>
+<li>不能使用函数中的成员</li>
+<li>函数不能直接访问其本地类的私有成员, 除非被设为友元</li>
+</ul>
+<h2 id="固有的可迁移特性">固有的可迁移特性</h2>
+<p>可迁移特性是机器特化的, 使用了这些特性的程序在从一种机器迁移到另一种机器时需要重新编写, 比如说内建的数学类型.</p>
+<h3 id="位域--bit-fields">位域(Bit-fields)</h3>
+<p>一个类可以定义非静态的位域, 一个类域保存了一个指定位数的数字. 经常用来将二进制数据传递给另一个程序或是一个设备</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">位域的内存布局是依赖于具体的机器的
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Bit</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">File</span> <span class="p">{</span>
+    <span class="n">Bit</span> <span class="nl">mode</span> <span class="p">:</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">Bit</span> <span class="nl">modified</span> <span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">Bit</span> <span class="nl">prot_owner</span> <span class="p">:</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">Bit</span> <span class="nl">prot_group</span> <span class="p">:</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">Bit</span> <span class="nl">prot_world</span> <span class="p">:</span> <span class="mi">3</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">enum</span> <span class="nc">modes</span> <span class="p">{</span> <span class="n">READ</span> <span class="o">=</span> <span class="mo">01</span><span class="p">,</span> <span class="n">WRITE</span> <span class="o">=</span> <span class="mo">02</span><span class="p">,</span> <span class="n">EXECUTE</span> <span class="o">=</span> <span class="mo">03</span> <span class="p">};</span>
+    <span class="n">File</span><span class="o">&amp;</span> <span class="n">open</span><span class="p">(</span><span class="n">modes</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">close</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">write</span><span class="p">();</span>
+    <span class="kt">bool</span> <span class="nf">isRead</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">setWrite</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>位域是按序定义的, 有可能的说, 可以将多个位域存到一个 unsigned int 中(依赖于具体的机器).</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">bit-fields 建议定议为无符号类型
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="使用">使用</h4>
+<p>和其它类成员类似</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="n">File</span><span class="o">::</span><span class="n">wtite</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">modified</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">File</span><span class="o">::</span><span class="n">close</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">modified</span><span class="p">)</span> <span class="p">{</span><span class="cm">/**/</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">File</span><span class="o">&amp;</span> <span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="n">modes</span><span class="o">&amp;</span> <span class="n">m</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">mode</span> <span class="o">|=</span> <span class="n">READ</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">&amp;</span> <span class="n">WRITE</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">bool</span> <span class="n">File</span><span class="o">::</span><span class="n">isWrite</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span><span class="k">return</span> <span class="n">mode</span> <span class="o">&amp;</span> <span class="n">WRITE</span><span class="p">;}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">File</span><span class="o">::</span><span class="n">setWrite</span><span class="p">()</span> <span class="p">{</span><span class="n">mode</span> <span class="o">|=</span> <span class="n">WRITE</span><span class="p">;}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="volatile-修饰符">volatile 修饰符</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">volatile 是固有的机器依赖属性, 使用 =volatile= 的程序通常在不同机器上是需要改变的
+</code></pre></td></tr></table>
+</div>
+</div><p>面对硬件的程序经常有一些数据不是由程序本身控制的, 如包含一个被系统时钟更新的变量. 这时需要使用 <code>volatile</code> 来告诉编译器不要优化它</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">display_register</span><span class="p">;</span>
+<span class="k">volatile</span> <span class="n">Task</span><span class="o">*</span> <span class="n">curr_task</span><span class="p">;</span>
+<span class="k">volatile</span> <span class="kt">int</span> <span class="n">iax</span><span class="p">[</span><span class="n">max_size</span><span class="p">];</span>
+<span class="k">volatile</span> <span class="n">Screen</span> <span class="n">bitmapBuf</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>volatile 对象可能只调用 volatile 成员</p>
+<h4 id="volatile-不会生成默认拷贝">volatile 不会生成默认拷贝</h4>
+<p>默认拷贝, 移动, 赋值无法用于 volatile, 如果想要使用, 必须宝义自己的函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Foo</span><span class="p">(</span><span class="k">volatile</span> <span class="k">const</span> <span class="n">Foo</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="n">Foo</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">volatile</span> <span class="k">const</span> <span class="n">Foo</span><span class="o">&amp;</span><span class="p">);</span>
+    <span class="n">Foo</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">volatile</span> <span class="k">const</span> <span class="n">Foo</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">volatile</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="链接指令-extern-c">链接指令: extern &ldquo;C&rdquo;</h3>
+<p>C++ 程序有时需要调用其它编程语言写的函数, 这个其它语言通常是 C. 如 C++ 中的名字一样, 使用之前必须声明. C++ 编译器用与 C++ 函数相同的方法检查调用签名. 不过编译器需要生成不同的调用代码. C++ 使用链接指令(linkage directives)来指定所有的非 C++ 语言</p>
+<h4 id="声明一个非-c-plus-plus-函数">声明一个非 C++ 函数</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="n">size_t</span> <span class="n">strlen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+
+<span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="p">{</span>
+<span class="kt">int</span> <span class="nf">strcmp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+<span class="kt">char</span><span class="o">*</span> <span class="nf">strcat</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>每个函数声明都必须有链接指令. extern 后跟的字符串字面量用来指出函数使用的语言, C++ 编译器要求实现链接 C, 有些编器还支持其它语言. 如 extern &ldquo;Ada&rdquo;, extern &ldquo;FORATRAN&rdquo; 等.</p>
+<h4 id="头文件">头文件</h4>
+<p>多声明类型可以应用在一个头文件类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="p">{</span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>链接指令可以嵌套</p>
+<h4 id="extern-c-函数指针">extern &ldquo;C&rdquo; 函数指针</h4>
+<p>需使用和语言相同的指令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">pf</span><span class="p">)(</span><span class="kt">int</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>指向 C 函数的指针和指向 C++ 函数的指针是不同类型, 不能相互赋值</p>
+<h4 id="导出-c-plus-plus-函数到其它语言">导出 C++ 函数到其它语言</h4>
+<p>编译 C++ 时, 编译器定义宏 __cplusplus</p>
+<h4 id="重载">重载</h4>
+<p>重载依赖于目标语言. 因为 C 不支持重载</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-24
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/tools/">tools</a>
+          <a href="/tags/tricks/">tricks</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/osc_synchronism/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">同步</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/osc_scheduling/">
+            <span class="next-text nav-default">进程调度</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-06-24 22:04:00 \u002b0800 CST',
+        title: '专门工具和技巧',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

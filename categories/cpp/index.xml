@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CPP on ticks blog</title>
+    <link>https://tickscn.github.io/categories/cpp/</link>
+    <description>Recent content in CPP on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 08 Aug 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/cpp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;14</title>
+      <link>https://tickscn.github.io/post/c&#43;&#43;14/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/c&#43;&#43;14/</guid>
+      <description>二进制字面量 1 char a = 0b1111&amp;#39;1111; 以 0b 或 0B 开头, 可以用&amp;rsquo;在分隔 扩展 8 进制 以 0 开头 10 进制 默认, 无特殊前缀 18 进制 0x 或 0X 泛型 lambda 表达式 lambda 表达式参数列</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;17</title>
+      <link>https://tickscn.github.io/post/c&#43;&#43;17/</link>
+      <pubDate>Sun, 02 Aug 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/c&#43;&#43;17/</guid>
+      <description>类模版参数推导 1 2 3 4 5 6 7 8 9 template &amp;lt;typename T = float&amp;gt; struct Foo { T val; Foo() : val() {} Foo(T _val) : val(_val) {} }; Foo f1(1); // OK Foo&amp;lt;int&amp;gt; Foo f2; // OK Foo&amp;lt;float&amp;gt; 折叠表达式 1 2 3 4 5 template &amp;lt;typename... T&amp;gt; auto sumxxx(T... args) { return (0 + ... + args); }</description>
+    </item>
+    
+    <item>
+      <title>模板编程</title>
+      <link>https://tickscn.github.io/post/cpp_templates/</link>
+      <pubDate>Thu, 02 Jul 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_templates/</guid>
+      <description>定义一个模板 函数模板 函数模板是生成特定类型函数的蓝图. 由关键字 template 后跟模板参数列表(template parameter list), 参数至少有一个 1 2 3 4 5 6 7 template &amp;lt;typename T&amp;gt; int compare(const</description>
+    </item>
+    
+    <item>
+      <title>专门工具和技巧</title>
+      <link>https://tickscn.github.io/post/cpp_extra_trick/</link>
+      <pubDate>Wed, 24 Jun 2020 22:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_trick/</guid>
+      <description>介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器</description>
+    </item>
+    
+    <item>
+      <title>大型程序工具</title>
+      <link>https://tickscn.github.io/post/cpp_extra_tool/</link>
+      <pubDate>Sun, 07 Jun 2020 15:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_tool/</guid>
+      <description>异常捕获 抛出异常 C++ 中异常通过抛出一个表达式来产生. 表达式类型和调用链一起决定处理器. 处理器是调用链中与抛出对象类型匹配的最近的那一个, 对象的</description>
+    </item>
+    
+    <item>
+      <title>专门的库特性</title>
+      <link>https://tickscn.github.io/post/cpp_libiary_future/</link>
+      <pubDate>Thu, 04 Jun 2020 18:07:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_libiary_future/</guid>
+      <description>元组 tuple 元组可以有任意数量的成员. 不过每个特定的元组元素数目是固定的. 经常用来合并多个数据到一个对象 tuple&amp;lt;T1, T2, &amp;hellip;, Tn&amp;gt; t; t 是一个有着 n 个类型分别为 T1, T2</description>
+    </item>
+    
+    <item>
+      <title>面像对象编程</title>
+      <link>https://tickscn.github.io/post/oop/</link>
+      <pubDate>Sat, 30 May 2020 13:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/oop/</guid>
+      <description>Objet_Oriented Program, OOP 数据抽象 (分离接口和实现) 继承 动态绑定 继承 类之间通过层级结构继承相关联. 层级结构的根是基类. 其它类直接或间接的继承于它. 继承的类被称为</description>
+    </item>
+    
+    <item>
+      <title>拷贝控制</title>
+      <link>https://tickscn.github.io/post/cpp_copy_control/</link>
+      <pubDate>Wed, 27 May 2020 17:44:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_copy_control/</guid>
+      <description>5 个特殊成员函数 拷贝构造 拷贝赋值 移动构造 移动赋值 析构函数 如果没有定义, 编译器会为缺失的函数定义默认的实现. 被称为拷贝控制函数 拷贝, 赋值, 析构</description>
+    </item>
+    
+    <item>
+      <title>动态内存</title>
+      <link>https://tickscn.github.io/post/cpp_dynamic_memory/</link>
+      <pubDate>Mon, 25 May 2020 21:14:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_dynamic_memory/</guid>
+      <description>动态内存和智能指针 动态内存使用一对运算符: new, delete. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存</description>
+    </item>
+    
+    <item>
+      <title>联合容器</title>
+      <link>https://tickscn.github.io/post/map_and_set/</link>
+      <pubDate>Sat, 23 May 2020 17:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/map_and_set/</guid>
+      <description>联合容器中的元素存储和取回按照关键字. 主要有 map. set. map 中元素为 键-值对. set 元素只是关键字 排序容器 map set multimap multiset 无序 unordered_map unordered_set unordered_multimap unordered_multiset pair pair 定义在头文件 utility, 成员变量为</description>
+    </item>
+    
+    <item>
+      <title>算法</title>
+      <link>https://tickscn.github.io/post/cpp_algorithms/</link>
+      <pubDate>Sat, 23 May 2020 16:10:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_algorithms/</guid>
+      <description>概论 大部分算法定义在头文件 algorithm 中, numeric 中定义了常用数学算法 通常算法不是直接作用在容器上, 而是作用在两个迭代器之间的容器. 1 2 3 4 5 6 7 8 9 10 11 12</description>
+    </item>
+    
+    <item>
+      <title>IO Library</title>
+      <link>https://tickscn.github.io/post/cpp_io/</link>
+      <pubDate>Tue, 19 May 2020 14:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_io/</guid>
+      <description>IO Classes header Type iostream istream, wistream, ostream, wostream, iostream, wiostream fstream ifstream, wifstream, ofstream, wofstream, fstream, wfstream sstream istringstream, wistringstream, ostringstream, wostringstream, stringstream, wstringstream 为了支持使用宽字符的语言, 库提供了 wchar_t, 操作宽字符的版本一般以 w 开头, 如 wcin, wcout, wcerr 相当于 cin, cout, cerr 不要</description>
+    </item>
+    
+    <item>
+      <title>顺序容器</title>
+      <link>https://tickscn.github.io/post/cpp_seq_container/</link>
+      <pubDate>Fri, 08 May 2020 15:27:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_seq_container/</guid>
+      <description>顺序表中元素的存储顺序与添加顺序相同. STL 还提供了一些联合容器, 存储顺序根据与元素关联的 key. 容器共享了一个普遍的接口, 并用各自的方法实现. 概论 容</description>
+    </item>
+    
+    <item>
+      <title>运算符重载和转换</title>
+      <link>https://tickscn.github.io/post/operator_overload/</link>
+      <pubDate>Sat, 02 May 2020 09:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/operator_overload/</guid>
+      <description>基础概念 重载运处符是特殊的函数: 定义 operator symbol(). 一元运算符有一个参数, 二元运算符有两. 二元运算符的左操作数是第一个参数, 右操作数是第二个参数. 如果运</description>
+    </item>
+    
+  </channel>
+</rss>

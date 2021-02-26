@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>IO 复用: select 和 poll 函数 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果." />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/unp_io_multiplexing/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="IO 复用: select 和 poll 函数" />
+<meta property="og:description" content="客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/unp_io_multiplexing/" />
+<meta property="article:published_time" content="2020-08-11T10:58:00+08:00" />
+<meta property="article:modified_time" content="2020-08-11T10:58:00+08:00" />
+<meta itemprop="name" content="IO 复用: select 和 poll 函数">
+<meta itemprop="description" content="客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果.">
+<meta itemprop="datePublished" content="2020-08-11T10:58:00+08:00" />
+<meta itemprop="dateModified" content="2020-08-11T10:58:00+08:00" />
+<meta itemprop="wordCount" content="2470">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="IO 复用: select 和 poll 函数"/>
+<meta name="twitter:description" content="客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">IO 复用: select 和 poll 函数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-11 </span>
+        <div class="post-category">
+            <a href="/categories/unp/"> UNP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#i-o-模型">I/O 模型</a></li>
+        <li><a href="#select-函数">select 函数</a></li>
+        <li><a href="#描述符就绪条件">描述符就绪条件</a></li>
+        <li><a href="#select-最大描述符">select 最大描述符</a></li>
+        <li><a href="#批量输入">批量输入</a></li>
+        <li><a href="#shutdown-函数">shutdown 函数</a></li>
+        <li><a href="#pselect">pselect</a></li>
+        <li><a href="#poll-函数">poll 函数</a></li>
+        <li><a href="#epoll">epoll</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果. 需要有一种机制, 当进程指定的一个或多个 IO 条件就绪, 内核就通知进程. 这个能力称为 IO 多路复用. 需要 (p)select 和 poll 函数的支持. IO 复用典型应用在以下网络应用场合</p>
+<ul>
+<li>当客户交替处理多个描述符时, 必须使用 IO 复用</li>
+<li>一个客户同时处理多个套接字</li>
+<li>一个服务器既要处理监听套接字, 又要处理连接套接字</li>
+<li>一个服务器既要处理 TCP 又要处理 UDP</li>
+<li>一个服务器要处理多个服务或多个协议</li>
+</ul>
+<h2 id="i-o-模型">I/O 模型</h2>
+<p>Unix5 种 IO 模型</p>
+<ul>
+<li>阻塞式 IO: 阻塞是最常用的, 套接字默认是阻塞的</li>
+<li>非阻塞 IO: 当需要将进程投入睡眠时, 不是睡眠而是返回一个错误. 进程可以循环等待</li>
+<li>IO 复用: 阻塞在多个 IO 调用中的某一个, 而不是阻塞在真正的调用上</li>
+<li>信号驱动式 IO: 当数据就绪时, 让内核发送数据通知进程</li>
+<li>异步 IO: 通知内核完成某个操作, 并在完成时通知进程</li>
+</ul>
+<h2 id="select-函数">select 函数</h2>
+<p>允许进程指示内核等待多个事件的发生, 在这些事件中一件或多件发生时或经过一段时间后唤醒它</p>
+<p>一个例子</p>
+<ul>
+<li>集合{1,4,5} 中的文件描述符准备好写</li>
+<li>集合 {2, 7} 中的文件描述符准备好读</li>
+<li>集合 {1, 4} 中的任何描述符有待处理的异常</li>
+<li>已经历了 10.2 s</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/select.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/time.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">select</span><span class="p">(</span><span class="kt">int</span> <span class="n">nfds</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">readfds</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">writefds</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">errorfds</span><span class="p">,</span> <span class="k">struct</span> <span class="n">timeval</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">timeout</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>timeval 参数指出内核可等待的时长</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">struct</span> <span class="n">timeval</span> <span class="p">{</span>
+    <span class="n">time_t</span> <span class="n">tv_sec</span><span class="p">;</span>   <span class="cm">/* 秒 */</span>
+    <span class="n">suseconds_t</span> <span class="n">tv_usec</span><span class="p">;</span> <span class="cm">/* 微秒 */</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>当该参数为 NULL 时表示无限等待, 直到一个事件发生</li>
+<li>等待一段固定时间: 在有一个 IO 在规定时间内准备好时返回</li>
+<li>不等待: 检查描述符后立即返回, 需要 timeval 指向一个对象且内容为 0</li>
+</ul>
+<p>timetal 中的精度虽然有身子微秒级, 但大部分内核的支持要粗糙的多. 大部分情况下会向上舍入成 10ms 的倍数. 而且返回是还有进程调度消耗</p>
+<p>fd_set 是描述符集合, 实同通常是用一个整数数组, 每个整数的每一位代表一个描述符, 不过这是实现的细节. 我们需要掌握的是四个操作 fd_set 的宏</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">void</span> <span class="nf">FD_ZERO</span><span class="p">(</span><span class="n">fd_set</span><span class="o">*</span> <span class="n">fdset</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">FD_SET</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="n">fdset</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">FD_CLR</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">.</span><span class="n">fd_set</span><span class="o">*</span> <span class="n">fdset</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">FD_ISSET</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="n">fdset</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>三个描述符集中不敢性趣和可以将参数设为空. 当三个参数都为空时, 可以将其当成一个比 sleep 更精准的计时器</p>
+<h2 id="描述符就绪条件">描述符就绪条件</h2>
+<ul>
+<li>准备好读
+<ol>
+<li>该套接字接收缓冲区中的数据字节数大于等于套接字接收缓冲区低水位标记的当前大小. 可以使用 SO_RCVLOWAT 选项设置低小位标记, TCP 与 UDP 默认是 1</li>
+<li>该连接的读半关闭, 即接收了 FIN 的 TCP 套接字</li>
+<li>一个监听套接字且已完成连接数不为 0, 这时 accept 通常不会阻塞</li>
+<li>其上有一个错误等处理, 调用读返回-1, 并设置 errno 为对应错误码</li>
+</ol>
+</li>
+<li>准备好读
+<ol>
+<li>该套接字发送缓冲区中的数据字节数大于等于套接字发送缓冲区低水位标记的当前大小</li>
+<li>写半部关闭, 对就种套接字写会产生 SIGPIPE 信号</li>
+<li>使用非阻塞的 connect 以成功建立连接, 或返回失败</li>
+<li>其上有一个错误等处理, 调用写操作返回-1, 并设置 errno 为对应错误码</li>
+</ol>
+</li>
+</ul>
+<h2 id="select-最大描述符">select 最大描述符</h2>
+<p>一般用宏 FD_SETSIZE 指定, 现在大部分系统为 1024. 修改这个宏来使 select 支持更多的描述符不一定起作用. 因为内核中 FD_SETSIZE 已经编译完成了, 想通过修改 FS_SETSIZE 来改变 select 支持的描述符个数还需要重编译内核. 不过最近有些厂家开始支持通过这个宏来设置大小了. 不过为了兼容性, 建议小心使用</p>
+<h2 id="批量输入">批量输入</h2>
+<p>批量输入时有可能在客户端读取到 EOF 时, 仍然有数据在网络传输了路上. 变时关闭连接会使数据丢失, 所以要有一种允许客户端只关闭一半的机制, 即发送 FIN 给服务器, 并仍然保持连接以便读取</p>
+<h2 id="shutdown-函数">shutdown 函数</h2>
+<p>终止网络连接的通常方法是调用 close, 而 close 有两个限制</p>
+<ol>
+<li>close 使引用计数减去 1, 只有计数为 0 时才关闭</li>
+<li>close 终止了读和写两方面的传输</li>
+</ol>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">shutodwn</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">howto</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>howto 的取值</p>
+<ul>
+<li>SHUT_RD: 关闭读这一半, 接收缓冲区数据都被丢弃, 进程不能再对这个套拉字调用任何函数, 对端发送的数据都被确认并丢弃</li>
+<li>SHUT_WR: 关闭写这一半. 对于 TCP 套接字, 这种状态为半关闭. 将发送缓冲区数据全部发送后跟 TCP 正常终止序列 FIN</li>
+<li>SHUT_RDWR: 相当于调用上两个函数</li>
+</ul>
+<h2 id="pselect">pselect</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/select.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">pselect</span><span class="p">(</span><span class="kt">int</span> <span class="n">nfds</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">readfds</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">writefds</span><span class="p">,</span> <span class="n">fd_set</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">errorfds</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">timespec</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">timeout</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">sigset_t</span><span class="o">*</span> <span class="kr">restrict</span> <span class="n">sigmask</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>pselect</code> 与 <code>select</code> 有两点不同,</p>
+<ul>
+<li>使有的定时结构为 <code>timespec</code> 而不是 <code>timeval</code></li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">struct</span> <span class="n">timespec</span> <span class="p">{</span>
+    <span class="n">time_t</span> <span class="n">tv_sec</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">tv_nsec</span><span class="p">;</span> <span class="cm">/* 纳秒 */</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>pselect</code> 增加了第 6 个参数: 一个指向信号掩码的指针, 这个参数允许程序先禁止递交某些信号</li>
+</ul>
+<h2 id="poll-函数">poll 函数</h2>
+<p>与 select 函数的功能相似, 但工作在流设置上时可以提供更多信息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;poll.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">poll</span><span class="p">(</span><span class="k">struct</span> <span class="n">pollfd</span> <span class="n">fds</span><span class="p">[],</span> <span class="n">nfds_t</span> <span class="n">nfds</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>每一个参数用来指定测试描述符的条件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">struct</span> <span class="n">pollfd</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>  <span class="cm">/* 文件描述符 */</span>
+    <span class="kt">short</span> <span class="n">events</span><span class="p">;</span>
+    <span class="kt">short</span> <span class="n">revents</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>events 描述测试的条件, revents 返回测试后的状态</p>
+<table>
+<thead>
+<tr>
+<th>constant</th>
+<th>events</th>
+<th>revents</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POLLIN</td>
+<td>yes</td>
+<td>yes</td>
+<td>normal or priority readable</td>
+</tr>
+<tr>
+<td>POLLRDNORM</td>
+<td>yes</td>
+<td>yes</td>
+<td>normal readable</td>
+</tr>
+<tr>
+<td>POLLRDBAND</td>
+<td>yes</td>
+<td>yes</td>
+<td>priority band readable</td>
+</tr>
+<tr>
+<td>POLLRDPRI</td>
+<td>yes</td>
+<td>yes</td>
+<td>high priority readable</td>
+</tr>
+<tr>
+<td>POLLOUT</td>
+<td>yes</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>POLLWRNORM</td>
+<td>yes</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>POLLWRBAND</td>
+<td>yes</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POLLERR</td>
+<td>no</td>
+<td>yes</td>
+<td>occur errors</td>
+</tr>
+<tr>
+<td>POLLHUP</td>
+<td>no</td>
+<td>yes</td>
+<td>hang up</td>
+</tr>
+<tr>
+<td>POLLNVAL</td>
+<td>no</td>
+<td>yes</td>
+<td>is not an open fd</td>
+</tr>
+</tbody>
+</table>
+<p>nfds 指定前一个参数中元素的数目, 后一个参数可指定超时时间</p>
+<ul>
+<li>INFTIM: 不超时</li>
+<li>0: 不等待</li>
+<li>
+<blockquote>
+<p>0: 等待 timeout 毫秒</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="epoll">epoll</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">epoll_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">);</span> <span class="cm">/*
+</span><span class="cm">                              Since Linux 2.6.8, size is ignored, but must be greater than zero
+</span><span class="cm">
+</span><span class="cm">                              return value is epoll file descriptor
+</span><span class="cm">                            */</span>
+
+<span class="cm">/*
+</span><span class="cm"> * epfd: epoll 文件描述符
+</span><span class="cm"> * op: 操作
+</span><span class="cm"> *   - EPOLL_CTL_ADD: 添加
+</span><span class="cm"> *   - EPOLL_CTL_MOD: 修改 event
+</span><span class="cm"> *   - EPOLL_CTL_DEL: 删除
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">epoll_ctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">epoll_event</span><span class="o">*</span> <span class="n">event</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">epoll_wait</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">epoll_event</span><span class="o">*</span> <span class="n">events</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxevents</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">epoll_pwait</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">epoll_event</span><span class="o">*</span> <span class="n">events</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxevents</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">,</span> <span class="k">const</span> <span class="n">sigset_t</span><span class="o">*</span> <span class="n">sigmask</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>epoll_event</code> 的结构定义为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="k">typedef</span> <span class="k">union</span> <span class="n">epoll_data</span> <span class="p">{</span>
+    <span class="kt">void</span><span class="o">*</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+    <span class="n">uint32_t</span> <span class="n">u32</span><span class="p">;</span>
+    <span class="n">uint64_t</span> <span class="n">u64</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">epoll_data_t</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">epoll_event</span> <span class="p">{</span>
+    <span class="n">uint32_t</span> <span class="n">events</span><span class="p">;</span>   <span class="cm">/* Epoll events */</span>
+    <span class="n">epoll_data_t</span> <span class="n">data</span><span class="p">;</span> <span class="cm">/* User data variable */</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以当作值-结果参数
+<code>epoll_event</code> 中的 <code>events</code> 有很多. 介绍几种</p>
+<table>
+<thead>
+<tr>
+<th>events</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EPOLLIN</td>
+<td>相关文件可以读了</td>
+</tr>
+<tr>
+<td>EPOLLOUT</td>
+<td>相关文件可以写了</td>
+</tr>
+<tr>
+<td>EPOLLRDHUP</td>
+<td>流套接字关闭或半关闭</td>
+</tr>
+<tr>
+<td>EPOLLPRI</td>
+<td>文件描述符中存在紧急数据</td>
+</tr>
+<tr>
+<td>EPOLLERR</td>
+<td>文件发生错误, 总是被监视, 不需要特别设置</td>
+</tr>
+<tr>
+<td>EPOLLHUP</td>
+<td>相关文件描述符被挂起</td>
+</tr>
+<tr>
+<td>EPOLLET</td>
+<td>设置触发模式为边缘触发</td>
+</tr>
+<tr>
+<td>EPOLLONESHOT</td>
+<td>该文件描述符只监视一次</td>
+</tr>
+</tbody>
+</table>
+<p>当网络信号到达网卡, 数据经网卡传到内存, 网卡产生一个中断通知 CPU 有数据到达, CPU 执行中断程序将数据拷贝到对应 socket 的输入缓冲区, 并唤醒阻塞在输入的进程. IO 多路复用就是可以监视多个文件描述符的的技术.
+最直接的想法就是之前介绍的 select. 当 select 监视的所有文件描述符都没有准备好时, 挂起进程, 当有一个或多个准备好时唤醒进程. 这种方法的缺点</p>
+<ol>
+<li>每次调用 select 都需要将进程加入到所有监视 socket 的等待队列，每次唤醒都需要从每个队列中移除。这里涉及了两次遍历，而且每次都要将整个 fds 列表传递给内核，有一定的开销。正是因为遍历操作开销大，出于效率的考量，才会规定 select 的最大监视数量，默认只能监视 1024 个 socket。</li>
+<li>进程被唤醒后, 需要遍历才能知道哪个文件准备好了</li>
+</ol>
+<p>为了解决这个问题有了 epoll. 解决办法有两步</p>
+<ol>
+<li>
+<p>功能分离: 将维护等待队列和阻塞进程分开. <code>select</code> 需要添加队列, 阻塞. 而 <code>epoll</code> 可以先用 <code>epoll_cli</code> 添加需要监视的描述符. 用 <code>epoll_wait</code> 阻塞</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">int</span> <span class="n">sfd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="c1">// ...
+</span><span class="c1"></span><span class="n">bind</span><span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="cm">/*...*/</span><span class="p">);</span>
+<span class="n">listen</span><span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="cm">/*...*/</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="n">epfd</span> <span class="o">=</span> <span class="n">epoll_create</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+<span class="n">epoll_cli</span><span class="p">(</span><span class="n">epfd</span><span class="p">,</span> <span class="cm">/*... */</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(;;)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="n">epfd</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="cm">/*ready socket*/</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>就绪队列: 可以直接知道就绪的文件</p>
+</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-11
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/socket_options/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">套接字选项</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/c&#43;&#43;14/">
+            <span class="next-text nav-default">C&#43;&#43;14</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-08-11 10:58:00 \u002b0800 CST',
+        title: 'IO 复用: select 和 poll 函数',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

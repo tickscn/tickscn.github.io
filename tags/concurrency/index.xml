@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>concurrency on ticks blog</title>
+    <link>https://tickscn.github.io/tags/concurrency/</link>
+    <description>Recent content in concurrency on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 15 Apr 2020 21:41:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>并发</title>
+      <link>https://tickscn.github.io/post/java_concurrency/</link>
+      <pubDate>Wed, 15 Apr 2020 21:41:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/java_concurrency/</guid>
+      <description>将任务移到实现了 Runable 接口类的 run 方法中 由 Runable 创建一个 Thread 对象 启动线程 线程 一个程序同时执行多个任务, 每个任务叫一个线程. #begin_example 一般来说, 进程(proces</description>
+    </item>
+    
+  </channel>
+</rss>

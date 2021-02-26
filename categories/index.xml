@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on ticks blog</title>
+    <link>https://tickscn.github.io/categories/</link>
+    <description>Recent content in Categories on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 23 Dec 2020 19:28:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neural-NetWork</title>
+      <link>https://tickscn.github.io/categories/neural-network/</link>
+      <pubDate>Wed, 23 Dec 2020 19:28:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/neural-network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>围棋入门</title>
+      <link>https://tickscn.github.io/categories/%E5%9B%B4%E6%A3%8B%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Wed, 02 Dec 2020 18:37:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/%E5%9B%B4%E6%A3%8B%E5%85%A5%E9%97%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Convex-Optimization</title>
+      <link>https://tickscn.github.io/categories/convex-optimization/</link>
+      <pubDate>Sun, 22 Nov 2020 20:13:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/convex-optimization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>https://tickscn.github.io/categories/golang/</link>
+      <pubDate>Mon, 09 Nov 2020 19:21:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OSC</title>
+      <link>https://tickscn.github.io/categories/osc/</link>
+      <pubDate>Tue, 27 Oct 2020 18:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/osc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://tickscn.github.io/categories/redis/</link>
+      <pubDate>Tue, 01 Sep 2020 21:12:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CPP-Multithread</title>
+      <link>https://tickscn.github.io/categories/cpp-multithread/</link>
+      <pubDate>Mon, 17 Aug 2020 17:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/cpp-multithread/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>UNP</title>
+      <link>https://tickscn.github.io/categories/unp/</link>
+      <pubDate>Thu, 13 Aug 2020 16:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/unp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CPP</title>
+      <link>https://tickscn.github.io/categories/cpp/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/cpp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>InnoDB</title>
+      <link>https://tickscn.github.io/categories/innodb/</link>
+      <pubDate>Thu, 06 Aug 2020 17:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/innodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MySQL</title>
+      <link>https://tickscn.github.io/categories/mysql/</link>
+      <pubDate>Thu, 06 Aug 2020 17:02:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SQL</title>
+      <link>https://tickscn.github.io/categories/sql/</link>
+      <pubDate>Tue, 04 Aug 2020 20:09:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/sql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>design-pattern</title>
+      <link>https://tickscn.github.io/categories/design-pattern/</link>
+      <pubDate>Mon, 27 Jul 2020 14:48:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/design-pattern/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>https://tickscn.github.io/categories/network/</link>
+      <pubDate>Thu, 23 Jul 2020 15:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>java</title>
+      <link>https://tickscn.github.io/categories/java/</link>
+      <pubDate>Sun, 03 May 2020 16:59:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>操作系统</title>
+      <link>https://tickscn.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sat, 04 Jan 2020 19:49:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>汇编语言</title>
+      <link>https://tickscn.github.io/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/</link>
+      <pubDate>Sat, 14 Dec 2019 20:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>附录</title>
+      <link>https://tickscn.github.io/categories/%E9%99%84%E5%BD%95/</link>
+      <pubDate>Sun, 08 Dec 2019 20:06:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/%E9%99%84%E5%BD%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rust</title>
+      <link>https://tickscn.github.io/categories/rust/</link>
+      <pubDate>Thu, 05 Dec 2019 18:25:53 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>算法导论</title>
+      <link>https://tickscn.github.io/categories/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/</link>
+      <pubDate>Wed, 27 Nov 2019 14:59:46 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/categories/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>32位 x86 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="操作模式 保护模式(Protected Mode): 原生状状, 所有的指令和特性都是可用的. 程序会被分配独立内存(段). 处理器禁止程序使用自身段外的内存 虚拟" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/32%E4%BD%8Dx86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="32位 x86" />
+<meta property="og:description" content="操作模式 保护模式(Protected Mode): 原生状状, 所有的指令和特性都是可用的. 程序会被分配独立内存(段). 处理器禁止程序使用自身段外的内存 虚拟" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/32%E4%BD%8Dx86/" />
+<meta property="article:published_time" content="2019-11-22T15:48:30+00:00" />
+<meta property="article:modified_time" content="2019-11-22T15:48:30+00:00" />
+<meta itemprop="name" content="32位 x86">
+<meta itemprop="description" content="操作模式 保护模式(Protected Mode): 原生状状, 所有的指令和特性都是可用的. 程序会被分配独立内存(段). 处理器禁止程序使用自身段外的内存 虚拟">
+<meta itemprop="datePublished" content="2019-11-22T15:48:30+00:00" />
+<meta itemprop="dateModified" content="2019-11-22T15:48:30+00:00" />
+<meta itemprop="wordCount" content="1097">
+
+
+
+<meta itemprop="keywords" content="汇编,assembly,CS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="32位 x86"/>
+<meta name="twitter:description" content="操作模式 保护模式(Protected Mode): 原生状状, 所有的指令和特性都是可用的. 程序会被分配独立内存(段). 处理器禁止程序使用自身段外的内存 虚拟"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">32位 x86</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"> 汇编语言 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#操作模式">操作模式</a></li>
+    <li><a href="#基本执行环境">基本执行环境</a>
+      <ul>
+        <li><a href="#地址空间">地址空间</a></li>
+        <li><a href="#基本程序执行寄存器basic-program-execution-regeisters">基本程序执行寄存器(basic program execution regeisters)</a>
+          <ul>
+            <li><a href="#通用寄存器">通用寄存器</a></li>
+            <li><a href="#段寄存器">段寄存器</a></li>
+            <li><a href="#指令指针程序计数器">指令指针(程序计数器)</a></li>
+            <li><a href="#eflags">EFLAGS</a></li>
+          </ul>
+        </li>
+        <li><a href="#mmx寄存器miltimedia-extensions">MMX寄存器(Miltimedia extensions)</a></li>
+        <li><a href="#xmm-寄存器">XMM 寄存器</a>
+          <ul>
+            <li><a href="#浮点单元float-point-unit-fpu">浮点单元(float-point unit, FPU)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#x86-内存管理">x86 内存管理</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="操作模式">操作模式</h1>
+<ol>
+<li>保护模式(Protected Mode): 原生状状, 所有的指令和特性都是可用的. 程序会被分配独立内存(段). 处理器禁止程序使用自身段外的内存</li>
+<li>虚拟 8086 模式(Virtual-8086 Mode):</li>
+<li>实地址模式(Real-Address Mode)</li>
+<li>系统管理模式(System Management Mode)</li>
+</ol>
+<h1 id="基本执行环境">基本执行环境</h1>
+<h2 id="地址空间">地址空间</h2>
+<p>32位保护模式下,一个任务最多寻址4GiB($2^32$)的线性空间.
+从P6 处理器开始, 扩展物理寻址(extended physical addressing)可以寻址64GiB的空间</p>
+<p>实地址模式只能寻址1MiB空间</p>
+<h2 id="基本程序执行寄存器basic-program-execution-regeisters">基本程序执行寄存器(basic program execution regeisters)</h2>
+<h3 id="通用寄存器">通用寄存器</h3>
+<p>其8个, 其中4个可以访问32, 16, 8位</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">32</th>
+<th style="text-align:center">低 16</th>
+<th style="text-align:center">高 8</th>
+<th style="text-align:center">低 8</th>
+<th style="text-align:center">特殊用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">EAX</td>
+<td style="text-align:center">AX</td>
+<td style="text-align:center">AH</td>
+<td style="text-align:center">AL</td>
+<td style="text-align:center">操作数累加器</td>
+</tr>
+<tr>
+<td style="text-align:center">EBX</td>
+<td style="text-align:center">BX</td>
+<td style="text-align:center">BH</td>
+<td style="text-align:center">BL</td>
+<td style="text-align:center">数据内存段指针</td>
+</tr>
+<tr>
+<td style="text-align:center">ECX</td>
+<td style="text-align:center">CX</td>
+<td style="text-align:center">CH</td>
+<td style="text-align:center">CL</td>
+<td style="text-align:center">string 计数或循环计数</td>
+</tr>
+<tr>
+<td style="text-align:center">EDX</td>
+<td style="text-align:center">DX</td>
+<td style="text-align:center">DH</td>
+<td style="text-align:center">DL</td>
+<td style="text-align:center">I/O 指针</td>
+</tr>
+</tbody>
+</table>
+<p>其余只能32, 16</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">32</th>
+<th style="text-align:center">16</th>
+<th style="text-align:center">特殊用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ESP</td>
+<td style="text-align:center">SP</td>
+<td style="text-align:center">栈指针</td>
+</tr>
+<tr>
+<td style="text-align:center">EBP</td>
+<td style="text-align:center">BP</td>
+<td style="text-align:center">栈数据指针</td>
+</tr>
+<tr>
+<td style="text-align:center">ESI</td>
+<td style="text-align:center">SI</td>
+<td style="text-align:center">字符串操作的源地址</td>
+</tr>
+<tr>
+<td style="text-align:center">EDI</td>
+<td style="text-align:center">DI</td>
+<td style="text-align:center">字符串操作的目的地址</td>
+</tr>
+</tbody>
+</table>
+<h3 id="段寄存器">段寄存器</h3>
+<p>实地址模式用来表示预分配内存基址</p>
+<p>保护模式段描述符表指针. 指令. 数据. 堆栈段存放局部变量和函数参数
+| CS | 代码段     |
+| SS | 栈段       |
+| DS | 数据段     |
+| ES | 数据段扩展 |
+| FS | 数据段扩展 |
+| GS | 数据段扩展 |</p>
+<h3 id="指令指针程序计数器">指令指针(程序计数器)</h3>
+<p>EIP 中包含下一条指令地址.</p>
+<h3 id="eflags">EFLAGS</h3>
+<p>EFLAGS 寄存器中包含独立的二进制位.用来控制CPU 操作. 或反应CPU操作的结果.</p>
+<h4 id="控制标志位">控制标志位</h4>
+<p>控制CPU操作</p>
+<p>如方向标志位(DF)</p>
+<h4 id="状态标志位">状态标志位</h4>
+<ul>
+<li>进位标志位(CF). 与目标位志相比, 无符号算术结果过大时, 设志该标志位</li>
+<li>溢出标志位(OF). 与目标位志相比, 有符号算术结果过大时, 设志该标志位</li>
+<li>符号标志位(SF). 算术或逻辑操作产生负结果时, 设志该标志位</li>
+<li>零标志位(ZF). 算术或逻辑操作产生0结果时, 设志该标志位</li>
+<li>辅助进位标志位(AC). 8位操作中产生位3向位4的进位. 设置该标志位</li>
+<li>奇偶校验标志位(PF). 最低有效字节包含偶数个1时,设置该标志位</li>
+</ul>
+<h2 id="mmx寄存器miltimedia-extensions">MMX寄存器(Miltimedia extensions)</h2>
+<p>8个64位MMX寄存器支持SIMD(单指令,多数据, Single-Instruction, Multiple-Data)特殊指令.</p>
+<h2 id="xmm-寄存器">XMM 寄存器</h2>
+<p>8 个128位的XMM寄存器. 用于SIMD流扩展指令集(Streaming SIMD Extensions, SSE)</p>
+<h3 id="浮点单元float-point-unit-fpu">浮点单元(float-point unit, FPU)</h3>
+<p>FPU 执行高速浮点运算.</p>
+<p>8个80位数据寄存器</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ST(0)</th>
+<th style="text-align:center">ST(1)</th>
+<th style="text-align:center">ST(2)</th>
+<th style="text-align:center">ST(3)</th>
+<th style="text-align:center">ST(4)</th>
+<th style="text-align:center">ST(5)</th>
+<th style="text-align:center">ST(6)</th>
+<th style="text-align:center">ST(7)</th>
+<th style="text-align:center">ST(8)</th>
+</tr>
+</thead>
+</table>
+<p>2 个48位指针寄存器
+FPU 指令指针(FIP), FPU数据指针(FDP)</p>
+<p>3个16位控制寄存器</p>
+<p>1个操作码寄存器</p>
+<h1 id="x86-内存管理">x86 内存管理</h1>
+<p>按照: 保护模式, 实地址模式等模式管理内存</p>
+<p>保护模式最可靠, 最强大的. 但是限制了对硬件的访问</p>
+<p>实地址模式中, 只能寻址1MiB. OOOOOH到FFFFFH (0x00000 到0xFFFFF). 一次运行一个程序. 可以通过中断处理外围设备请求</p>
+<p>保护模式可同时运行多个程序. 每个进程分配总共4GiB内存</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-22
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+          <a href="/tags/assembly/">assembly</a>
+          <a href="/tags/cs/">CS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/64-bit-x86/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">64位 x86_64</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/x86%E5%BE%AE%E6%9C%BA%E8%AE%BE%E8%AE%A1/">
+            <span class="next-text nav-default">x86微机设计</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-11-22 15:48:30 \u002b0000 UTC',
+        title: '32位 x86',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

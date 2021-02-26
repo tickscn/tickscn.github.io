@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>网络 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="连接到服务器 使用 telnet 1 2 3 4 5 6 7 $ telnet time-a.nist.gov 13 Trying 129.6.15.28... Connected to time-a.nist.gov. Escape character is &amp;#39;^]&amp;#39;. 58965 20-04-26 11:43:02 50 0 0 484.9 UTC(NIST) * Connection closed by foreign host. 使用 Java 连接到服务器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_network/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="网络" />
+<meta property="og:description" content="连接到服务器 使用 telnet 1 2 3 4 5 6 7 $ telnet time-a.nist.gov 13 Trying 129.6.15.28... Connected to time-a.nist.gov. Escape character is &#39;^]&#39;. 58965 20-04-26 11:43:02 50 0 0 484.9 UTC(NIST) * Connection closed by foreign host. 使用 Java 连接到服务器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_network/" />
+<meta property="article:published_time" content="2020-04-28T15:48:00+08:00" />
+<meta property="article:modified_time" content="2020-04-28T15:48:00+08:00" />
+<meta itemprop="name" content="网络">
+<meta itemprop="description" content="连接到服务器 使用 telnet 1 2 3 4 5 6 7 $ telnet time-a.nist.gov 13 Trying 129.6.15.28... Connected to time-a.nist.gov. Escape character is &#39;^]&#39;. 58965 20-04-26 11:43:02 50 0 0 484.9 UTC(NIST) * Connection closed by foreign host. 使用 Java 连接到服务器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18">
+<meta itemprop="datePublished" content="2020-04-28T15:48:00+08:00" />
+<meta itemprop="dateModified" content="2020-04-28T15:48:00+08:00" />
+<meta itemprop="wordCount" content="1923">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="网络"/>
+<meta name="twitter:description" content="连接到服务器 使用 telnet 1 2 3 4 5 6 7 $ telnet time-a.nist.gov 13 Trying 129.6.15.28... Connected to time-a.nist.gov. Escape character is &#39;^]&#39;. 58965 20-04-26 11:43:02 50 0 0 484.9 UTC(NIST) * Connection closed by foreign host. 使用 Java 连接到服务器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">网络</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-28 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#连接到服务器">连接到服务器</a>
+          <ul>
+            <li><a href="#使用-telnet">使用 telnet</a></li>
+            <li><a href="#使用-java-连接到服务器">使用 Java 连接到服务器</a></li>
+            <li><a href="#套接字超时">套接字超时</a></li>
+            <li><a href="#因特网地址">因特网地址</a></li>
+          </ul>
+        </li>
+        <li><a href="#实现服务器">实现服务器</a>
+          <ul>
+            <li><a href="#服务器套接字">服务器套接字</a></li>
+            <li><a href="#为多个客户端服务">为多个客户端服务</a></li>
+            <li><a href="#半关闭">半关闭</a></li>
+          </ul>
+        </li>
+        <li><a href="#可中断套接字">可中断套接字</a></li>
+        <li><a href="#获取-web-数据">获取 Web 数据</a>
+          <ul>
+            <li><a href="#url-和-uri">URL 和 URI</a></li>
+            <li><a href="#使用-urlconnection">使用 URLConnection</a></li>
+            <li><a href="#提交表单数据">提交表单数据</a></li>
+          </ul>
+        </li>
+        <li><a href="#发送-e-mail">发送 E-mail</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="连接到服务器">连接到服务器</h2>
+<h3 id="使用-telnet">使用 telnet</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ telnet time-a.nist.gov <span class="m">13</span>
+Trying 129.6.15.28...
+Connected to time-a.nist.gov.
+Escape character is <span class="s1">&#39;^]&#39;</span>.
+
+<span class="m">58965</span> 20-04-26 11:43:02 <span class="m">50</span> <span class="m">0</span> <span class="m">0</span> 484.9 UTC<span class="o">(</span>NIST<span class="o">)</span> *
+Connection closed by foreign host.
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用-java-连接到服务器">使用 Java 连接到服务器</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">socket</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SocketTest</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span>
+    <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="n">Socket</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="s">&#34;time-a.nist.gov&#34;</span><span class="o">,</span> <span class="n">13</span><span class="o">);</span>
+             <span class="n">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(),</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">))</span>
+        <span class="o">{</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">hasNextLine</span><span class="o">())</span>
+            <span class="o">{</span>
+                <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextLine</span><span class="o">();</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>套接字(Socket)是一个抽象概念, 负则启动通信. 接下来介绍仅包含 TCP (传输控制协议)</p>
+<ul>
+<li>Socket(String host, int port)</li>
+<li>InputStream getInputStream()</li>
+<li>OutputStream getOutputStream()</li>
+</ul>
+<h3 id="套接字超时">套接字超时</h3>
+<h4 id="读写超时">读写超时</h4>
+<p>从套接字读取信息时, 在有数据可访问之前, 读操作会阻塞. 为了不因为主机不可达而等待过长时间, 可以设置超时值</p>
+<ul>
+<li>SetSoTimeout</li>
+</ul>
+<p>如果超时会抛出 SocketTimeoutException</p>
+<h4 id="初始链接超时">初始链接超时</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Socket</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">();</span>
+<span class="n">s</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">),</span> <span class="n">timeout</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="因特网地址">因特网地址</h3>
+<ul>
+<li>IPV4 中是以 4 个字节组成</li>
+<li>IPV6 中是以 16 个字节组成</li>
+</ul>
+<p>通常不用过多考虑因特网地址的问题. 但是, 如果需要主机名和因特网地址之间进行转换, 可以使用 InetAddress 类</p>
+<ul>
+<li><code>InetAddress address = InetAddress.getByName(host)</code></li>
+</ul>
+<p>只得到 localhost 地址, 总会得到本地回环地址 127.0.0.1, 但是其它程序无法使用该地址到这台计算机. 可以使用静态方法 <code>getLocalHost</code> 获取本地主机地址</p>
+<h2 id="实现服务器">实现服务器</h2>
+<h3 id="服务器套接字">服务器套接字</h3>
+<p>一但启动服务器程序, 它会等待某个客户端连接它的端口.</p>
+<ol>
+<li><code>ServerSocket s = new ServerSocket(port)</code> 用来新建一个监听端口 <code>port</code> 的服务器</li>
+<li><code>Socket incoming = s.accept()</code> 等待连接请求, 并在连接后返回连接成功的 Socket</li>
+<li>获取输入/输出端</li>
+<li>接收命令</li>
+<li>解码命令</li>
+<li>收集信息</li>
+<li>发送信息</li>
+</ol>
+<h3 id="为多个客户端服务">为多个客户端服务</h3>
+<p>使用多线程.</p>
+<ol>
+<li>新定义一个实现了 Runnable 的类, 并覆盖 run 方法</li>
+</ol>
+<h3 id="半关闭">半关闭</h3>
+<p>终止输出, 保持输入</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">try</span><span class="o">(</span><span class="n">Socket</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">))</span>
+<span class="o">{</span>
+    <span class="n">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(),</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">);</span>
+    <span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">(),</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">);</span>
+    <span class="c1">// 发送数据
+</span><span class="c1"></span>    <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">xxx</span><span class="o">);</span>
+    <span class="n">out</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+    <span class="n">s</span><span class="o">.</span><span class="na">ShutdownOutput</span><span class="o">();</span>
+    <span class="c1">// 接收
+</span><span class="c1"></span>    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="可中断套接字">可中断套接字</h2>
+<p>连接和读写都有可能阻塞当前线程.  为了可以中取消那些很有可能没有结果的连接, 可以使用 java.nio 包提供的 <code>SocketChannel</code> 类
+<code>SocketChannel channel = SocketChannel.open(new InetSocketAddress(host, port))</code> . channel 提供了 read 和 write 方法</p>
+<h2 id="获取-web-数据">获取 Web 数据</h2>
+<h3 id="url-和-uri">URL 和 URI</h3>
+<p>URL 和 URLConnection 类封装了大量细节. 可以通过字符串构建一个 URL.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="n">urlString</span><span class="o">);</span>
+<span class="n">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">url</span><span class="o">.</span><span class="na">openStream</span><span class="o">(),</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>URL(Uniform Resource Locater, URL) 统一资源定位符是 URI 的特例, 不能定位资源的 URI 被称为统一资源名称(Uniform Resource Name, URN)</p>
+<p>URI 类只负责解析, URL 可以打开一个到达资的源. URL 只能用于 JAVA 知道如何处理的模式, 如 http:, https:, ftp:, file:, jar:</p>
+<p>URI 语法</p>
+<p><code>[schema:]schemaSpecialPart[#fragment]</code></p>
+<ul>
+<li>[&hellip;]表示可选部分</li>
+<li>包含 schema: 部分的 URI 为绝对 URI, 否则为相对 URI</li>
+<li>schemaSpecialPart 不以 / 开头. 称其为不透明的</li>
+<li>绝对的透明 URI 和所有的相对 URI 都是分层的
+<ul>
+<li>分层结构 <code>[//authority][path][?query]</code></li>
+<li>authority: [user-info@]host[:port]</li>
+</ul>
+</li>
+</ul>
+<p>URI 类的作用是解析标识符, 可以使用 getXXX 获取</p>
+<h3 id="使用-urlconnection">使用 URLConnection</h3>
+<p>URLConnection 比 URL 有更多的控制功能</p>
+<ol>
+<li>调用 URL 的 openConnection 获取 URLConnection
+=URLConnection connection = url.openConnection()</li>
+<li>设置请求属性
+<ol>
+<li>setDoInput</li>
+<li>setDoOutput</li>
+<li>setIfModifiedSince</li>
+<li>setUseCaches</li>
+<li>setAllowUserInteraction</li>
+<li>setRequestProperty</li>
+<li>setConnectionTimeout</li>
+<li>setReadTimeout</li>
+</ol>
+</li>
+<li>调用 connect 方法连接远程资源
+<code>connection.connect()</code></li>
+<li>获取资源信息
+<ol>
+<li>getContentType</li>
+<li>getContentLength</li>
+<li>getContentEncoding</li>
+<li>getDate</li>
+<li>getExpiration</li>
+<li>getLastModified</li>
+</ol>
+</li>
+<li>获取输入流 <code>getInputStream</code></li>
+</ol>
+<p>默认只产生输入流, 如果想要向服务器提交数据, 需要设置 <code>connection.setDoOutput(true)</code></p>
+<p>设置请求头, 例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">GET www.server.com/index.html HTTP/1.0
+Referer: http://www.somewhere.com/links.html
+Proxy-Connection: Keep-Alive
+User-angent: xxxx
+Host: www.server.com
+Accept: text/html, image/gif, image/jpeg, image/png, */*
+Accept-Language: en
+Accept-Charset: iso-8859-1, *, utf-8
+Cookie: xxx
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="提交表单数据">提交表单数据</h3>
+<p>有许多技术可以让 Web 服务器调用程序, 如 Java Servlet, JavaServer Face, ASP(Active Server Pages), CGI(Common Gateway Interface)
+以下主要讨论客户端如何与以知的服务端交互. 当向 Web 服务器发送信息时, 常用的两个命令: GET 和 POST</p>
+<h4 id="get">GET</h4>
+<p>将参数附加再 URL 结尾处: <code>http://host/path?query</code>. 每个参数都具有&quot;名字=值&quot;的形式. 参数用&amp;隔开. 值将遵循下面的规则</p>
+<ul>
+<li>保留 a-z, A-Z, 0-9, 以及 . - ~ _</li>
+<li>用 + 替换所有空格</li>
+<li>将其它所有字符编码为 utf-8, 并将每个字节写为 % 后面跟两个 16 进制数字</li>
+</ul>
+<h4 id="post">POST</h4>
+<p>为了处理具有大量数据的表单. 可以使用 POST. POST 并不在 URL 上附着参数, 从 URLConnection 获取输出流, 并将名, 值对写入该流.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&#34;http://host/path&#34;</span><span class="o">);</span>
+<span class="n">URLConnection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="na">openURLConnection</span><span class="o">();</span>
+<span class="n">connection</span><span class="o">.</span><span class="na">setDoOutput</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">,</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">);</span>
+
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">name1</span> <span class="o">+</span> <span class="s">&#34;=&#34;</span> <span class="o">+</span> <span class="n">URLEncoder</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">value1</span><span class="o">,</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34;&amp;&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">name2</span> <span class="o">+</span> <span class="s">&#34;=&#34;</span> <span class="o">+</span> <span class="n">URLEncoder</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">value2</span><span class="o">,</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34;&amp;&#34;</span><span class="o">);</span>
+<span class="c1">// ...
+</span><span class="c1"></span>
+<span class="n">out</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>再提交表单数据时, HTTP 包含了内容类型和内容长度</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+Connect-Length: 91
+</code></pre></td></tr></table>
+</div>
+</div><p>当然还可以用其它形式提交表单. 如 json. <code>Content-Type: application/json</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">post</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * This program demonstrates how to use the URLConnection class for a POST request.
+</span><span class="cm"> * @version 1.40 2016-04-24
+</span><span class="cm"> * @author Cay Horstmann
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PostTest</span>
+<span class="o">{</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span>
+   <span class="o">{</span>
+      <span class="n">String</span> <span class="n">propsFilename</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="n">0</span> <span class="o">?</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">:</span> <span class="s">&#34;post/post.properties&#34;</span><span class="o">;</span>
+      <span class="n">Properties</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+      <span class="k">try</span> <span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">newInputStream</span><span class="o">(</span><span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">propsFilename</span><span class="o">)))</span>
+      <span class="o">{</span>
+         <span class="n">props</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="n">String</span> <span class="n">urlString</span> <span class="o">=</span> <span class="n">props</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="s">&#34;url&#34;</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+      <span class="n">Object</span> <span class="n">userAgent</span> <span class="o">=</span> <span class="n">props</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="s">&#34;User-Agent&#34;</span><span class="o">);</span>
+      <span class="n">Object</span> <span class="n">redirects</span> <span class="o">=</span> <span class="n">props</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="s">&#34;redirects&#34;</span><span class="o">);</span>
+      <span class="n">CookieHandler</span><span class="o">.</span><span class="na">setDefault</span><span class="o">(</span><span class="k">new</span> <span class="n">CookieManager</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">CookiePolicy</span><span class="o">.</span><span class="na">ACCEPT_ALL</span><span class="o">));</span>
+      <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">doPost</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="n">urlString</span><span class="o">),</span> <span class="n">props</span><span class="o">,</span>
+         <span class="n">userAgent</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">userAgent</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span>
+         <span class="n">redirects</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="n">1</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">redirects</span><span class="o">.</span><span class="na">toString</span><span class="o">()));</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+   <span class="o">}</span>
+
+   <span class="cm">/**
+</span><span class="cm">    * Do an HTTP POST.
+</span><span class="cm">    * @param url the URL to post to
+</span><span class="cm">    * @param nameValuePairs the query parameters
+</span><span class="cm">    * @param userAgent the user agent to use, or null for the default user agent
+</span><span class="cm">    * @param redirects the number of redirects to follow manually, or -1 for automatic redirects
+</span><span class="cm">    * @return the data returned from the server
+</span><span class="cm">    */</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">doPost</span><span class="o">(</span><span class="n">URL</span> <span class="n">url</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">nameValuePairs</span><span class="o">,</span> <span class="n">String</span> <span class="n">userAgent</span><span class="o">,</span> <span class="kt">int</span> <span class="n">redirects</span><span class="o">)</span>
+         <span class="kd">throws</span> <span class="n">IOException</span>
+   <span class="o">{</span>
+      <span class="n">HttpURLConnection</span> <span class="n">connection</span> <span class="o">=</span> <span class="o">(</span><span class="n">HttpURLConnection</span><span class="o">)</span> <span class="n">url</span><span class="o">.</span><span class="na">openConnection</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">userAgent</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+         <span class="n">connection</span><span class="o">.</span><span class="na">setRequestProperty</span><span class="o">(</span><span class="s">&#34;User-Agent&#34;</span><span class="o">,</span> <span class="n">userAgent</span><span class="o">);</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">redirects</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">)</span>
+         <span class="n">connection</span><span class="o">.</span><span class="na">setInstanceFollowRedirects</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+      <span class="n">connection</span><span class="o">.</span><span class="na">setDoOutput</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+      <span class="k">try</span> <span class="o">(</span><span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">()))</span>
+      <span class="o">{</span>
+         <span class="kt">boolean</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+         <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">pair</span> <span class="o">:</span> <span class="n">nameValuePairs</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span>
+         <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">first</span><span class="o">)</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="k">else</span> <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="sc">&#39;&amp;&#39;</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="na">getKey</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+            <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="sc">&#39;=&#39;</span><span class="o">);</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">URLEncoder</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">));</span>
+         <span class="o">}</span>
+      <span class="o">}</span>
+      <span class="n">String</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getContentEncoding</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">encoding</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">;</span>
+
+      <span class="k">if</span> <span class="o">(</span><span class="n">redirects</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span>
+      <span class="o">{</span>
+         <span class="kt">int</span> <span class="n">responseCode</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getResponseCode</span><span class="o">();</span>
+         <span class="k">if</span> <span class="o">(</span><span class="n">responseCode</span> <span class="o">==</span> <span class="n">HttpURLConnection</span><span class="o">.</span><span class="na">HTTP_MOVED_PERM</span>
+               <span class="o">||</span> <span class="n">responseCode</span> <span class="o">==</span> <span class="n">HttpURLConnection</span><span class="o">.</span><span class="na">HTTP_MOVED_TEMP</span>
+               <span class="o">||</span> <span class="n">responseCode</span> <span class="o">==</span> <span class="n">HttpURLConnection</span><span class="o">.</span><span class="na">HTTP_SEE_OTHER</span><span class="o">)</span>
+         <span class="o">{</span>
+            <span class="n">String</span> <span class="n">location</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getHeaderField</span><span class="o">(</span><span class="s">&#34;Location&#34;</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">location</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="o">{</span>
+               <span class="n">URL</span> <span class="n">base</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getURL</span><span class="o">();</span>
+               <span class="n">connection</span><span class="o">.</span><span class="na">disconnect</span><span class="o">();</span>
+               <span class="k">return</span> <span class="n">doPost</span><span class="o">(</span><span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="n">base</span><span class="o">,</span> <span class="n">location</span><span class="o">),</span> <span class="n">nameValuePairs</span><span class="o">,</span> <span class="n">userAgent</span><span class="o">,</span> <span class="n">redirects</span> <span class="o">-</span> <span class="n">1</span><span class="o">);</span>
+            <span class="o">}</span>
+
+         <span class="o">}</span>
+      <span class="o">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">redirects</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+      <span class="o">{</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&#34;Too many redirects&#34;</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="n">StringBuilder</span> <span class="n">response</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+      <span class="k">try</span> <span class="o">(</span><span class="n">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">(),</span> <span class="n">encoding</span><span class="o">))</span>
+      <span class="o">{</span>
+         <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">hasNextLine</span><span class="o">())</span>
+         <span class="o">{</span>
+            <span class="n">response</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">nextLine</span><span class="o">());</span>
+            <span class="n">response</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;\n&#34;</span><span class="o">);</span>
+         <span class="o">}</span>
+      <span class="o">}</span>
+      <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span>
+      <span class="o">{</span>
+         <span class="n">InputStream</span> <span class="n">err</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getErrorStream</span><span class="o">();</span>
+         <span class="k">if</span> <span class="o">(</span><span class="n">err</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">throw</span> <span class="n">e</span><span class="o">;</span>
+         <span class="k">try</span> <span class="o">(</span><span class="n">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Scanner</span><span class="o">(</span><span class="n">err</span><span class="o">))</span>
+         <span class="o">{</span>
+            <span class="n">response</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">nextLine</span><span class="o">());</span>
+            <span class="n">response</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;\n&#34;</span><span class="o">);</span>
+         <span class="o">}</span>
+      <span class="o">}</span>
+
+      <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="发送-e-mail">发送 E-mail</h2>
+<p>不需要认证的发送</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Socket</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="s">&#34;mail.yourserver.com&#34;</span><span class="o">,</span> <span class="n">25</span><span class="o">);</span>
+<span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">openStream</span><span class="o">(),</span> <span class="s">&#34;UTF-8&#34;</span><span class="o">);</span>
+
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;HELO&#34;</span> <span class="o">+</span> <span class="n">sendinghost</span> <span class="o">+</span> <span class="s">&#34;\r\n&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;Mail From: &#34;</span> <span class="o">+</span> <span class="n">senderaddress</span> <span class="o">+</span> <span class="s">&#34;\r\n&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;RCPT TO: &#34;</span> <span class="o">+</span> <span class="n">recipientaddress</span> <span class="o">+</span> <span class="s">&#34;\r\n&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;DATA\r\n&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;Subject:&#34;</span> <span class="o">+</span> <span class="n">subject</span> <span class="o">+</span> <span class="s">&#34;\r\n&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">prinln</span><span class="o">(</span><span class="s">&#34;&#34;</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+<span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;QUIT&#34;</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>为了防止蠕虫. 许多服务器内置了检查功能, 只接收受信用户或受信 IP 地址范围; 通常通过安全套接字实现认证</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-28
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/operator_overload/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">运算符重载和转换</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_xml/">
+            <span class="next-text nav-default">可扩展标记语言(Extensible Markup Language, XML)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-04-28 15:48:00 \u002b0800 CST',
+        title: '网络',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

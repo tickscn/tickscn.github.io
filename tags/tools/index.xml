@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tools on ticks blog</title>
+    <link>https://tickscn.github.io/tags/tools/</link>
+    <description>Recent content in tools on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 24 Jun 2020 22:04:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>专门工具和技巧</title>
+      <link>https://tickscn.github.io/post/cpp_extra_trick/</link>
+      <pubDate>Wed, 24 Jun 2020 22:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_trick/</guid>
+      <description>介绍一些只有部分应用需要使用的特性 控制内存分配 重载 new 和 delete 当我们使用 new 表达式时, 主要有三步 调用库函数 operator new 或 operator new[], 分配足够大的没有特化的内存 编译器</description>
+    </item>
+    
+    <item>
+      <title>大型程序工具</title>
+      <link>https://tickscn.github.io/post/cpp_extra_tool/</link>
+      <pubDate>Sun, 07 Jun 2020 15:15:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/cpp_extra_tool/</guid>
+      <description>异常捕获 抛出异常 C++ 中异常通过抛出一个表达式来产生. 表达式类型和调用链一起决定处理器. 处理器是调用链中与抛出对象类型匹配的最近的那一个, 对象的</description>
+    </item>
+    
+    <item>
+      <title>汇编学习工具</title>
+      <link>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%AD%A6%E4%B9%A0%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Fri, 29 Nov 2019 18:49:18 +0000</pubDate>
+      
+      <guid>https://tickscn.github.io/post/%E6%B1%87%E7%BC%96%E5%AD%A6%E4%B9%A0%E5%B7%A5%E5%85%B7/</guid>
+      <description>汇编器(assembler) MASM NASM GAS: 使用AT&amp;amp;T 语法 等 链接器(linker) 链接 objfile 生成可执行文件 调试器(debugger) GNU assembler gas 是 GNU b</description>
+    </item>
+    
+  </channel>
+</rss>

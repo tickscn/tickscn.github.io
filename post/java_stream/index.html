@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>流库 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/java_stream/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="流库" />
+<meta property="og:description" content="通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/java_stream/" />
+<meta property="article:published_time" content="2020-04-18T21:15:00+08:00" />
+<meta property="article:modified_time" content="2020-04-18T21:15:00+08:00" />
+<meta itemprop="name" content="流库">
+<meta itemprop="description" content="通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String">
+<meta itemprop="datePublished" content="2020-04-18T21:15:00+08:00" />
+<meta itemprop="dateModified" content="2020-04-18T21:15:00+08:00" />
+<meta itemprop="wordCount" content="1235">
+
+
+
+<meta itemprop="keywords" content="stream," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="流库"/>
+<meta name="twitter:description" content="通过流可以说明想要完成什么任务, 而不是如何实现它 迭代与流 处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用. 1 2 3 4 5 6 7 8 9 10 11 String"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">流库</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-18 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#迭代与流">迭代与流</a></li>
+        <li><a href="#流的创建">流的创建</a></li>
+        <li><a href="#filter-map-flatmap">filter, map, flatMap</a></li>
+        <li><a href="#抽取子流和连接流">抽取子流和连接流</a></li>
+        <li><a href="#其它流转换">其它流转换</a></li>
+        <li><a href="#简单约简">简单约简</a></li>
+        <li><a href="#optional-类型">Optional 类型</a>
+          <ul>
+            <li><a href="#如何使用">如何使用</a></li>
+            <li><a href="#不适合使用-optional-值的地方">不适合使用 Optional 值的地方</a></li>
+            <li><a href="#创建-optional-值">创建 Optional 值</a></li>
+            <li><a href="#用-flatmap-来构建">用 flatMap 来构建</a></li>
+          </ul>
+        </li>
+        <li><a href="#收集结果">收集结果</a></li>
+        <li><a href="#收集到映射表中">收集到映射表中</a></li>
+        <li><a href="#群组和分区">群组和分区</a></li>
+        <li><a href="#下游收集器">下游收集器</a></li>
+        <li><a href="#约简操作">约简操作</a></li>
+        <li><a href="#基本类型流">基本类型流</a></li>
+        <li><a href="#并行流">并行流</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>通过流可以说明想要完成什么任务, 而不是如何实现它</p>
+<h2 id="迭代与流">迭代与流</h2>
+<p>处理集合时常常需要遍历它的元素, 并在每个元素上执行某个操用.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="n">contents</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">Files</span><span class="o">.</span><span class="na">readAllBytes</span><span class="o">(</span><span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;text.txt&#34;</span><span class="o">)),</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">contents</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">&#34;\\PL+&#34;</span><span class="o">));</span>
+
+<span class="c1">// 迭代
+</span><span class="c1"></span><span class="kt">long</span> <span class="n">count</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+<span class="k">for</span><span class="o">(</span><span class="n">String</span> <span class="n">w</span><span class="o">:</span><span class="n">words</span><span class="o">){</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">w</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="n">10</span><span class="o">)</span> <span class="n">count</span><span class="o">++;</span>
+<span class="o">}</span>
+
+<span class="c1">// 流
+</span><span class="c1"></span><span class="kt">long</span> <span class="n">count</span> <span class="o">=</span> <span class="n">words</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">w</span><span class="o">.</span><span class="na">lenght</span><span class="o">&gt;</span><span class="n">10</span><span class="o">).</span><span class="na">count</span><span class="o">();</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>流并不存储元素, 这些元素有可能存于底层的数组, 也有可能按需生成</li>
+<li>流的操作不改变数据源</li>
+<li>流的操作惰性执行, 只有需要时才执行</li>
+</ol>
+<p>操作流的典型流程</p>
+<ol>
+<li>创建一个流</li>
+<li>指定将初始流转换为其它流的操作, 可能需要好多步</li>
+<li>终止操作, 产生结果</li>
+</ol>
+<h2 id="流的创建">流的创建</h2>
+<p>集合 Collection 接口的 stream 方法可以将任合一个集合转换为一个流. 普通数组可以用静态的 Stream.of 方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">words</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">contents</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">&#34;\\PL+&#34;</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用 Array.stream(array, from, to) 可以用子数组创建流</p>
+<p>generate 方法可以按某个方法生成无限流</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Stream</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">randoms</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">generate</span><span class="o">(</span><span class="n">Math</span><span class="o">::</span><span class="n">random</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>iterate 方法可以生成无限序列</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Stream</span><span class="o">&lt;</span><span class="n">BigInteger</span><span class="o">&gt;</span> <span class="n">integers</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">iterate</span><span class="o">(</span><span class="n">BigInteger</span><span class="o">.</span><span class="na">ZERO</span><span class="o">,</span> <span class="n">n</span><span class="o">-&gt;</span><span class="n">n</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">BigInteger</span><span class="o">.</span><span class="na">ONE</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="filter-map-flatmap">filter, map, flatMap</h2>
+<ul>
+<li>filter: 与某种要求匹配而派生新的流</li>
+<li>map: 按某种方法转换流中的元素</li>
+</ul>
+<!--listend-->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">lowerwords</span> <span class="o">=</span> <span class="n">words</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">String</span><span class="o">::</span><span class="n">toLowerCase</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>flatMap: map 有时会产生流的流, 如果想要摊平成一维的流, 可以使用 flatMap</li>
+</ul>
+<h2 id="抽取子流和连接流">抽取子流和连接流</h2>
+<ul>
+<li>stream.limit(n) 会返回一个新的截断在 n 的流, 如果原流长度小于 n, 等于原来的流</li>
+<li>stream.skip(n) 跳过前 n 个元素</li>
+<li>Stream 类的静态方法 contact 可以连接两个流</li>
+</ul>
+<h2 id="其它流转换">其它流转换</h2>
+<ul>
+<li>distinct 返回剔除重复元素的流</li>
+<li>sorted 排序的流. 流中元素应是 Comparable 的,  或者可以传入一个 Comparator</li>
+<li>peek 会产生一个元素与原来相同的新流, 但是每获取一个元素, 都会调用一个函数</li>
+</ul>
+<h2 id="简单约简">简单约简</h2>
+<p>约简是一种 <strong><strong>终结</strong></strong> 操作, 可以将流约简为可以使用的非流值</p>
+<ul>
+<li>count 方法返回流中元素数量</li>
+<li>max, min 方法返回流中最大或最小值. 具体的说返回的是 Optional<T>类型</li>
+<li>findFirst 返回集合的第一个值</li>
+<li>findAny 可以返回任何一个匹配, 可以并行处理</li>
+<li>allMatch 全部匹配</li>
+<li>noneMatch 没有匹配</li>
+<li>anyMatch 存在匹配</li>
+</ul>
+<h2 id="optional-类型">Optional 类型</h2>
+<p>Optional<T> 要么包装了 T 的对象, 要么没有包装任何对象</p>
+<h3 id="如何使用">如何使用</h3>
+<p><strong>不存在值时可以有替代物, 只有存在值时才使用值</strong></p>
+<ul>
+<li>使用默认值
+<ul>
+<li>字符串 optionalString.orElse(&quot;&quot;)</li>
+<li>通过调用代码获取 optionalString.orElseGet( <em>xxx</em> ); 只有需要时才执行</li>
+<li>抛出异常 optionalString.orElseThrow(xxx::new)</li>
+</ul>
+</li>
+<li>只有存在值时才使用值
+<ul>
+<li>ifPresent 会接收一个函数, 当该可选值存在其会被传递给函数, 否则什么都不会发生</li>
+<li>map 会把结果存入返回值</li>
+</ul>
+</li>
+</ul>
+<h3 id="不适合使用-optional-值的地方">不适合使用 Optional 值的地方</h3>
+<ul>
+<li>get() 存在时返回值</li>
+<li>isPresent() 存在值时返回 true</li>
+</ul>
+<h3 id="创建-optional-值">创建 Optional 值</h3>
+<ul>
+<li>of</li>
+<li>ofNullable</li>
+<li>empty</li>
+</ul>
+<h3 id="用-flatmap-来构建">用 flatMap 来构建</h3>
+<p>如果方法 f 可以产生 Optional<T> 而 T 有方法 g. 可以这样连续调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">s</span><span class="o">.</span><span class="na">f</span><span class="o">().</span><span class="na">flatMap</span><span class="o">(</span><span class="n">T</span><span class="o">::</span><span class="n">g</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="收集结果">收集结果</h2>
+<ul>
+<li>iterator 方法产生旧式的迭代器</li>
+<li>forEach 方法, 在并行流上会以任意顺序遍历元素</li>
+<li>forEachOrdered 方法, 按顺序遍历</li>
+<li>toArray 获得由流中元素构成的数组, 返回的是 Object[], 如果想要具体的数组, 可以传递类型构造器</li>
+<li>collect 接收 Collector 接口的对象, Collectors 中有许多静态工厂方法
+<ul>
+<li>stream.collect(Collectors.totLis());</li>
+<li>stream.collect(Collectors.totSet());</li>
+<li>stream.collect(Collectors.toCollection(xxx:new));</li>
+<li>stream.collect(Collectors.joining());</li>
+<li>stream.collect(Collectors.joining(&quot;,&quot;)); 加分隔符</li>
+<li>stream.collect(Collectors.xxxSummaryStatistics()); 加分隔符</li>
+</ul>
+</li>
+</ul>
+<h2 id="收集到映射表中">收集到映射表中</h2>
+<p>toMap
+避免冲突, 传递第三个参数</p>
+<h2 id="群组和分区">群组和分区</h2>
+<p>将具有相同特性值群聚成组可以用 GroupingBy</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Stream</span><span class="o">&lt;</span><span class="n">Locale</span><span class="o">&gt;</span> <span class="n">locales</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">getAvailableLocales</span><span class="o">());</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Locale</span><span class="o">&gt;&gt;</span> <span class="n">countryToLocales</span> <span class="o">=</span> <span class="n">locales</span><span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">groupingBy</span><span class="o">(</span><span class="n">Locale</span><span class="o">::</span><span class="n">getCountry</span><span class="o">));</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>分类函数是断言函数(返回 boolean)时, partitioningBy 比 groupingBy 更高效</p>
+<h2 id="下游收集器">下游收集器</h2>
+<p>groupingBy 会产生一个映射表, values 是 List, 若想以某种方法处理该列表, 可以用下游收集器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Locale</span><span class="o">&gt;&gt;</span> <span class="n">localesSet</span> <span class="o">=</span> <span class="n">locales</span><span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">groupingBy</span><span class="o">(</span><span class="n">Locale</span><span class="o">::</span><span class="n">getCountry</span><span class="o">,</span> <span class="n">Collectors</span><span class="o">.</span><span class="na">toSet</span><span class="o">()));</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>常用收集器</p>
+<ul>
+<li>counting 产生收集到的元素个数</li>
+<li>summingInt/Double/Long 接收一个引元, 将引元应用到下游元素并产生它们的和</li>
+<li>maxBy/minBy. 接收一个比较器, 产生最大/最小值</li>
+</ul>
+<h2 id="约简操作">约简操作</h2>
+<p>reduce, 接收二元函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="o">...;</span>
+
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">reduce</span><span class="o">((</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">);</span>
+
+<span class="c1">// 使用幺元
+</span><span class="c1"></span>
+<span class="n">Integer</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">reduce</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">);</span>
+<span class="n">Long</span> <span class="n">product</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">reduce</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)-&gt;</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="基本类型流">基本类型流</h2>
+<p>IntStream, LongStream, DoubleStream 直接存储基本值 int, long, double 而无需使用包装器同样可以使用 generate, iterate 方法, IntStream 和 LongStream 有 range 和 rangeClosed 方法可以产生步长为 1 的整数范围</p>
+<h2 id="并行流">并行流</h2>
+<ul>
+<li>parallelStream()</li>
+<li>stream.parallel()</li>
+</ul>
+<p>应保证安全</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-18
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/stream/">stream</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java_io/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">输入与输出</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java_concurrency/">
+            <span class="next-text nav-default">并发</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-04-18 21:15:00 \u002b0800 CST',
+        title: '流库',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

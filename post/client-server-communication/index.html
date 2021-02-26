@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>client/server communication - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="客户机/服务器通信 套接字(socket) 套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个 套接字由一个IP地址和一个端口号" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/client-server-communication/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="client/server communication" />
+<meta property="og:description" content="客户机/服务器通信 套接字(socket) 套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个 套接字由一个IP地址和一个端口号" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/client-server-communication/" />
+<meta property="article:published_time" content="2019-11-25T15:57:28+00:00" />
+<meta property="article:modified_time" content="2019-11-25T15:57:28+00:00" />
+<meta itemprop="name" content="client/server communication">
+<meta itemprop="description" content="客户机/服务器通信 套接字(socket) 套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个 套接字由一个IP地址和一个端口号">
+<meta itemprop="datePublished" content="2019-11-25T15:57:28+00:00" />
+<meta itemprop="dateModified" content="2019-11-25T15:57:28+00:00" />
+<meta itemprop="wordCount" content="1162">
+
+
+
+<meta itemprop="keywords" content="操作系统,进程,OS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="client/server communication"/>
+<meta name="twitter:description" content="客户机/服务器通信 套接字(socket) 套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个 套接字由一个IP地址和一个端口号"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">client/server communication</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-25 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"> 操作系统 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#客户机服务器通信">客户机/服务器通信</a>
+      <ul>
+        <li><a href="#套接字socket">套接字(socket)</a>
+          <ul>
+            <li><a href="#例子">例子</a></li>
+          </ul>
+        </li>
+        <li><a href="#远程过程调用remote-procedure-call-rpc">远程过程调用(Remote Procedure Call, RPC)</a>
+          <ul>
+            <li><a href="#不同数据表示">不同数据表示</a></li>
+          </ul>
+        </li>
+        <li><a href="#管道pipe">管道(pipe)</a>
+          <ul>
+            <li><a href="#普通管道">普通管道</a></li>
+            <li><a href="#命名管道">命名管道</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="客户机服务器通信">客户机/服务器通信</h1>
+<h2 id="套接字socket">套接字(socket)</h2>
+<p>套接字为通信的端点. 网络通信的进程需要一对套接字, 即一个进程各有一个
+套接字由一个IP地址和一个端口号组成.</p>
+<ul>
+<li>1-1024 端口是被规定好的, 被称作众所周知的端口(Well Known Ports)</li>
+<li>1025-65535 动态端口(Dynamic Ports)
+套接字通常采用客户机/服务器架构</li>
+</ul>
+<h3 id="例子">例子</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+<span class="cm">/**
+</span><span class="cm"> * Time-of-day server listening to port 6013.
+</span><span class="cm"> *
+</span><span class="cm"> * Figure 3.21
+</span><span class="cm"> *
+</span><span class="cm"> * @file DataServer.java
+</span><span class="cm"> * @author Silberschatz, Gagne, and Galvin. 
+</span><span class="cm"> * Operating System Concepts  - Ninth Edition
+</span><span class="cm"> * Copyright John Wiley &amp; Sons - 2013.
+</span><span class="cm"> */</span>
+ 
+<span class="kn">import</span> <span class="nn">java.net.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DateServer</span>
+<span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>  <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">ServerSocket</span> <span class="n">sock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerSocket</span><span class="o">(</span><span class="n">6013</span><span class="o">);</span>
+
+			<span class="c1">// now listen for connections
+</span><span class="c1"></span>			<span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">Socket</span> <span class="n">client</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+				<span class="c1">// we have a connection
+</span><span class="c1"></span>				
+				<span class="n">PrintWriter</span> <span class="n">pout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+				<span class="c1">// write the Date to the socket
+</span><span class="c1"></span>				<span class="n">pout</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+
+				<span class="c1">// close the socket and resume listening for more connections
+</span><span class="c1"></span>				<span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ioe</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * Client program requesting current date from server.
+</span><span class="cm"> *
+</span><span class="cm"> * Figure 3.22
+</span><span class="cm"> *
+</span><span class="cm"> * @file DataClient.java
+</span><span class="cm"> * @author Silberschatz, Gagne and Galvin
+</span><span class="cm"> * Operating System Concepts  - Eighth Edition
+</span><span class="cm"> */</span> 
+
+<span class="kn">import</span> <span class="nn">java.net.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DateClient</span>
+<span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>  <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="c1">// this could be changed to an IP name or address other than the localhost
+</span><span class="c1"></span>			<span class="n">Socket</span> <span class="n">sock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="o">,</span><span class="n">6013</span><span class="o">);</span>
+			<span class="n">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+			<span class="n">BufferedReader</span> <span class="n">bin</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span><span class="n">in</span><span class="o">));</span>
+
+			<span class="n">String</span> <span class="n">line</span><span class="o">;</span>
+			<span class="k">while</span><span class="o">(</span> <span class="o">(</span><span class="n">line</span> <span class="o">=</span> <span class="n">bin</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+				
+			<span class="n">sock</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ioe</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ javac DataServer.java
+$ javac DataClient.java
+$ java DataServer
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ java DateClient
+Mon Nov <span class="m">25</span> 17:46:06 CST <span class="m">2019</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="远程过程调用remote-procedure-call-rpc">远程过程调用(Remote Procedure Call, RPC)</h2>
+<p>RPC 交换的信息具有明确的结构</p>
+<blockquote>
+<p>存根(stub)</p>
+<p>一个占位的函数, 接收参数并跳转到真正的实现</p>
+</blockquote>
+<ol>
+<li>客户端调用本地客户端存根(client stub), client stub 打包(封装, 编组. marshaling)参数</li>
+<li>client stub 把打包好的参数发给远端系统</li>
+<li>server stub(skeleton)接收消息, 反编参数</li>
+<li>server stub 调用服务器过程</li>
+<li>结果反传</li>
+</ol>
+<h3 id="不同数据表示">不同数据表示</h3>
+<ol>
+<li>大端尾序(big-endian)
+将高序字节存储在起始地址</li>
+<li>小端尾序(little-endian)
+将低序字节存储在起始地址</li>
+<li>外部数据表示(eXternal Data Representation, XDR)</li>
+</ol>
+<h2 id="管道pipe">管道(pipe)</h2>
+<h3 id="普通管道">普通管道</h3>
+<ul>
+<li>单向</li>
+<li>生产者向管道的写入端写, 消费者从管道读出端读</li>
+</ul>
+<p>unix创建pipe, 使用<code>pipe</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">NAME
+       pipe — create an interprocess channel
+
+SYNOPSIS
+       #include &lt;unistd.h&gt;
+
+       int pipe(int fildes[2]);
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>fildes[0] 读出端</li>
+<li>fildes[1] 写入端</li>
+</ul>
+<p>UNIX 将管道当作一种文件, 可以使用read() 和 write()
+用于父子通信</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
+</span><span class="cm"> * Example program demonstrating UNIX pipes.
+</span><span class="cm"> *
+</span><span class="cm"> * Figures 3.25 &amp; 3.26
+</span><span class="cm"> *
+</span><span class="cm"> * @author Silberschatz, Galvin, and Gagne
+</span><span class="cm"> * Operating System Concepts  - Ninth Edition
+</span><span class="cm"> * Copyright John Wiley &amp; Sons - 2013
+</span><span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#define BUFFER_SIZE 25
+</span><span class="cp">#define READ_END	0
+</span><span class="cp">#define WRITE_END	1
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">char</span> <span class="n">write_msg</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#34;Greetings&#34;</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="n">read_msg</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+	<span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">fd</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+	<span class="cm">/* create the pipe */</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">&#34;Pipe failed&#34;</span><span class="p">);</span>
+		<span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="cm">/* now fork a child process */</span>
+	<span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Fork failed&#34;</span><span class="p">);</span>
+		<span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  <span class="cm">/* parent process */</span>
+		<span class="cm">/* close the unused end of the pipe */</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="n">READ_END</span><span class="p">]);</span>
+
+		<span class="cm">/* write to the pipe */</span>
+		<span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="n">WRITE_END</span><span class="p">],</span> <span class="n">write_msg</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">write_msg</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> 
+
+		<span class="cm">/* close the write end of the pipe */</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="n">WRITE_END</span><span class="p">]);</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="p">{</span> <span class="cm">/* child process */</span>
+		<span class="cm">/* close the unused end of the pipe */</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="n">WRITE_END</span><span class="p">]);</span>
+
+		<span class="cm">/* read from the pipe */</span>
+		<span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="n">READ_END</span><span class="p">],</span> <span class="n">read_msg</span><span class="p">,</span> <span class="n">BUFFER_SIZE</span><span class="p">);</span>
+		<span class="n">printf</span><span class="p">(</span><span class="s">&#34;child read %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">read_msg</span><span class="p">);</span>
+
+		<span class="cm">/* close the write end of the pipe */</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="n">READ_END</span><span class="p">]);</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="命名管道">命名管道</h3>
+<p>UNIX 命名管道为FIFO</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">NAME
+       fifo - first-in first-out special file, named pipe
+
+DESCRIPTION
+       A FIFO special file (a named pipe) is similar to a pipe, except that it is accessed as part of the filesystem.  It can be opened by multiple processes for reading or writing.  When processes are exchanging data via the FIFO, the kernel passes all data internally  without writing  it  to  the filesystem.  Thus, the FIFO special file has no contents on the filesystem; the filesystem entry merely serves as a reference point so that processes can access the pipe using a name in the filesystem.
+       ...
+</code></pre></td></tr></table>
+</div>
+</div><p>只能半双工, 要求进程位于同一机器</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-25
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+          <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+          <a href="/tags/os/">OS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E4%BB%B6/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">计算机组件</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/">
+            <span class="next-text nav-default">强连通分量</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-11-25 15:57:28 \u002b0000 UTC',
+        title: 'client\/server communication',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

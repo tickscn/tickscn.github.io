@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>arithmetic on ticks blog</title>
+    <link>https://tickscn.github.io/tags/arithmetic/</link>
+    <description>Recent content in arithmetic on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 14 Dec 2019 20:04:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/tags/arithmetic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>汇编基本运算</title>
+      <link>https://tickscn.github.io/post/asm-num-arithmetic/</link>
+      <pubDate>Sat, 14 Dec 2019 20:04:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/asm-num-arithmetic/</guid>
+      <description>整型运算 加 (addition) add 指令 add 指令用来加两个整型 1 add source, destination source 可以是寄存器, 内存, 立即数 destination 可以是寄存器, 内存 但是 source 和 destination 不可以同时是内存 add 后面应该加上后缀来</description>
+    </item>
+    
+  </channel>
+</rss>

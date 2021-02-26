@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>UNP on ticks blog</title>
+    <link>https://tickscn.github.io/categories/unp/</link>
+    <description>Recent content in UNP on ticks blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 13 Aug 2020 16:26:00 +0800</lastBuildDate><atom:link href="https://tickscn.github.io/categories/unp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>套接字选项</title>
+      <link>https://tickscn.github.io/post/socket_options/</link>
+      <pubDate>Thu, 13 Aug 2020 16:26:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/socket_options/</guid>
+      <description>有很多方法来获取和设置套接字的选项 getsockopt 的 setsockopt fcntl ioctl getsockopt 和 setsockopt 这两个函数仅用于套接字 1 2 3 4 #include &amp;lt;sys/socket.h&amp;gt;int getsockopt(int sockfd, int level, int option_name, void* restrict option_value, socklen_t* restrict option_len); int setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len); 第一个参</description>
+    </item>
+    
+    <item>
+      <title>IO 复用: select 和 poll 函数</title>
+      <link>https://tickscn.github.io/post/unp_io_multiplexing/</link>
+      <pubDate>Tue, 11 Aug 2020 10:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_io_multiplexing/</guid>
+      <description>客户端如果有本机的输入文件描述符和 socket 文件描述符, 当服务器给客户端正确的发送了 FIN 时, 客户端有可能阻塞在输入文件描述符上而无法处理服务器的结果.</description>
+    </item>
+    
+    <item>
+      <title>基本 TCP 套接字编程</title>
+      <link>https://tickscn.github.io/post/unp_tcp_base/</link>
+      <pubDate>Mon, 03 Aug 2020 11:46:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_tcp_base/</guid>
+      <description>socket 函数 调用 socket 函数指定通信协议类型 1 2 #include &amp;lt;sys/socket.h&amp;gt;int socket(int domain, int type, int protocol); 协议簇 domain 说明 AF_INET IPv4 协议 AF_INET6 IPv6 协议 AF_LOCAL Unix 域协议 AF_ROUTE 路由套接字 AF_KEY 密钥套接字 类型 type 说明 SOCK_STREAM 字节流套接字 SOCK_DGRAM</description>
+    </item>
+    
+    <item>
+      <title>套接字编程简介</title>
+      <link>https://tickscn.github.io/post/unp_socket_introduction/</link>
+      <pubDate>Mon, 03 Aug 2020 11:16:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_socket_introduction/</guid>
+      <description>套接字地址结构 IPv4 套接字地址结构 通常也通为网际套接字地址结构, 它以 sockaddr_in 命名, 定义在头文件 &amp;lt;netinet/in.h&amp;gt;. 它的 POSIX 定义 1 2 3 4 5 6 7 8 9 10 11 struct in_addr { in_addr_t s_addr; /* 32 bits IPv4 地址</description>
+    </item>
+    
+    <item>
+      <title>TCP, UDP, SFTP</title>
+      <link>https://tickscn.github.io/post/unp_chapter2/</link>
+      <pubDate>Fri, 24 Jul 2020 20:56:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_chapter2/</guid>
+      <description>TCP 端口号与并发服务器 监听套接字(* : 21, * : *) 接收本地接口的 21 端口等待连接当一个客户(206.168.122.219)选择临时端口 1500, 与服务器连</description>
+    </item>
+    
+    <item>
+      <title>简介</title>
+      <link>https://tickscn.github.io/post/unp_jianjie/</link>
+      <pubDate>Fri, 24 Jul 2020 19:58:00 +0800</pubDate>
+      
+      <guid>https://tickscn.github.io/post/unp_jianjie/</guid>
+      <description>一个时间获取程序 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 #include &amp;#34;unp.h&amp;#34; int main(int argc, char* argv[]) { int sockfd, n; char recvline[MAXLENGTH + 1]; struct sockaddr_in servaddr; if (argc != 2) err_quit(&amp;#34;Usage:a.out &amp;lt;IPAddress&amp;gt;&amp;#34;); if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) &amp;lt; 0) err_sys(&amp;#34;socket error&amp;#34;); bzero(&amp;amp;servaddr, sizeof(servaddr)); // 置0;</description>
+    </item>
+    
+  </channel>
+</rss>

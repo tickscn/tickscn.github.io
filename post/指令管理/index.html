@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>指令管理 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="CPU从内存读取指令(instruction)和数据(data). 为了区分指令和数腒, 分别使用指令指针(instruction pointer), 数据指针(d" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/%E6%8C%87%E4%BB%A4%E7%AE%A1%E7%90%86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="指令管理" />
+<meta property="og:description" content="CPU从内存读取指令(instruction)和数据(data). 为了区分指令和数腒, 分别使用指令指针(instruction pointer), 数据指针(d" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/%E6%8C%87%E4%BB%A4%E7%AE%A1%E7%90%86/" />
+<meta property="article:published_time" content="2019-11-28T20:37:58+00:00" />
+<meta property="article:modified_time" content="2019-11-28T20:37:58+00:00" />
+<meta itemprop="name" content="指令管理">
+<meta itemprop="description" content="CPU从内存读取指令(instruction)和数据(data). 为了区分指令和数腒, 分别使用指令指针(instruction pointer), 数据指针(d">
+<meta itemprop="datePublished" content="2019-11-28T20:37:58+00:00" />
+<meta itemprop="dateModified" content="2019-11-28T20:37:58+00:00" />
+<meta itemprop="wordCount" content="876">
+
+
+
+<meta itemprop="keywords" content="汇编,assembly,CS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="指令管理"/>
+<meta name="twitter:description" content="CPU从内存读取指令(instruction)和数据(data). 为了区分指令和数腒, 分别使用指令指针(instruction pointer), 数据指针(d"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">指令管理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-28 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"> 汇编语言 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#指令码格式">指令码格式</a></li>
+    <li><a href="#opcode">opcode</a></li>
+    <li><a href="#prefix">prefix</a></li>
+    <li><a href="#modifier">modifier</a>
+      <ul>
+        <li><a href="#modrm">ModR/M</a>
+          <ul>
+            <li><a href="#mod-区">mod 区</a></li>
+            <li><a href="#regopcode">reg/opcode</a></li>
+            <li><a href="#rm">r/m</a></li>
+          </ul>
+        </li>
+        <li><a href="#sibscale-index-base">SIB(Scale-Index-Base)</a></li>
+        <li><a href="#displacement">displacement</a></li>
+        <li><a href="#data-elements">data elements</a></li>
+      </ul>
+    </li>
+    <li><a href="#汇编语言">汇编语言</a>
+      <ul>
+        <li><a href="#助记符">助记符</a></li>
+        <li><a href="#定义数据">定义数据</a>
+          <ul>
+            <li><a href="#使用内存定位">使用内存定位</a></li>
+            <li><a href="#使用栈">使用栈</a></li>
+          </ul>
+        </li>
+        <li><a href="#伪指令directive">伪指令(directive)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>CPU从内存读取指令(instruction)和数据(data).</p>
+<p>为了区分指令和数腒, 分别使用指令指针(instruction pointer), 数据指针(data pointer).</p>
+<p>指针用来追踪以执行的指令,并指向下一步执行的指令</p>
+<h1 id="指令码格式">指令码格式</h1>
+<ul>
+<li>前缀(prefix):可选(0-4 bytes)</li>
+<li>操作码(operational code, opcode)(1-3 bytes)</li>
+<li>修饰(modifier):可选
+<ul>
+<li>ModR/M(0-1 bytes)</li>
+<li>SIB (0-1 bytes)</li>
+<li>Displacement (0-4 bytes)</li>
+</ul>
+</li>
+<li>立即数(data elements):可选</li>
+</ul>
+<h1 id="opcode">opcode</h1>
+<p>是唯一必须的, 告诉CPU要执行什么任务</p>
+<h1 id="prefix">prefix</h1>
+<p>用来设置opcode 的行为. 分为四种不同类型. 每种类型一次只能选择一个来修饰</p>
+<ul>
+<li>lock and repeat prefixes: lock 表示独占共享内存. repeat 表明重复函数(function)</li>
+<li>segment override and branch hint prefixes: segment override 表明可以重设段寄存器的值. branch hint 告诉CPU 最有可能执行的分支路径, 用在有分支预测的硬件上</li>
+<li>operand size override prefix: 转换操作数大小. 告诉处理器指令会切换操作数的大小. 提醒处理器会使用更大的操作数, 加快对寄存器的赋值</li>
+<li>address size override prefix: 转换地址大小. 程序要切换地址位数</li>
+</ul>
+<h1 id="modifier">modifier</h1>
+<h2 id="modrm">ModR/M</h2>
+<ul>
+<li>Mod(2 bits, 7-6)</li>
+<li>reg/opcode (3bits, 5-3)</li>
+<li>r/m (3 bits, 2-0)</li>
+</ul>
+<h3 id="mod-区">mod 区</h3>
+<p>和 r/m 区定义指令使用的寄存器或地址模式. 地址模式一共24种, 通用寄存器8个. 一共32种可能的值</p>
+<h3 id="regopcode">reg/opcode</h3>
+<p>3 bits的额外空间去定义更详细的opcode, 或者寄存器的名字</p>
+<h3 id="rm">r/m</h3>
+<p>定义另一个寄存器, 或者和 mod区一起定义地址模式</p>
+<h2 id="sibscale-index-base">SIB(Scale-Index-Base)</h2>
+<ul>
+<li>scale(2bits, 7-6)</li>
+<li>index(3bits, 5-3)</li>
+<li>base(3bits, 2-0)
+$index + base*2^{scale}$</li>
+</ul>
+<h2 id="displacement">displacement</h2>
+<p>地址偏移. 用作基址的偏移在内存中访问数据</p>
+<h2 id="data-elements">data elements</h2>
+<p>指令自带的操作数.</p>
+<p>例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">C7 45 FC 01 00 00 00
+</code></pre></td></tr></table>
+</div>
+</div><p>C7 指令移动数据
+45 EBP regesiter
+FC -4
+01 00 00 00小端序. 是int型的1</p>
+<h1 id="汇编语言">汇编语言</h1>
+<ul>
+<li>指令(Opcode)助记符</li>
+<li>数据段</li>
+<li>命令</li>
+</ul>
+<h2 id="助记符">助记符</h2>
+<p>避免记忆复杂的操作码bits, 只需要记住助记符</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">55 
+89 E5
+83 EC 08
+C7 45 FC 01 00 00 00
+83 EC 0C
+6A 00
+E8 D1 FE FF FF 
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">push</span> <span class="nv">%ebp</span>
+<span class="nf">mov</span> <span class="nv">%esp</span><span class="p">,</span> <span class="nv">%ebp</span>
+<span class="nf">sub</span> <span class="no">$0x8</span><span class="p">,</span> <span class="nv">%esp</span>
+<span class="nf">movl</span> <span class="no">$0x1</span><span class="p">,</span> <span class="p">-</span><span class="mi">4</span><span class="p">(</span><span class="nv">%ebp</span><span class="p">)</span>
+<span class="nf">sub</span> <span class="no">$0xC</span><span class="p">,</span> <span class="nv">%esp</span>
+<span class="nf">push</span> <span class="no">$0x0</span>
+<span class="nf">call</span> <span class="mi">8048348</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="定义数据">定义数据</h2>
+<h3 id="使用内存定位">使用内存定位</h3>
+<ul>
+<li>label</li>
+<li>数据类型</li>
+<li>默认值</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nl">testvalue:</span>
+    <span class="na">.long</span> <span class="mi">150</span>
+<span class="nl">message:</span>
+    <span class="na">.ascii</span> <span class="s">&#34;This is a test message&#34;</span>
+<span class="nl">pi:</span>
+    <span class="na">.float</span> <span class="mi">3</span><span class="no">.14159</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用栈">使用栈</h3>
+<p>栈是一段特殊的内存. 预留来进形参数传递. 也可用来储存临时变量</p>
+<h2 id="伪指令directive">伪指令(directive)</h2>
+<p>告诉汇编器如何生成指令代码. 如上使用的 .long, .ascii, .float</p>
+<p>一个比较重要的伪指令 <code>.section</code>, 用来指出程序某一部分是用来定义啥的</p>
+<ul>
+<li>data section</li>
+<li>bss section</li>
+<li>text section</li>
+</ul>
+<p>data section 定义数据元素, 需要默认值</p>
+<p>bss section 提供一个buffer给之后声明的变量, 是静态的.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-28
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+          <a href="/tags/assembly/">assembly</a>
+          <a href="/tags/cs/">CS</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B1%87%E7%BC%96%E5%AD%A6%E4%B9%A0%E5%B7%A5%E5%85%B7/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">汇编学习工具</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/simple-unix-shell/">
+            <span class="next-text nav-default">simple_unix_shell</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-11-28 20:37:58 \u002b0000 UTC',
+        title: '指令管理',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

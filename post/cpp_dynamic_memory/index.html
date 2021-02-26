@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>动态内存 - ticks blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="ticks" /><meta name="description" content="动态内存和智能指针 动态内存使用一对运算符: new, delete. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="https://tickscn.github.io/post/cpp_dynamic_memory/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="动态内存" />
+<meta property="og:description" content="动态内存和智能指针 动态内存使用一对运算符: new, delete. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tickscn.github.io/post/cpp_dynamic_memory/" />
+<meta property="article:published_time" content="2020-05-25T21:14:00+08:00" />
+<meta property="article:modified_time" content="2020-05-25T21:14:00+08:00" />
+<meta itemprop="name" content="动态内存">
+<meta itemprop="description" content="动态内存和智能指针 动态内存使用一对运算符: new, delete. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存">
+<meta itemprop="datePublished" content="2020-05-25T21:14:00+08:00" />
+<meta itemprop="dateModified" content="2020-05-25T21:14:00+08:00" />
+<meta itemprop="wordCount" content="2664">
+
+
+
+<meta itemprop="keywords" content="dynamic-memory," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="动态内存"/>
+<meta name="twitter:description" content="动态内存和智能指针 动态内存使用一对运算符: new, delete. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">ticks blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">ticks blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">动态内存</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-25 </span>
+        <div class="post-category">
+            <a href="/categories/cpp/"> CPP </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#动态内存和智能指针">动态内存和智能指针</a>
+          <ul>
+            <li><a href="#shared-ptr"><code>shared_ptr</code></a></li>
+            <li><a href="#直接管理内存">直接管理内存</a></li>
+            <li><a href="#shared-ptr-with-new"><code>shared_ptr</code> with <code>new</code></a></li>
+            <li><a href="#智能指针和异常">智能指针和异常</a></li>
+            <li><a href="#unique-ptr"><code>unique_ptr</code></a></li>
+            <li><a href="#weak-ptr"><code>weak_ptr</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#动态数组">动态数组</a>
+          <ul>
+            <li><a href="#new-和数组"><code>new</code> 和数组</a></li>
+            <li><a href="#分配器--allocator-class">分配器(allocator class)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="动态内存和智能指针">动态内存和智能指针</h2>
+<p>动态内存使用一对运算符: <code>new, delete</code>. 动态内存很容易出问题, 比如说没有在正确时间释放内存导致内存泄漏, 或者使用了指向已经释放了的内存, 为了使动态内存更简单和安全. 库提供了两种智能指针</p>
+<ul>
+<li><code>shared_ptr</code>: 允许多个指针指向同一个对象</li>
+<li><code>unique_ptr</code>: 独占指向的对象</li>
+</ul>
+<p>一个配合的类 <code>weak_ptr</code>: 是一个被 <code>shared_ptr</code> 管理对象的弱引用</p>
+<h3 id="shared-ptr"><code>shared_ptr</code></h3>
+<p><code>shared_ptr</code> 是一个模版类.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">pStr</span><span class="p">;</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">pLst</span><span class="p">;</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">pStr</span> <span class="o">&amp;&amp;</span> <span class="n">pStr</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">())</span>
+    <span class="o">*</span><span class="n">pStr</span> <span class="o">=</span> <span class="s">&#34;Hei&#34;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="make-shared-函数"><code>make_shared</code> 函数</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p1</span>      <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&#34;999999&#34;</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p2</span>      <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="sc">&#39;9&#39;</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">p3</span>         <span class="o">=</span> <span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="shared-ptr-拷贝和赋值"><code>shared_ptr</code> 拷贝和赋值</h4>
+<p>拷贝和赋值 <code>shared_ptr</code> 时, 指向同一对象的所有 <code>shared_ptr</code> 会追踪有多少指针指向该对象. 可以认为其有一个相关的计数器.
+当其被拷贝或用来初使化另一个 <code>shared_ptr</code> 时计数器会加 1, 当 <code>shared_ptr</code> 被赋新值时或被销毁时, 原计数器减 1. 计数器为 1 时自动释放管理对象的内存</p>
+<h4 id="shared-ptr-自动销毁理管理对象"><code>shared_ptr</code> 自动销毁理管理对象</h4>
+<p>生存周期到了后调用析构函数</p>
+<h3 id="直接管理内存">直接管理内存</h3>
+<ul>
+<li>new: 分配内存</li>
+<li>delete: 释放 <code>new</code> 分配的内存</li>
+</ul>
+<h4 id="使用-new-分配和初始化内存">使用 <code>new</code> 分配和初始化内存</h4>
+<p><code>new</code> 分配内存, 构造对象, 返回指针</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span><span class="o">*</span> <span class="n">pi1</span>       <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>
+<span class="kt">int</span><span class="o">*</span> <span class="n">pi2</span>       <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">();</span>
+<span class="n">string</span><span class="o">*</span> <span class="n">ps1</span>    <span class="o">=</span> <span class="k">new</span> <span class="n">string</span><span class="p">;</span>
+<span class="n">string</span><span class="o">*</span> <span class="n">ps2</span>    <span class="o">=</span> <span class="k">new</span> <span class="n">string</span><span class="p">();</span>
+<span class="kt">int</span> <span class="k">const</span><span class="o">*</span> <span class="n">pci</span> <span class="o">=</span> <span class="k">new</span> <span class="k">const</span> <span class="kt">int</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+<span class="n">string</span> <span class="k">const</span><span class="o">*</span> <span class="n">pcs</span> <span class="o">=</span> <span class="k">new</span> <span class="k">const</span> <span class="n">string</span><span class="p">(</span><span class="s">&#34;hi&#34;</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="内存枯竭">内存枯竭</h4>
+<p>虽然现代机器有非常在的内存, 自由存储区仍然有可能耗尽. 如果一个程序用尽了允许的内存, <code>new</code> 会失败, 默认抛出 <code>bad_alloc</code> 异常, 可以使用另一种 <code>new</code> 禁止抛出异常</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span><span class="o">*</span> <span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>            <span class="c1">// if failed, throw bad_alloc
+</span><span class="c1"></span><span class="kt">int</span><span class="o">*</span> <span class="n">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="p">(</span><span class="n">nothrow</span><span class="p">)</span> <span class="kt">int</span><span class="p">;</span>  <span class="c1">// if failed, return nullptr;
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="释放内存">释放内存</h4>
+<p><code>delete</code> 指针, 销毁对象, 释放内存释放栈对象或已释放内存是未定义行为. delete 空指针是合法的</p>
+<h4 id="delete-后重设指针"><code>delete</code> 后重设指针</h4>
+<p>当 <code>delete</code> 一个指针时后, 指针仍指向已释放的内存, 称为悬挂指针(dangling pointer). 为了避免可以在相关指针本身将过期时删除, 或者将 <code>nullptr</code> 赋值给该指针. 可惜这种保护很有限. 如果有多个指针指向该元素, 其它指针仍然不安全</p>
+<h3 id="shared-ptr-with-new"><code>shared_ptr</code> with <code>new</code></h3>
+<p>T* q = new T;</p>
+<ul>
+<li>shared_ptr<T> p(q)</li>
+<li>shared_ptr<T> p(u): u 是 <code>unique_ptr</code>, 之后 u 是 null, 其管理的对象交给 <code>shared_ptr</code></li>
+</ul>
+<h4 id="不要混用内建指针和智能指针">不要混用内建指针和智能指针</h4>
+<p>容易出错</p>
+<h4 id="不要使用-get-获得的内建指针初始化另一个智能指针">不要使用 <code>get</code> 获得的内建指针初始化另一个智能指针</h4>
+<p>容易出现悬挂指针</p>
+<h3 id="智能指针和异常">智能指针和异常</h3>
+<p>智能指针确保不用的内存会释放, 即使提前结束代码块. 而内建指针会在抛出异常且没有在 <code>delete</code> 之前捕获, 会造成内破存泄漏</p>
+<h4 id="智能指针与-dumb-classes">智能指针与 dumb classes</h4>
+<p>许多类定义了析构函数负则释放对象资源, 不过通常来说, 同时为 c 和 c++ 设计的类需要专门释放资源, 这种类有可能出现抛出异常后导致资源泄漏. 可以使用智能指针</p>
+<h4 id="使用自定义删除代码">使用自定义删除代码</h4>
+<p>默认时 <code>shared_ptr</code> 确保指向动态内存. 默认时引用计数为 0 时, 调用 delete 删除指针指向资源. 为了管理 dumb classes 需要自定义关闭函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">destination</span><span class="p">;</span>
+<span class="k">struct</span> <span class="nc">connection</span><span class="p">;</span>
+<span class="n">connection</span> <span class="nf">connect</span><span class="p">(</span><span class="n">destination</span><span class="o">*</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">disconnect</span><span class="p">(</span><span class="n">connection</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">end_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">disconnect</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">destination</span><span class="o">&amp;</span> <span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">connection</span> <span class="n">c</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="p">);</span>
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">connection</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="n">end_connection</span><span class="p">);</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="unique-ptr"><code>unique_ptr</code></h3>
+<p><code>unique_ptr</code> 独占指向的对象, 与 <code>shared_ptr</code> 不同, 一个对象同时只能被一个 <code>unique_ptr</code> 指向. 不能拷贝和赋值, 通过绑定 new 返回的指针初始化. 虽然不能拷贝和赋值, 可以通过 <code>reset, release</code> 来转移所有权</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&#34;hi&#34;</span><span class="p">));</span>
+<span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p2</span><span class="p">(</span><span class="n">p1</span><span class="p">.</span><span class="n">release</span><span class="p">());</span>  <span class="c1">// p1 will be null;
+</span><span class="c1"></span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p3</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">));</span>
+<span class="n">p2</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">p3</span><span class="p">.</span><span class="n">release</span><span class="p">());</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="传递和返回-unique-ptr">传递和返回 <code>unique_ptr</code></h4>
+<p>不能拷贝 <code>unique_ptr</code> 有一个例外, 就是被拷贝对象将被销毁</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">auto_ptr 类似于 unique_ptr 但是不安全且不如用, 建议新程序用 unique_ptr 替换
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="给-unique-ptr-传递-deleter">给 <code>unique_ptr</code> 传递 deleter</h4>
+<p>默认使用 <code>delete</code> 释放资源, 可以重载 deleter</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">destination</span><span class="p">;</span>
+<span class="k">struct</span> <span class="nc">connection</span><span class="p">;</span>
+<span class="n">connection</span> <span class="nf">connect</span><span class="p">(</span><span class="n">destination</span><span class="o">*</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">disconnect</span><span class="p">(</span><span class="n">connection</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">end_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">disconnect</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">destination</span><span class="o">&amp;</span> <span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">connection</span> <span class="n">c</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="p">);</span>
+    <span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">connection</span><span class="p">,</span> <span class="k">decltype</span><span class="p">(</span><span class="n">end_connection</span><span class="p">)</span><span class="o">*&gt;</span> <span class="n">p</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="n">end_connection</span><span class="p">);</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="weak-ptr"><code>weak_ptr</code></h3>
+<p><code>weak_ptr</code> 不控制所指对象的生命期. 其所指对象由 <code>shared_ptr</code> 管理, <code>weak_prt</code> 不会改变 <code>shared_ptr</code> 引用计数. 如果 <code>shared_ptr</code> 引用计数为 0, 管理对象会被释放, 即使有 <code>weak_ptr</code> 正指向该对象</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>weak_ptr&lt;T&gt; w</code></td>
+<td>null 指针, 能指向类型 T</td>
+</tr>
+<tr>
+<td><code>weak_ptr&lt;T&gt; w(sp)</code></td>
+<td>指向 <code>shared_ptr</code> sp 管理对象</td>
+</tr>
+<tr>
+<td>w = p</td>
+<td>p 可以是 <code>weak_ptr</code> 也可以是 <code>shared_ptr</code></td>
+</tr>
+<tr>
+<td>w.reset()</td>
+<td>置空</td>
+</tr>
+<tr>
+<td>w.use_count()</td>
+<td>引用计数</td>
+</tr>
+<tr>
+<td>w.expired()</td>
+<td>引用计数为 0 时返回 <code>true</code></td>
+</tr>
+<tr>
+<td>w.lock()</td>
+<td>return <code>shared_ptr</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="授查指针类--checked-pointer-classes">授查指针类(checked pointer classes)</h4>
+<p>示例, Blob 的伴旅指针类 BlobStr.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#ifndef _BLOB_HPP_
+</span><span class="cp">#define _BLOB_HPP_
+</span><span class="cp">#include</span> <span class="cpf">&lt;initializer_list&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">BlobPtr</span><span class="p">;</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Blob</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">friend</span> <span class="k">class</span> <span class="nc">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">begin</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">end</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">using</span> <span class="n">size_type</span> <span class="o">=</span> <span class="n">size_t</span><span class="p">;</span>
+    <span class="n">Blob</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">())</span> <span class="p">{}</span>
+    <span class="n">Blob</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">il</span><span class="p">)</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">il</span><span class="p">))</span> <span class="p">{}</span>
+    <span class="n">size_type</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">bool</span> <span class="nf">empty</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">push_back</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">_v</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">_v</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">pop_back</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;pop_back on empty Blob&#34;</span><span class="p">);</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">pop_back</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="n">T</span><span class="o">&amp;</span> <span class="n">front</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;front on empty Blob&#34;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">front</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">front</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;front on empty Blob&#34;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">front</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">T</span><span class="o">&amp;</span> <span class="n">back</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;back on empty Blob&#34;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">back</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">back</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;back on empty Blob&#34;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">back</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">check</span><span class="p">(</span><span class="n">size_type</span> <span class="n">i</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">())</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">BlobPtr</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">using</span> <span class="n">size_type</span> <span class="o">=</span> <span class="n">size_t</span><span class="p">;</span>
+    <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">:</span> <span class="n">curr</span><span class="p">(</span><span class="mi">0</span><span class="p">){};</span>
+    <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">b</span><span class="p">,</span> <span class="n">size_type</span> <span class="n">sz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">data</span><span class="p">),</span> <span class="n">curr</span><span class="p">(</span><span class="n">sz</span><span class="p">){};</span>
+    <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s">&#34;dereference past end&#34;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)[</span><span class="n">curr</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="s">&#34;increment past end of BlobPtr&#34;</span><span class="p">);</span>
+        <span class="o">++</span><span class="n">curr</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">BlobPtr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">++</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">check</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="s">&#34;increment past end of BlobPtr&#34;</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="n">temp</span> <span class="o">=</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+        <span class="o">++</span><span class="n">curr</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">temp</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">check</span><span class="p">(</span><span class="n">size_type</span> <span class="n">i</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ret</span><span class="p">)</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;己释放&#34;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">ret</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">())</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">size_type</span> <span class="n">curr</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="cp">#endif
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="指针操作">指针操作</h4>
+<h2 id="动态数组">动态数组</h2>
+<p><code>new</code> 和 <code>delete</code> 一次操作一个对象. 有时需要一次为多个对象分配内存. 为了这种情况, 有两种方法一次申请一个对象数组. 定义了第二种 <code>new</code> 表达式. STL 中有模版类 <code>allocator</code>.</p>
+<p>很多甚至大部分情况不需要直接使用动态数组, 可以使用标准库容器, 如 <code>vector</code>, 来替代. 新的标准库也非常的快速, 安全, 简单. 容器可以使用默认拷贝, 赋值, 析构函数. 如果使用动态数组, 这三种函数需要自己定义.</p>
+<h3 id="new-和数组"><code>new</code> 和数组</h3>
+<p>使用 <code>new</code> 分配一组对象, 需要在类型后用方括号输入大小</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="o">*</span> <span class="n">pia</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>方括号中的数据必须是整数类型(char, short, int, long, long long&hellip;), 不过不需要是常量</p>
+<h4 id="new-数组产生一个指向元素的指针"><code>new</code> 数组产生一个指向元素的指针</h4>
+<p><code>new</code> 分配数组时, 我们无法获取数组类型. 我们获取的是指针. 不能使用 <code>begin, end</code>. 不能使用 range for. 使用 sizeof 得到的是指针的大小而不是数组的大小</p>
+<h4 id="动态数组初始化">动态数组初始化</h4>
+<p>在方括号后加一个空的圆括号可以初始化动态数组. 新的标准允许提供初始化列表. 如果列表元素少于数组大小, 剩下的元素值初始化. 反之多于数组大小, 分配失败, 抛出 <code>bad_array_new_length</code></p>
+<h4 id="允许-new-一个空数组">允许 <code>new</code> 一个空数组</h4>
+<p>如果大小为 0, new 返回一个合法非空指针, 不过不能解引用.</p>
+<h4 id="释放动态数组">释放动态数组</h4>
+<p>delete 后加一个空的方括号</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">delete</span><span class="p">[]</span> <span class="n">pia</span><span class="p">;</span>  <span class="c1">//方 括号不可省略
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="智能指针和动态数组">智能指针和动态数组</h4>
+<p><code>unique_ptr&lt;T[]&gt; up</code> 不能使用 &lsquo;.&rsquo; 或 &lsquo;-&gt;&rsquo;. 可以使用下标运算符访问.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">[]</span><span class="o">&gt;</span> <span class="n">up</span><span class="p">(</span><span class="n">mew</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">]);</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">up</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>shared_ptr</code> 不能直接管理动态数组, 如果想要使用必须提供 deleter, 且其不支持下标运算符和数学运算, 访问需要使用 get 获取内建指针</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">[]</span><span class="o">&gt;</span> <span class="n">sp</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="p">[](</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span><span class="p">[]</span> <span class="n">p</span><span class="p">;</span> <span class="p">});</span>
+<span class="c1">// shared_ptr&lt;int[]&gt; sp(new int[10], default_delete&lt;int[]&gt;())
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="分配器--allocator-class">分配器(allocator class)</h3>
+<p><code>new</code> 将内存分配与构造对象相关联, 当分配一个对象时, 这通常是我们想要的.</p>
+<p>当我们分配一块内存, 并想要按需构造时, 我们想要分离分配内存与构造对象. 这时关联分配与构造有可能是浪费的. 特别的, 没有默认构造函数时无法使用动态数组</p>
+<h4 id="allocator-class">allocator class</h4>
+<p><code>allocator</code> 提供类型明确的未构造内存.</p>
+<table>
+<thead>
+<tr>
+<th><code>allocator&lt;T&gt; a</code></th>
+<th>定义一个名为 a 的可以分配类型为 T 的对象的 allocator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a.allocate(n)</td>
+<td>分配可以保存 n 个 T 对象的未构造内存</td>
+</tr>
+<tr>
+<td>a.deallocate(p, n)</td>
+<td>释放内存</td>
+</tr>
+<tr>
+<td>a.constuc(p, args)</td>
+<td>构造对象</td>
+</tr>
+<tr>
+<td>a.destroy(p)</td>
+<td>析构对象</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">allocator</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">alloc</span><span class="p">;</span>
+<span class="k">auto</span> <span class="k">const</span> <span class="n">p</span> <span class="o">=</span> <span class="n">alloc</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="c1">// 构造
+</span><span class="c1"></span><span class="k">auto</span> <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+<span class="n">alloc</span><span class="p">.</span><span class="n">consruct</span><span class="p">(</span><span class="n">q</span><span class="o">++</span><span class="p">);</span>
+<span class="n">alloc</span><span class="p">.</span><span class="n">consruct</span><span class="p">(</span><span class="n">q</span><span class="o">++</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="sc">&#39;9&#39;</span><span class="p">);</span>
+<span class="n">alloc</span><span class="p">.</span><span class="n">consruct</span><span class="p">(</span><span class="n">q</span><span class="o">++</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+<span class="c1">// 析构
+</span><span class="c1"></span><span class="k">while</span> <span class="p">(</span><span class="n">q</span> <span class="o">!=</span> <span class="n">p</span><span class="p">)</span> <span class="n">alloc</span><span class="p">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">q</span><span class="o">--</span><span class="p">);</span>
+
+<span class="c1">// 释放内存
+</span><span class="c1"></span><span class="n">alloc</span><span class="p">.</span><span class="n">deallocte</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="未初始化内存的拷贝或填充算法">未初始化内存的拷贝或填充算法</h4>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uninitialized_copy(beg, end, beg2)</code></td>
+<td>beg 和 end 之间的元素拷贝到 beg2, 需要有足够空间</td>
+</tr>
+<tr>
+<td><code>uninitialized_copy_n(beg, n, beg2)</code></td>
+<td>拷贝 n 个元素</td>
+</tr>
+<tr>
+<td><code>uninitialized_fill(beg, end, t)</code></td>
+<td>beg 和 end 之间的元素拷贝到 beg2, 需要有足够空间</td>
+</tr>
+<tr>
+<td><code>uninitialized_fill_n(beg, n, t)</code></td>
+<td>拷贝 n 个元素</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// vi 是已知的的vector&lt;int&gt;
+</span><span class="c1"></span><span class="n">allocator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">alloc</span><span class="p">;</span>
+<span class="k">auto</span> <span class="k">const</span> <span class="n">p</span> <span class="o">=</span> <span class="n">alloc</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">vi</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">q</span>       <span class="o">=</span> <span class="n">uninitialized_copy</span><span class="p">(</span><span class="n">vi</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vi</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">p</span><span class="p">);</span>
+<span class="n">uninitialized_fill_n</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">vi</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="mi">42</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">ticks</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-25
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/dynamic-memory/">dynamic-memory</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/cpp_copy_control/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">拷贝控制</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/map_and_set/">
+            <span class="next-text nav-default">联合容器</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2020-05-25 21:14:00 \u002b0800 CST',
+        title: '动态内存',
+        clientID: 'ea0e3eccad5c469abf15',
+        clientSecret: 'f80a60df515da91e6c9b53c0bede3227ebe2f8ce',
+        repo: 'tickscn.github.io',
+        owner: 'tickscn',
+        admin: ['tickscn'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xiehuiwu1996@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/tickscn/" class="iconfont icon-github" title="github"></a>
+  <a href="https://tickscn.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>ticks</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
